@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.GridItemBinding
 
-class DiaryMonthAdapter (val context: Context, val items: ArrayList<DiaryMonthData>) : RecyclerView.Adapter<DiaryMonthAdapter.ViewHolder>() {
+class DiaryDayAdapter (val context: Context, val items: ArrayList<DiaryMainDayData>) : RecyclerView.Adapter<DiaryDayAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: GridItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : DiaryMonthData){
+        fun bind(item : DiaryMainDayData){
             binding.tvDay.text = item.date.toString()
 
             Glide.with(context)

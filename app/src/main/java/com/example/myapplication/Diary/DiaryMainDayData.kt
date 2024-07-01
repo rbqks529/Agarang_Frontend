@@ -1,6 +1,6 @@
 package com.example.myapplication.Diary
 
-data class DiaryMonthData(
+data class DiaryMainDayData(
     val imageResId: Int,
     val date: Int? = null
 )
