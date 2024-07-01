@@ -2,4 +2,5 @@
     <string name="app_name">My Application</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_version_info">현재 %1$s / 최신 %2$s</string>
 </resources>
