@@ -13,8 +13,8 @@ import com.example.myapplication.databinding.FragmentDiaryMainDayBinding
 class DiaryMainDayFragment : Fragment() {
 
     lateinit var binding: FragmentDiaryMainDayBinding
-    private var DiaryMonthAdapter : DiaryDayAdapter?= null
-    private var DiaryMonthitemList : ArrayList<DiaryMainDayData> = arrayListOf()
+    private var DiaryDayAdapter : DiaryDayAdapter?= null
+    private var DiaryDayitemList : ArrayList<DiaryMainDayData> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,12 +33,12 @@ class DiaryMainDayFragment : Fragment() {
 
     private fun initRecyclerView() {
         val spanCount = 3 // 열의 수
-        DiaryMonthAdapter = DiaryDayAdapter(requireContext(), DiaryMonthitemList)
-        binding.rvDiary.adapter = DiaryMonthAdapter
-        binding.rvDiary.layoutManager = GridLayoutManager(context, spanCount)
+        DiaryDayAdapter = DiaryDayAdapter(requireContext(), DiaryDayitemList)
+        binding.rvDiaryDay.adapter = DiaryDayAdapter
+        binding.rvDiaryDay.layoutManager = GridLayoutManager(context, spanCount)
 
         // 아이템 크기 고정
-        binding.rvDiary.addItemDecoration(SquareItemDecoration(spanCount))
+        binding.rvDiaryDay.addItemDecoration(SquareItemDecoration(spanCount))
 
         /*// 아이템 간 간격 설정
         val spacingHorizontal = resources.getDimensionPixelSize(R.dimen.grid_spacing)
@@ -47,29 +47,29 @@ class DiaryMainDayFragment : Fragment() {
     }
 
     private fun initData() {
-        DiaryMonthitemList.addAll(
+        DiaryDayitemList.addAll(
             arrayListOf(
-                DiaryMainDayData(R.drawable.post_sample, 1),
-                DiaryMainDayData(R.drawable.post_sample, 2),
-                DiaryMainDayData(R.drawable.post_sample, 3),
-                DiaryMainDayData(R.drawable.post_sample, 4),
-                DiaryMainDayData(R.drawable.post_sample, 5),
-                DiaryMainDayData(R.drawable.post_sample, 6),
-                DiaryMainDayData(R.drawable.post_sample, 7),
-                DiaryMainDayData(R.drawable.post_sample, 8),
-                DiaryMainDayData(R.drawable.post_sample, 9),
-                DiaryMainDayData(R.drawable.post_sample, 10),
-                DiaryMainDayData(R.drawable.post_sample, 11),
-                DiaryMainDayData(R.drawable.post_sample, 12),
-                DiaryMainDayData(R.drawable.post_sample, 13),
-                DiaryMainDayData(R.drawable.post_sample, 14),
-                DiaryMainDayData(R.drawable.post_sample, 15),
-                DiaryMainDayData(R.drawable.post_sample, 16),
-                DiaryMainDayData(R.drawable.post_sample, 17),
-                DiaryMainDayData(R.drawable.post_sample, 18),
-                DiaryMainDayData(R.drawable.post_sample, 19),
-                DiaryMainDayData(R.drawable.post_sample, 20),
-                DiaryMainDayData(R.drawable.post_sample, 21)
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 1"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 2"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 4"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 5"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 6"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 7"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 8"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 9"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 10"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 11"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 12"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 13"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 14"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 15"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 16"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 17"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 18"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 19"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 20"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 21"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 22")
             )
         )
 
