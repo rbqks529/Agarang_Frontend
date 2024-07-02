@@ -20,10 +20,24 @@ class HomeSettingFragment : Fragment() {
     }
 
     private fun init() {
+        //baby name
+        val babyname="아깽이"
+        val babyNameText=getString(R.string.baby_name,babyname)
+        binding.tvProfileName.text=babyNameText
+        //d-day
+        val d_day="DAY"
+        val d_dayText=getString(R.string.d_day,d_day)
+        binding.tvProfileDday.text=d_dayText
+        //due date
+        val year = 2024
+        val month = 2
+        val day = 4
+        val dueDateText=getString(R.string.due_date,year.toString(),month.toString(),day.toString())
+        binding.tvProfileDueDate.text=dueDateText
         //version init
         val currentVersion = "1.2.0"
         val latestVersion="1.5.0"
-        val versionInfoText=getString(R.string.tv_version_info, currentVersion, latestVersion)
+        val versionInfoText=getString(R.string.version_info, currentVersion, latestVersion)
         binding.tvVersionInfo.text=versionInfoText
     }
 
