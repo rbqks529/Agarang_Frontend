@@ -1,14 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Setting.ChildInfoChangeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/tv_birth_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="태명"
+        android:textSize="16sp"
+        android:textColor="#C5C5C5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16.97dp"
+        android:layout_marginTop="74.55dp"
+        android:layout_marginEnd="314.03dp"
+        />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_birth_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/birth_name"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="30.27dp"
+        android:layout_marginTop="109.41dp"
+        android:layout_marginEnd="280.73dp"
+        />
+
+    <ImageView
+        android:id="@+id/btn_name_cancle"
+        android:layout_width="10dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="317.67dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="24.33dp"
+        android:src="@drawable/ic_cancle_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="337.031dp"
+        android:layout_height="0.92dp"
+        android:background="#C5C5C5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_birth_name"
+        android:layout_marginStart="11.48dp"
+        android:layout_marginEnd="11.48dp"
+        android:layout_marginTop="8dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_due_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="예정일"
+        android:textSize="16sp"
+        android:textColor="#C5C5C5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16.97dp"
+        android:layout_marginTop="192.41dp"
+        android:layout_marginEnd="299.03dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_ic_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_calendar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="317.67dp"
+        android:layout_marginTop="216.76dp"
+        android:layout_marginEnd="24.33dp"
+        />
+
+    <View
+        android:layout_width="337.031dp"
+        android:layout_height="0.92dp"
+        android:background="#C5C5C5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_ic_calendar"
+        android:layout_marginStart="11.48dp"
+        android:layout_marginEnd="11.48dp"
+        android:layout_marginTop="8.35dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_weight_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="체중"
+        android:textSize="16sp"
+        android:textColor="#C5C5C5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16.97dp"
+        android:layout_marginTop="300.23dp"
+        android:layout_marginEnd="314.03dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/weight"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="29.97dp"
+        android:layout_marginTop="339.46dp"
+        android:layout_marginEnd="287.03dp"
+        />
+
+    <ImageView
+        android:id="@+id/ic_cancle_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="317.67dp"
+        android:layout_marginTop="339.46dp"
+        android:layout_marginEnd="24.33dp"
+        android:src="@drawable/ic_cancle_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="337.031dp"
+        android:layout_height="0.92dp"
+        android:background="#C5C5C5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ic_cancle_btn"
+        android:layout_marginStart="11.48dp"
+        android:layout_marginEnd="11.48dp"
+        android:layout_marginTop="5.13dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_cancle_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_cancle_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="602.26dp"
+        android:layout_marginEnd="231.82dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_ok_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_ok_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="602.26dp"
+        android:layout_marginStart="140.04dp"
+        android:layout_marginEnd="31dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="취소"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/iv_cancle_box"
+        app:layout_constraintTop_toTopOf="@id/iv_cancle_box"
+        app:layout_constraintEnd_toEndOf="@id/iv_cancle_box"
+        app:layout_constraintBottom_toBottomOf="@id/iv_cancle_box"
+        android:layout_marginStart="31.59dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="30.59dp"
+        android:layout_marginBottom="14dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="수정완료"
+        android:textSize="20sp"
+        android:textColor="#FFF"
+        app:layout_constraintStart_toStartOf="@id/iv_ok_box"
+        app:layout_constraintTop_toTopOf="@id/iv_ok_box"
+        app:layout_constraintEnd_toEndOf="@id/iv_ok_box"
+        app:layout_constraintBottom_toBottomOf="@id/iv_ok_box"
+        android:layout_marginStart="60.48dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="60.48dp"
+        android:layout_marginBottom="14dp"
+        />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
