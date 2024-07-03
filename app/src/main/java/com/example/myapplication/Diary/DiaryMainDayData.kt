@@ -2,7 +2,8 @@ package com.example.myapplication.Diary
 
 data class DiaryMainDayData(
     val imageResId: Int,
-    val date: String
+    val date: String,
+    val bookmark: Int = 0
 ) {
     val year: Int
     val month: Int
