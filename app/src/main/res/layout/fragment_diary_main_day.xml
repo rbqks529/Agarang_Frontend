@@ -4,19 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Diary.DiaryMainMonthFragment">
+    tools:context=".Diary.DiaryMainDayFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_diary_month"
+        android:id="@+id/rv_diary_day"
         android:background="#F9F9F9"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        tools:listitem="@layout/diary_month_item" />
+        android:layout_marginStart="1.5dp"
+        android:layout_marginEnd="1.5dp"
+        tools:listitem="@layout/grid_day_item" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2024 / 05"
+        android:textSize="22sp"
+        android:textColor="@color/white"
+        android:textStyle="normal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="48dp" />
 
     <ImageView
-        android:id="@+id/iv_search_month"
+        android:id="@+id/iv_search_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_search"
@@ -24,5 +37,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

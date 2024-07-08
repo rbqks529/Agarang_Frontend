@@ -6,21 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.databinding.FragmentDiaryMainMonthBinding
+import com.example.myapplication.databinding.FragmentDiaryMainDayBinding
 
-class DiaryMainMonthFragment : Fragment() {
 
-    lateinit var binding: FragmentDiaryMainMonthBinding
-    private var DiaryMonthAdapter : DiaryMonthAdapter?= null
-    private var DiaryMonthitemList : ArrayList<DiaryMainDayData> = arrayListOf()
+class DiaryMainDayFragment : Fragment() {
+
+    lateinit var binding: FragmentDiaryMainDayBinding
+    private var DiaryDayAdapter : DiaryDayAdapter?= null
+    private var DiaryDayitemList : ArrayList<DiaryMainDayData> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentDiaryMainMonthBinding.inflate(inflater, container, false)
+
+        binding = FragmentDiaryMainDayBinding.inflate(inflater, container, false)
 
         //데이터 생성
         initData()
@@ -32,19 +33,26 @@ class DiaryMainMonthFragment : Fragment() {
 
     private fun initRecyclerView() {
         val spanCount = 3 // 열의 수
-        DiaryMonthAdapter = DiaryMonthAdapter(requireContext(), DiaryMonthitemList)
-        binding.rvDiaryMonth.adapter = DiaryMonthAdapter
-        binding.rvDiaryMonth.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+        DiaryDayAdapter = DiaryDayAdapter(requireContext(), DiaryDayitemList)
+        binding.rvDiaryDay.adapter = DiaryDayAdapter
+        binding.rvDiaryDay.layoutManager = GridLayoutManager(context, spanCount)
 
+        // 아이템 크기 고정
+        binding.rvDiaryDay.addItemDecoration(SquareItemDecoration(spanCount))
+
+        /*// 아이템 간 간격 설정
+        val spacingHorizontal = resources.getDimensionPixelSize(R.dimen.grid_spacing)
+        val spacingVertical = resources.getDimensionPixelSize(R.dimen.grid_spacing)
+        binding.rvDiary.addItemDecoration(GridSpacingItemDecoration(spanCount, spacingHorizontal, spacingVertical))*/
     }
 
     private fun initData() {
-        DiaryMonthitemList.addAll(
+        DiaryDayitemList.addAll(
             arrayListOf(
-                DiaryMainDayData(R.drawable.post_sample, "2024 / 3 / 1"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 1"),
                 DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 2"),
                 DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 4"),
-                DiaryMainDayData(R.drawable.post_sample, "2024 / 4 / 5"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 5"),
                 DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 6"),
                 DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 7"),
                 DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 8"),
@@ -58,10 +66,10 @@ class DiaryMainMonthFragment : Fragment() {
                 DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 16"),
                 DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 17"),
                 DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 18"),
-                DiaryMainDayData(R.drawable.post_sample, "2024 / 6 / 19"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 19"),
                 DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 20"),
                 DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 21"),
-                DiaryMainDayData(R.drawable.post_sample, "2024 / 7 / 22")
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 22")
             )
         )
 

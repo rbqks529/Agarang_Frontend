@@ -6,23 +6,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.myapplication.databinding.GridItemBinding
+import com.example.myapplication.databinding.GridDayItemBinding
 
-class DiaryMonthAdapter (val context: Context, val items: ArrayList<DiaryMonthData>) : RecyclerView.Adapter<DiaryMonthAdapter.ViewHolder>() {
+class DiaryDayAdapter (val context: Context, val items: ArrayList<DiaryMainDayData>) : RecyclerView.Adapter<DiaryDayAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: GridItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : DiaryMonthData){
-            binding.tvDay.text = item.date.toString()
+    inner class ViewHolder(val binding: GridDayItemBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(item : DiaryMainDayData){
+            binding.tvDay.text = item.day.toString()
 
             Glide.with(context)
                 .load(item.imageResId)
                 .centerCrop()
-                .into(binding.imageView)
+                .into(binding.ivDay)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = GridItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = GridDayItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
