@@ -37,6 +37,15 @@ class CalendarFragment : DialogFragment() {
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.style_calendar_bg)
+    }
+
     interface OnDateSelectedListener {
         fun onDateSelected(date: String)
     }
