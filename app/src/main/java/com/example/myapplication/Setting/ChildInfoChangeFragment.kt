@@ -2,6 +2,8 @@ package com.example.myapplication.Setting
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +46,19 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
             parentFragmentManager.popBackStack()
         }
 
+        binding.etWeight.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!s.isNullOrEmpty() && !s.toString().endsWith("kg")) {
+                    binding.etWeight.setText("$s kg")
+                    binding.etWeight.setSelection(s.length)
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
         return binding.root
     }
 
@@ -56,7 +71,7 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
         with(sharedPreferences.edit()) {
             putString("birthName", binding.etBirthName.text.toString())
             putString("birthDate", binding.tvBirthDate.text.toString())
-            putString("weight", binding.etWeight.text.toString())
+            putString("weight", binding.etWeight.text.toString().replace(" kg",""))
             apply()
         }
     }
@@ -70,6 +85,6 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
 
         binding.etBirthName.setText(birthName)
         binding.tvBirthDate.text = birthDate
-        binding.etWeight.setText(weight)
+        binding.etWeight.setText(if (weight.isNullOrEmpty()) "" else "$weight kg")
     }
 }
