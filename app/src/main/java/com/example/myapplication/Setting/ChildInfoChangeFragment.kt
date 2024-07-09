@@ -55,6 +55,7 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
         val sharedPreferences = requireActivity().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
         with(sharedPreferences.edit()) {
             putString("birthName", binding.etBirthName.text.toString())
+            putString("birthDate", binding.tvBirthDate.text.toString())
             putString("weight", binding.etWeight.text.toString())
             apply()
         }
@@ -62,5 +63,13 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
 
     private fun init() {
         // 초기화 작업 수행
+        val sharedPreferences = requireActivity().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val birthName = sharedPreferences.getString("birthName", "")
+        val birthDate = sharedPreferences.getString("birthDate", "")
+        val weight = sharedPreferences.getString("weight", "")
+
+        binding.etBirthName.setText(birthName)
+        binding.tvBirthDate.text = birthDate
+        binding.etWeight.setText(weight)
     }
 }
