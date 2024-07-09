@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportFragmentManager.beginTransaction().replace(R.id.main_frm, DiaryFragment())
+        supportFragmentManager.beginTransaction().replace(R.id.main_frm, ChangeChar2Fragment())
             .commitAllowingStateLoss()
 
     }
