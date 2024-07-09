@@ -15,11 +15,28 @@ class HomeSettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding= FragmentHomeSettingBinding.inflate(inflater,container,false)
-        init()
+        infoinit()
+
+        binding.ivChildInfoPlus.setOnClickListener {
+            val fragment=ChildInfoChangeFragment()
+            val transaction=parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_frm,fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
+        binding.ivFamilyInfoPlus.setOnClickListener {
+            val fragment=FamilyInfoFragment()
+            val transaction=parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_frm,fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
         return binding.root
     }
 
-    private fun init() {
+    private fun infoinit() {
         //baby name
         val babyname="아깽이"
         val babyNameText=getString(R.string.baby_name,babyname)
