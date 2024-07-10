@@ -1,4 +1,7 @@
 <resources>
+
+    <!-- 다른 문자열 리소스들 -->
+
     <!-- 추가할 문자열 리소스 -->
     <string name="close">Close</string>
     <string name="hello_blank_fragment">Hello Blank Fragment</string>

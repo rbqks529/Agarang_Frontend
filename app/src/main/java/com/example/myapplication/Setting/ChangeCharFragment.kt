@@ -1,20 +1,29 @@
-package com.example.myapplication
+package com.example.myapplication.Setting
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
-import android.widget.ImageView
+import com.example.myapplication.R
 
 
 class ChangeCharFragment : Fragment() {
 
     private val imageResources = intArrayOf(
-        R.drawable.mouse_1,R.drawable.cow_1,R.drawable.tiger_1,R.drawable.rabbit_1,R.drawable.dragon_1, R.drawable.snake_1,
-        R.drawable.horse_1,R.drawable.sheep_1,R.drawable.monkey_1,R.drawable.chick_1,R.drawable.dog_1,R.drawable.pig_1
+        R.drawable.mouse_1,
+        R.drawable.cow_1,
+        R.drawable.tiger_1,
+        R.drawable.rabbit_1,
+        R.drawable.dragon_1,
+        R.drawable.snake_1,
+        R.drawable.horse_1,
+        R.drawable.sheep_1,
+        R.drawable.monkey_1,
+        R.drawable.chick_1,
+        R.drawable.dog_1,
+        R.drawable.pig_1
     )
 
     private val charNames = arrayOf(

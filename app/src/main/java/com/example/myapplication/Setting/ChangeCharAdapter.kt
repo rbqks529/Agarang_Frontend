@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.Setting
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
+import com.example.myapplication.R
 
 class ChangeCharAdapter(
     private val context: Context,
@@ -50,7 +51,11 @@ class ChangeCharAdapter(
 
         view.setOnClickListener {
             val fragmentActivity = context as FragmentActivity
-            val dialogFragment = ItemDetailDialogFragment.newInstance(items[position],charnames[position] ,descriptions[position])
+            val dialogFragment = ItemDetailDialogFragment.newInstance(
+                items[position],
+                charnames[position],
+                descriptions[position]
+            )
             dialogFragment.show(fragmentActivity.supportFragmentManager, "item_detail_dialog")
         }
 
