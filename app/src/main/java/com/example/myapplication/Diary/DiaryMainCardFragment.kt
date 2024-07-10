@@ -23,6 +23,11 @@ class DiaryMainCardFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDiaryMainCardBinding.inflate(inflater, container, false)
+
+        binding.ivDiaryPrevious.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         return binding.root
     }
 
