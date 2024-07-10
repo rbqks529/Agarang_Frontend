@@ -29,7 +29,7 @@ class DiaryDayAdapter (val context: Context, val items: ArrayList<DiaryMainDayDa
                 .centerCrop()
                 .into(binding.ivDay)
 
-            binding.ivDay.setOnClickListener {
+            itemView.setOnClickListener {
                 listener?.onItemClick(item)
             }
         }

@@ -4,9 +4,10 @@
     android:layout_width="288dp"
     android:layout_height="472dp"
     android:layout_margin="16dp"
+    android:background="#F9F9F9"
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp">
-
+i
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

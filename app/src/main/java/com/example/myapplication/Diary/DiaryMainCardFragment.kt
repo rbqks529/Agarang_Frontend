@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentDiaryMainCardBinding
-
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class DiaryMainCardFragment : Fragment() {
     private lateinit var binding: FragmentDiaryMainCardBinding
@@ -17,6 +19,7 @@ class DiaryMainCardFragment : Fragment() {
     private lateinit var cardAdapter: CardviewAdapter
     private var diaryDataList: List<DiaryMainDayData> = listOf()
     private var currentPosition = 0
+    private var scrollJob: Job? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDiaryMainCardBinding.inflate(inflater, container, false)
@@ -26,7 +29,7 @@ class DiaryMainCardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            val data = it.getSerializable("data") as? List<DiaryMainDayData>
+            val data = it.getSerializable("data") as? ArrayList<DiaryMainDayData>
             val position = it.getInt("position", 0)
             if (data != null) {
                 setData(data, position)
@@ -35,25 +38,14 @@ class DiaryMainCardFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
-        // Date RecyclerView
         dateAdapter = DateAdapter(diaryDataList) { position ->
-            currentPosition = position
-            binding.rvDiaryCardView.smoothScrollToPosition(position)
+            scrollToPosition(position)
         }
         binding.rvDiaryDate.apply {
             adapter = dateAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    currentPosition = layoutManager.findFirstVisibleItemPosition()
-                    /*binding.rvDiaryCardView.scrollToPosition(currentPosition)*/
-                }
-            })
         }
 
-        // Card RecyclerView
         cardAdapter = CardviewAdapter(diaryDataList)
         binding.rvDiaryCardView.apply {
             adapter = cardAdapter
@@ -62,15 +54,31 @@ class DiaryMainCardFragment : Fragment() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    currentPosition = layoutManager.findFirstVisibleItemPosition()
-                    binding.rvDiaryDate.smoothScrollToPosition(currentPosition)
+                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+                    if (firstVisibleItemPosition != RecyclerView.NO_POSITION && firstVisibleItemPosition != currentPosition) {
+                        currentPosition = firstVisibleItemPosition
+                        updateDateSelection(currentPosition)
+                    }
                 }
             })
         }
 
-        // 초기 선택 위치 설정
-        binding.rvDiaryDate.scrollToPosition(currentPosition)
-        binding.rvDiaryCardView.scrollToPosition(currentPosition)
+        scrollToPosition(currentPosition)
+    }
+
+    private fun scrollToPosition(position: Int) {
+        scrollJob?.cancel()
+        scrollJob = MainScope().launch {
+            delay(100) // debounce
+            binding.rvDiaryCardView.smoothScrollToPosition(position)
+            binding.rvDiaryDate.smoothScrollToPosition(position)
+            dateAdapter.updateSelectedPosition(position)
+        }
+    }
+
+    private fun updateDateSelection(position: Int) {
+        dateAdapter.updateSelectedPosition(position)
+        binding.rvDiaryDate.smoothScrollToPosition(position)
     }
 
     fun setData(data: List<DiaryMainDayData>, initialPosition: Int) {
