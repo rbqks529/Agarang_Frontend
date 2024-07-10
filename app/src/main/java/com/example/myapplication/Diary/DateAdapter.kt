@@ -25,7 +25,6 @@ class DateAdapter(private var items: List<DiaryMainDayData>, private val onItemC
             tvWeekday.text = getWeekday(item.year, item.month, item.day)
             tvDay.text = item.day.toString()
 
-            // 선택된 아이템 스타일 변경
             if (position == selectedPosition) {
                 tvDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.selected_date_color))
                 tvDay.setBackgroundResource(R.drawable.selected_date_background)
