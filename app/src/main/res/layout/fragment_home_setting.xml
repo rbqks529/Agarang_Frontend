@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/whitebeige"
+    tools:context=".Setting.HomeSettingFragment">
+
+    <ImageView
+        android:id="@+id/img_profile_blank_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_profile_blank_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="7dp"
+        />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/siv_property"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="21.18dp"
+        android:layout_marginBottom="20.82dp"
+        android:background="@color/whitebeige"
+        android:src="@drawable/property37"
+        app:layout_constraintBottom_toBottomOf="@id/img_profile_blank_box"
+        app:layout_constraintStart_toStartOf="@id/img_profile_blank_box"
+        app:layout_constraintTop_toTopOf="@id/img_profile_blank_box"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
+
+    <TextView
+        android:id="@+id/tv_profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/baby_name"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@id/img_profile_blank_box"
+        app:layout_constraintTop_toTopOf="@id/img_profile_blank_box"
+        app:layout_constraintBottom_toBottomOf="@id/img_profile_blank_box"
+        android:layout_marginStart="100.37dp"
+        android:layout_marginTop="35.91dp"
+        android:layout_marginBottom="50.09dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_profile_dday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/d_day"
+        android:textColor="@color/orange"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/tv_profile_name"
+        app:layout_constraintTop_toTopOf="@id/img_profile_blank_box"
+        android:layout_marginStart="9.94dp"
+        android:layout_marginTop="35.91dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_profile_due"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="예정일:"
+        android:textColor="#B4B4B4"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/img_profile_blank_box"
+        app:layout_constraintTop_toTopOf="@id/img_profile_blank_box"
+        android:layout_marginStart="100.37dp"
+        android:layout_marginTop="61.7dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_profile_due_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/due_date"
+        android:textColor="#B4B4B4"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/tv_profile_due"
+        app:layout_constraintTop_toTopOf="@id/tv_profile_due"
+        app:layout_constraintBottom_toBottomOf="@id/tv_profile_due"
+        android:layout_marginStart="5dp"
+        />
+
+    <ImageView
+        android:id="@+id/tv_profile_due_date_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_due_plus"
+        app:layout_constraintStart_toEndOf="@id/tv_profile_due_date"
+        app:layout_constraintTop_toTopOf="@id/tv_profile_due_date"
+        app:layout_constraintBottom_toBottomOf="@id/tv_profile_due_date"
+        android:layout_marginStart="10.63dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_info_blank_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_blank_box"
+        app:layout_constraintTop_toBottomOf="@id/img_profile_blank_box"
+        android:layout_marginTop="14dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="7dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_child_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="아이 정보"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="22.73dp"
+        android:layout_marginTop="20.07dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_info_blank_box"
+        android:layout_marginBottom="175.93dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_family_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="가족 정보"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="22.73dp"
+        android:layout_marginTop="72.07dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_info_blank_box"
+        android:layout_marginBottom="123.93dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_char_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="캐릭터"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="22.73dp"
+        android:layout_marginTop="125.07dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_info_blank_box"
+        android:layout_marginBottom="70.93dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_noti_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="공지사항"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="22.73dp"
+        android:layout_marginTop="177.07dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_info_blank_box"
+        android:layout_marginBottom="18.93dp"
+        />
+
+    <View
+        android:layout_width="333.35dp"
+        android:layout_height="0.92dp"
+        android:background="#F1F1F1"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="6.18dp"
+        android:layout_marginTop="52.49dp"
+        />
+
+    <View
+        android:layout_width="333.35dp"
+        android:layout_height="0.92dp"
+        android:background="#F1F1F1"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="6.18dp"
+        android:layout_marginTop="105.9dp"
+        />
+
+    <View
+        android:layout_width="333.35dp"
+        android:layout_height="0.92dp"
+        android:background="#F1F1F1"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="6.18dp"
+        android:layout_marginTop="157.49dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_child_info_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_plus"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="315.59dp"
+        android:layout_marginTop="23.07dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_family_info_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_plus"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="315.59dp"
+        android:layout_marginTop="75.07dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_char_info_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_plus"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="315.59dp"
+        android:layout_marginTop="128.07dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_noti_info_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_plus"
+        app:layout_constraintStart_toStartOf="@id/iv_info_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_info_blank_box"
+        android:layout_marginStart="315.59dp"
+        android:layout_marginTop="180.07dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_setting_blank_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_setting_blank_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="384.2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="7dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="환경 설정"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/iv_setting_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_setting_blank_box"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="18.82dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_setting_blank_box"
+        android:layout_marginBottom="72.12dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_use_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이용 안내"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/iv_setting_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_setting_blank_box"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="71.88dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_setting_blank_box"
+        android:layout_marginBottom="18.12dp"
+        />
+
+    <View
+        android:layout_width="333.35dp"
+        android:layout_height="0.92dp"
+        android:background="#F1F1F1"
+        app:layout_constraintStart_toStartOf="@id/iv_setting_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_setting_blank_box"
+        android:layout_marginStart="6.45dp"
+        android:layout_marginTop="53.41dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_setting_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_plus"
+        app:layout_constraintStart_toStartOf="@id/iv_setting_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_setting_blank_box"
+        android:layout_marginStart="315.85dp"
+        android:layout_marginTop="21.87dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_use_info_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_plus"
+        app:layout_constraintStart_toStartOf="@id/iv_setting_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_setting_blank_box"
+        android:layout_marginStart="315.85dp"
+        android:layout_marginTop="74.88dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_version_blank_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_version_blank_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginTop="502.99dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_vesion_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="버전 정보"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/iv_version_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_version_blank_box"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="19.08dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_version_blank_box"
+        android:layout_marginBottom="17.92dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_version_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/version_info"
+        android:textColor="#7E7E7E"
+        app:layout_constraintStart_toStartOf="@id/iv_version_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_version_blank_box"
+        app:layout_constraintEnd_toEndOf="@id/iv_version_blank_box"
+        android:layout_marginStart="207.19dp"
+        android:layout_marginTop="19.08dp"
+        android:layout_marginEnd="38.81dp"
+        android:textSize="12sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_use_agreement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이용약관"
+        android:textSize="10sp"
+        android:textColor="#7E7E7E"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_version_blank_box"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="23.43dp"
+        />
+
+    <View
+        android:id="@+id/line_after_agreement"
+        android:layout_width="0.5dp"
+        android:layout_height="10dp"
+        app:layout_constraintStart_toEndOf="@id/tv_use_agreement"
+        app:layout_constraintTop_toTopOf="@id/tv_use_agreement"
+        app:layout_constraintBottom_toBottomOf="@id/tv_use_agreement"
+        android:layout_marginStart="5dp"
+        android:background="#7E7E7E"
+        />
+
+    <TextView
+        android:id="@+id/tv_personal_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="개인정보 취급방침"
+        android:textSize="10sp"
+        android:textColor="#7E7E7E"
+        app:layout_constraintStart_toEndOf="@id/line_after_agreement"
+        app:layout_constraintTop_toBottomOf="@id/iv_version_blank_box"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="23.43dp"
+        />
+
+    <View
+        android:id="@+id/line_personal_info"
+        android:layout_width="0.5dp"
+        android:layout_height="10dp"
+        app:layout_constraintStart_toEndOf="@id/tv_personal_info"
+        app:layout_constraintTop_toTopOf="@id/tv_use_agreement"
+        app:layout_constraintBottom_toBottomOf="@id/tv_use_agreement"
+        android:layout_marginStart="5dp"
+        android:background="#7E7E7E"
+        />
+
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="자주 묻는 문의"
+        android:textSize="10sp"
+        android:textColor="#7E7E7E"
+        app:layout_constraintStart_toEndOf="@id/line_personal_info"
+        app:layout_constraintTop_toBottomOf="@id/iv_version_blank_box"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="23.43dp"
+        />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

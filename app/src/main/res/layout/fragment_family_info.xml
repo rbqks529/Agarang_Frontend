@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/whitebeige"
+    tools:context=".Setting.FamilyInfoFragment">
+
+    <TextView
+        android:id="@+id/tv_family_sharing_code_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="가족 공유 코드"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="67.23dp"
+        android:layout_marginStart="135.5dp"
+        android:layout_marginEnd="136.5dp"/>
+    <TextView
+        android:id="@+id/tv_family_sharing_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/family_sharing_code"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="109.5dp"
+        android:layout_marginEnd="109.5dp"
+        android:layout_marginTop="102.5dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_family_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="가족"
+        android:textSize="12sp"
+        android:textColor="#818181"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="156dp"
+        android:layout_marginEnd="309dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_family_blank_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_family_blank_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginTop="176.86dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_family_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="엄마"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/iv_family_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_family_blank_box"
+        android:layout_marginStart="23.3dp"
+        android:layout_marginTop="20.14dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_family_blank_box"
+        android:layout_marginBottom="122.86dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_family_sec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="아빠"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/iv_family_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_family_blank_box"
+        android:layout_marginStart="23.3dp"
+        android:layout_marginTop="71.14dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_family_blank_box"
+        android:layout_marginBottom="71.86dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_family_third"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="할아버지"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/iv_family_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_family_blank_box"
+        android:layout_marginStart="23.3dp"
+        android:layout_marginTop="123.14dp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_family_blank_box"
+        android:layout_marginBottom="19.86dp"
+        />
+
+    <View
+        android:layout_width="333.35dp"
+        android:layout_height="0.92dp"
+        android:background="#F1F1F1"
+        app:layout_constraintStart_toStartOf="@id/iv_family_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_family_blank_box"
+        android:layout_marginStart="6.18dp"
+        android:layout_marginTop="52.49dp"
+        />
+
+    <View
+        android:layout_width="333.35dp"
+        android:layout_height="0.92dp"
+        android:background="#F1F1F1"
+        app:layout_constraintStart_toStartOf="@id/iv_family_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_family_blank_box"
+        android:layout_marginStart="6.18dp"
+        android:layout_marginTop="105.9dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_family_first_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_plus"
+        app:layout_constraintStart_toStartOf="@id/iv_family_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_family_blank_box"
+        android:layout_marginStart="315.59dp"
+        android:layout_marginTop="23.07dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_family_sec_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_plus"
+        app:layout_constraintStart_toStartOf="@id/iv_family_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_family_blank_box"
+        android:layout_marginStart="315.59dp"
+        android:layout_marginTop="75.07dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_family_third_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_plus"
+        app:layout_constraintStart_toStartOf="@id/iv_family_blank_box"
+        app:layout_constraintTop_toTopOf="@id/iv_family_blank_box"
+        android:layout_marginStart="315.59dp"
+        android:layout_marginTop="128.07dp"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_orange_circle"
+        app:layout_constraintStart_toEndOf="@id/tv_family_first"
+        app:layout_constraintBottom_toBottomOf="@id/tv_family_first"
+        android:layout_marginStart="0.64dp"
+        android:layout_marginBottom="13.67dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
