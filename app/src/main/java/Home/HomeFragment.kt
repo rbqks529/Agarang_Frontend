@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
+import com.example.myapplication.Setting.ChildInfoChangeFragment
+import com.example.myapplication.Setting.HomeSettingFragment
 import com.example.myapplication.databinding.FragmentHomeBinding
 
 class HomeFragment: Fragment() {
@@ -28,6 +30,13 @@ class HomeFragment: Fragment() {
         initData()
         //RecyclerView 생성
         initRecyclerView()
+
+        binding.ivSetting.setOnClickListener {
+            val fragmentSetting=HomeSettingFragment()
+            val transaction=parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_frm,fragmentSetting)
+                .commit()
+        }
 
         return binding.root
     }

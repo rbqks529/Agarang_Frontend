@@ -33,6 +33,13 @@ class HomeSettingFragment : Fragment() {
             transaction.commit()
         }
 
+        binding.ivCharInfoPlus.setOnClickListener {
+            val fragmentChangChar= ChangeChar2Fragment() //일단 후기로 옮김
+            val transaction=parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_frm,fragmentChangChar)
+                .commit()
+        }
+
         return binding.root
     }
 

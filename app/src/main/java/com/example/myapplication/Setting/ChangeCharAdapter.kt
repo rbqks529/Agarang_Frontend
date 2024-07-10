@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.Setting
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
+import com.example.myapplication.R
 
 class ChangeCharAdapter(
     private val context: Context,
@@ -33,7 +34,7 @@ class ChangeCharAdapter(
         val holder: ViewHolder
 
         if (convertView == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.grid_item, parent, false)
+            view = LayoutInflater.from(context).inflate(R.layout.char_item, parent, false)
             holder = ViewHolder()
             holder.imageView = view.findViewById(R.id.icon_image)
             holder.textView = view.findViewById(R.id.tv_char_name)
@@ -50,7 +51,11 @@ class ChangeCharAdapter(
 
         view.setOnClickListener {
             val fragmentActivity = context as FragmentActivity
-            val dialogFragment = ItemDetailDialogFragment.newInstance(items[position],charnames[position] ,descriptions[position])
+            val dialogFragment = ItemDetailDialogFragment.newInstance(
+                items[position],
+                charnames[position],
+                descriptions[position]
+            )
             dialogFragment.show(fragmentActivity.supportFragmentManager, "item_detail_dialog")
         }
 
