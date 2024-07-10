@@ -1,10 +1,13 @@
 package com.example.myapplication.Diary
 
+import java.io.Serializable
+
+
 data class DiaryMainDayData(
     val imageResId: Int,
     val date: String,
     val bookmark: Int = 0
-) {
+) : Serializable {
     val year: Int
     val month: Int
     val day: Int

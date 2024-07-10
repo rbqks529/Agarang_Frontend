@@ -10,6 +10,16 @@ import com.example.myapplication.databinding.GridDayItemBinding
 
 class DiaryDayAdapter (val context: Context, val items: ArrayList<DiaryMainDayData>) : RecyclerView.Adapter<DiaryDayAdapter.ViewHolder>() {
 
+    interface OnItemClickListener {
+        fun onItemClick(item: DiaryMainDayData)
+    }
+
+    private var listener: OnItemClickListener? = null
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.listener = listener
+    }
+
     inner class ViewHolder(val binding: GridDayItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(item : DiaryMainDayData){
             binding.tvDay.text = item.day.toString()
@@ -18,6 +28,10 @@ class DiaryDayAdapter (val context: Context, val items: ArrayList<DiaryMainDayDa
                 .load(item.imageResId)
                 .centerCrop()
                 .into(binding.ivDay)
+
+            binding.ivDay.setOnClickListener {
+                listener?.onItemClick(item)
+            }
         }
     }
 
