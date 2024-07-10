@@ -40,10 +40,29 @@ class DiaryMainDayFragment : Fragment() {
         // 아이템 크기 고정
         binding.rvDiaryDay.addItemDecoration(SquareItemDecoration(spanCount))
 
+        DiaryDayAdapter?.setOnItemClickListener(object : DiaryDayAdapter.OnItemClickListener {
+            override fun onItemClick(item: DiaryMainDayData) {
+                navigateToDiaryMainCard(item)
+            }
+        })
+
         /*// 아이템 간 간격 설정
         val spacingHorizontal = resources.getDimensionPixelSize(R.dimen.grid_spacing)
         val spacingVertical = resources.getDimensionPixelSize(R.dimen.grid_spacing)
         binding.rvDiary.addItemDecoration(GridSpacingItemDecoration(spanCount, spacingHorizontal, spacingVertical))*/
+    }
+
+    private fun navigateToDiaryMainCard(item: DiaryMainDayData) {
+        val fragment = DiaryMainCardFragment()
+        val bundle = Bundle().apply {
+            putSerializable("data", ArrayList(DiaryDayitemList))
+            putInt("position", DiaryDayitemList.indexOf(item))
+        }
+        fragment.arguments = bundle
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun initData() {
