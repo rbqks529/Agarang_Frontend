@@ -5,56 +5,66 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
+import com.example.myapplication.databinding.FragmentDiaryMainMonthBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DiaryMainMonthFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DiaryMainMonthFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var binding: FragmentDiaryMainMonthBinding
+    private var DiaryMonthAdapter : DiaryMonthAdapter?= null
+    private var DiaryMonthitemList : ArrayList<DiaryMainDayData> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_diary_main_month, container, false)
+        binding = FragmentDiaryMainMonthBinding.inflate(inflater, container, false)
+
+        //데이터 생성
+        initData()
+        //RecyclerView 생성
+        initRecyclerView()
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DiaryMainMonthFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DiaryMainMonthFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun initRecyclerView() {
+        val spanCount = 3 // 열의 수
+        DiaryMonthAdapter = DiaryMonthAdapter(requireContext(), DiaryMonthitemList)
+        binding.rvDiaryMonth.adapter = DiaryMonthAdapter
+        binding.rvDiaryMonth.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
     }
+
+    private fun initData() {
+        DiaryMonthitemList.addAll(
+            arrayListOf(
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 3 / 1"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 2"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 4"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 4 / 5"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 6"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 7"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 8"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 9"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 10"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 11"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 12"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 13"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 14"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 15"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 16"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 17"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 18"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 6 / 19"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 20"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 21"),
+                DiaryMainDayData(R.drawable.post_sample, "2024 / 7 / 22")
+            )
+        )
+
+    }
+
 }

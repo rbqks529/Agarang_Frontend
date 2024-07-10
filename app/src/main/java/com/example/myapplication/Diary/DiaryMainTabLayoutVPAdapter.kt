@@ -9,9 +9,9 @@ class DiaryMainTabLayoutVPAdapter(activity: FragmentActivity) : FragmentStateAda
 
     override fun createFragment(position: Int): Fragment {
         return when(position) {
-            0 -> DiaryMainDayFragment()
+            0 -> DiaryMainBookmarkFragment()
             1 -> DiaryMainMonthFragment()
-            else -> DiaryMainBookmarkFragment()
+            else -> DiaryMainDayFragment()
         }
     }
 }
