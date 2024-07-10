@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.Setting
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import com.example.myapplication.R
 
 public class ChangeChar2Adapter(val context: Context, val items: IntArray): BaseAdapter(){
     override fun getCount(): Int {
