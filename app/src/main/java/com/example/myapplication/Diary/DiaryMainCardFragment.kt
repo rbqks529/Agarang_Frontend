@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.FragmentDiaryMainCardBinding
 import kotlinx.coroutines.Job
@@ -55,16 +56,22 @@ class DiaryMainCardFragment : Fragment() {
         binding.rvDiaryCardView.apply {
             adapter = cardAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            // PagerSnapHelper 추가
+            val snapHelper = PagerSnapHelper()
+            snapHelper.attachToRecyclerView(this)
+
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-                    if (firstVisibleItemPosition != RecyclerView.NO_POSITION && firstVisibleItemPosition != currentPosition) {
-                        currentPosition = firstVisibleItemPosition + 1
-                        
-                        //스크롤 됐다는 사실을 알려줌
-                        updateDateSelection(currentPosition)
+                    val snapView = snapHelper.findSnapView(layoutManager)
+                    if (snapView != null) {
+                        val position = layoutManager.getPosition(snapView)
+                        if (position != RecyclerView.NO_POSITION && position != currentPosition) {
+                            currentPosition = position
+                            updateDateSelection(currentPosition)
+                        }
                     }
                 }
             })
