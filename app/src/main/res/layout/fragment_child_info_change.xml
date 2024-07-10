@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Setting.ChildInfoChangeFragment">
+    tools:context=".Setting.ChildInfoChangeFragment"
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/tv_birth_name_text"
