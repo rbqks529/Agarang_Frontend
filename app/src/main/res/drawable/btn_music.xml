@@ -6,22 +6,22 @@
   <path
       android:pathData="M2.117,1.309H28.117"
       android:strokeWidth="2.5"
-      android:fillColor="#00000000"
-      android:strokeColor="#B9B9B9"
+      android:fillColor="@drawable/bottom_navigation_color"
+      android:strokeColor="@drawable/bottom_navigation_color"
       android:strokeLineCap="round"/>
   <path
       android:pathData="M2.117,11.059H28.117"
       android:strokeWidth="2.5"
-      android:fillColor="#00000000"
-      android:strokeColor="#B9B9B9"
+      android:fillColor="@drawable/bottom_navigation_color"
+      android:strokeColor="@drawable/bottom_navigation_color"
       android:strokeLineCap="round"/>
   <path
       android:pathData="M2.117,20.809H17.284"
       android:strokeWidth="2.5"
-      android:fillColor="#00000000"
-      android:strokeColor="#B9B9B9"
+      android:fillColor="@drawable/bottom_navigation_color"
+      android:strokeColor="@drawable/bottom_navigation_color"
       android:strokeLineCap="round"/>
   <path
       android:pathData="M29.049,20.03C29.622,20.391 29.622,21.226 29.049,21.587L22.758,25.55C22.145,25.935 21.348,25.495 21.348,24.771L21.348,16.846C21.348,16.122 22.145,15.682 22.758,16.067L29.049,20.03Z"
-      android:fillColor="#B9B9B9"/>
+      android:fillColor="@drawable/bottom_navigation_color"/>
 </vector>
