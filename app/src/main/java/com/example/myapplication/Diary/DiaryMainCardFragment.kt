@@ -63,15 +63,21 @@ class DiaryMainCardFragment : Fragment() {
             })
         }
 
-        scrollToPosition(currentPosition)
+        scrollToPosition(currentPosition + 1)
     }
 
     private fun scrollToPosition(position: Int) {
         scrollJob?.cancel()
         scrollJob = MainScope().launch {
             delay(100) // debounce
-            binding.rvDiaryCardView.smoothScrollToPosition(position)
-            binding.rvDiaryDate.smoothScrollToPosition(position)
+            binding.rvDiaryCardView.scrollToPosition(position)
+
+            // 날짜 RecyclerView를 중앙으로 스크롤
+            val layoutManager = binding.rvDiaryDate.layoutManager as LinearLayoutManager
+            val smoothScroller = CenterSmoothScroller(requireContext())
+            smoothScroller.targetPosition = position
+            layoutManager.startSmoothScroll(smoothScroller)
+
             dateAdapter.updateSelectedPosition(position)
         }
     }
