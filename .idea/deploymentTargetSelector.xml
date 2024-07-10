@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-07-09T17:42:06.320428300Z">
+        <DropdownSelection timestamp="2024-07-10T05:34:58.385287900Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\정주연\.android\avd\Instagram_API_34.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\GyuBin\.android\avd\Pixel_7_Pro_API_34.avd" />
             </handle>
           </Target>
         </DropdownSelection>
