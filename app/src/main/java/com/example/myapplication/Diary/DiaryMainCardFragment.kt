@@ -56,14 +56,16 @@ class DiaryMainCardFragment : Fragment() {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
                     if (firstVisibleItemPosition != RecyclerView.NO_POSITION && firstVisibleItemPosition != currentPosition) {
-                        currentPosition = firstVisibleItemPosition
+                        currentPosition = firstVisibleItemPosition + 1
+                        
+                        //스크롤 됐다는 사실을 알려줌
                         updateDateSelection(currentPosition)
                     }
                 }
             })
         }
 
-        scrollToPosition(currentPosition + 1)
+        scrollToPosition(currentPosition)
     }
 
     private fun scrollToPosition(position: Int) {
@@ -77,14 +79,17 @@ class DiaryMainCardFragment : Fragment() {
             val smoothScroller = CenterSmoothScroller(requireContext())
             smoothScroller.targetPosition = position
             layoutManager.startSmoothScroll(smoothScroller)
-
             dateAdapter.updateSelectedPosition(position)
         }
     }
 
     private fun updateDateSelection(position: Int) {
         dateAdapter.updateSelectedPosition(position)
-        binding.rvDiaryDate.smoothScrollToPosition(position)
+
+        val layoutManager = binding.rvDiaryDate.layoutManager as LinearLayoutManager
+        val smoothScroller = CenterSmoothScroller(requireContext())
+        smoothScroller.targetPosition = position
+        layoutManager.startSmoothScroll(smoothScroller)
     }
 
     fun setData(data: List<DiaryMainDayData>, initialPosition: Int) {
