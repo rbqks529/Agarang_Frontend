@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.example.myapplication.Diary.DiaryMainTabLayoutVPAdapter
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentDiaryBinding
@@ -32,6 +34,30 @@ class DiaryFragment : Fragment() {
         TabLayoutMediator(binding.tlMain, binding.vpMain){ tab, position ->
             tab.text = tapList[position]
         }.attach()
+
+        // 특정 탭의 너비 변경
+        binding.tlMain.postDelayed({
+            val tabs = binding.tlMain.getChildAt(0) as ViewGroup
+            val tab = tabs.getChildAt(0)
+            val layoutParams = tab.layoutParams as LinearLayout.LayoutParams
+            layoutParams.width = 30
+            tab.layoutParams = layoutParams
+        }, 100)
+
+        // 특정 탭의 최소 너비 및 간격 변경
+        binding.tlMain.post {
+            val tabs = binding.tlMain.getChildAt(0) as ViewGroup
+
+            val tab = tabs.getChildAt(0)
+            val layoutParams = tab.layoutParams as LinearLayout.LayoutParams
+
+            // 간격 설정 (탭 간의 간격을 줄이기 위해 오른쪽 마진을 음수로 설정)
+            if (0 < tabs.childCount - 1) {
+                layoutParams.marginEnd = -10 // 음수 값으로 설정하여 간격을 줄임
+            }
+
+            tab.layoutParams = layoutParams
+        }
     }
 
 }

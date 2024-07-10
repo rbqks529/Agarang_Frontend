@@ -9,70 +9,60 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentDiaryMainDayBinding
 
-
 class DiaryMainDayFragment : Fragment() {
 
-    lateinit var binding: FragmentDiaryMainDayBinding
-    private var DiaryMonthAdapter : DiaryDayAdapter?= null
-    private var DiaryMonthitemList : ArrayList<DiaryMainDayData> = arrayListOf()
+    private lateinit var binding: FragmentDiaryMainDayBinding
+    private var diaryDayAdapter: DiaryDayAdapter? = null
+    private var diaryDayItemList: ArrayList<DiaryMainDayData> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         binding = FragmentDiaryMainDayBinding.inflate(inflater, container, false)
-
-        //데이터 생성
         initData()
-        //RecyclerView 생성
         initRecyclerView()
-
         return binding.root
     }
 
     private fun initRecyclerView() {
-        val spanCount = 3 // 열의 수
-        DiaryMonthAdapter = DiaryDayAdapter(requireContext(), DiaryMonthitemList)
-        binding.rvDiary.adapter = DiaryMonthAdapter
-        binding.rvDiary.layoutManager = GridLayoutManager(context, spanCount)
+        val spanCount = 3
+        diaryDayAdapter = DiaryDayAdapter(requireContext(), diaryDayItemList)
+        binding.rvDiaryDay.apply {
+            adapter = diaryDayAdapter
+            layoutManager = GridLayoutManager(context, spanCount)
+            addItemDecoration(SquareItemDecoration(spanCount))
+        }
 
-        // 아이템 크기 고정
-        binding.rvDiary.addItemDecoration(SquareItemDecoration(spanCount))
+        diaryDayAdapter?.setOnItemClickListener(object : DiaryDayAdapter.OnItemClickListener {
+            override fun onItemClick(item: DiaryMainDayData) {
+                navigateToDiaryMainCard(item)
+            }
+        })
+    }
 
-        /*// 아이템 간 간격 설정
-        val spacingHorizontal = resources.getDimensionPixelSize(R.dimen.grid_spacing)
-        val spacingVertical = resources.getDimensionPixelSize(R.dimen.grid_spacing)
-        binding.rvDiary.addItemDecoration(GridSpacingItemDecoration(spanCount, spacingHorizontal, spacingVertical))*/
+    private fun navigateToDiaryMainCard(item: DiaryMainDayData) {
+        val fragment = DiaryMainCardFragment()
+        val bundle = Bundle().apply {
+            putSerializable("data", ArrayList(diaryDayItemList))
+            putInt("position", diaryDayItemList.indexOf(item))
+        }
+        fragment.arguments = bundle
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun initData() {
-        DiaryMonthitemList.addAll(
-            arrayListOf(
-                DiaryMainDayData(R.drawable.post_sample, 1),
-                DiaryMainDayData(R.drawable.post_sample, 2),
-                DiaryMainDayData(R.drawable.post_sample, 3),
-                DiaryMainDayData(R.drawable.post_sample, 4),
-                DiaryMainDayData(R.drawable.post_sample, 5),
-                DiaryMainDayData(R.drawable.post_sample, 6),
-                DiaryMainDayData(R.drawable.post_sample, 7),
-                DiaryMainDayData(R.drawable.post_sample, 8),
-                DiaryMainDayData(R.drawable.post_sample, 9),
-                DiaryMainDayData(R.drawable.post_sample, 10),
-                DiaryMainDayData(R.drawable.post_sample, 11),
-                DiaryMainDayData(R.drawable.post_sample, 12),
-                DiaryMainDayData(R.drawable.post_sample, 13),
-                DiaryMainDayData(R.drawable.post_sample, 14),
-                DiaryMainDayData(R.drawable.post_sample, 15),
-                DiaryMainDayData(R.drawable.post_sample, 16),
-                DiaryMainDayData(R.drawable.post_sample, 17),
-                DiaryMainDayData(R.drawable.post_sample, 18),
-                DiaryMainDayData(R.drawable.post_sample, 19),
-                DiaryMainDayData(R.drawable.post_sample, 20),
-                DiaryMainDayData(R.drawable.post_sample, 21)
+        // 실제 애플리케이션에서는 이 부분을 데이터베이스나 API에서 데이터를 가져오는 로직으로 대체해야 합니다.
+        for (i in 1..31) {
+            diaryDayItemList.add(
+                DiaryMainDayData(
+                    R.drawable.post_sample,
+                    "2024 / 5 / $i"
+                )
             )
-        )
-
+        }
     }
-
 }

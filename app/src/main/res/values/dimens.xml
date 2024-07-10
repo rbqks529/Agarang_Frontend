@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="grid_spacing">3dp</dimen>
+    <dimen name="screen_half_width">0dp</dimen>
+    <dimen name="date_item_width">60dp</dimen>
 </resources>
