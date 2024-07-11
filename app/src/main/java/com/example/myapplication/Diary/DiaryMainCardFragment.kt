@@ -62,13 +62,18 @@ class DiaryMainCardFragment : Fragment() {
             val snapHelper = PagerSnapHelper()
             snapHelper.attachToRecyclerView(this)
 
+            // 패딩 설정으로 첫 번째와 마지막 아이템도 중앙에 올 수 있게 함
+            val padding = resources.displayMetrics.widthPixels / 2 -
+                    resources.getDimensionPixelSize(R.dimen.card_item_width) / 2
+            setPadding(padding, 0, padding, 0)
+            clipToPadding = false
+
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val snapView = snapHelper.findSnapView(layoutManager)
-                    if (snapView != null) {
-                        val position = layoutManager.getPosition(snapView)
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        val centerView = snapHelper.findSnapView(layoutManager)
+                        val position = centerView?.let { layoutManager?.getPosition(it) } ?: RecyclerView.NO_POSITION
                         if (position != RecyclerView.NO_POSITION && position != currentPosition) {
                             currentPosition = position
                             updateDateSelection(currentPosition)
