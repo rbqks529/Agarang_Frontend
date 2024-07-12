@@ -1,6 +1,7 @@
 package com.example.myapplication.Music
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Diary.DiaryDayAdapter
@@ -12,6 +13,12 @@ class MusicMainAdapter(val items:ArrayList<MusicMainData>):RecyclerView.Adapter<
         fun bind(item: MusicMainData){
             binding.ivRvCover1.setImageResource(item.musicImgId)
             binding.tvCover1.text=item.musicContent
+
+            if (position==0){
+                binding.ivCoverHeart.visibility= View.VISIBLE
+            }else{
+                binding.ivCoverHeart.visibility= View.GONE
+            }
         }
     }
 
