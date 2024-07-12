@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMusicBinding
@@ -31,7 +32,7 @@ class MusicFragment : Fragment() {
     private fun recycler() {
         musicMainAdapter=MusicMainAdapter(itemList)
         binding.rvMusic.adapter=musicMainAdapter
-        binding.rvMusic.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+        binding.rvMusic.layoutManager=GridLayoutManager(requireContext(),2)
     }
 
 }
