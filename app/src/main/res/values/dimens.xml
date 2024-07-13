@@ -3,4 +3,5 @@
     <dimen name="grid_spacing">3dp</dimen>
     <dimen name="screen_half_width">0dp</dimen>
     <dimen name="date_item_width">60dp</dimen>
+    <dimen name="item_spacing">34dp</dimen>
 </resources>

@@ -1,9 +1,11 @@
 package com.example.myapplication.Music
 
+import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.myapplication.Diary.DiaryDayAdapter
 import com.example.myapplication.databinding.MusicItemBinding
 
@@ -18,6 +20,19 @@ class MusicMainAdapter(val items:ArrayList<MusicMainData>):RecyclerView.Adapter<
                 binding.ivCoverHeart.visibility= View.VISIBLE
             }else{
                 binding.ivCoverHeart.visibility= View.GONE
+            }
+        }
+    }
+
+    inner class MusicMainItemDecoration(private val height : Int) : ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            if(parent.getChildAdapterPosition(view)!=parent.adapter!!.itemCount-1){
+                outRect.bottom=height
             }
         }
     }
