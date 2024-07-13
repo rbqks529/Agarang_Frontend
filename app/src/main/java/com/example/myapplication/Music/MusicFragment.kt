@@ -21,7 +21,7 @@ class MusicFragment : Fragment() {
     ): View? {
         binding=FragmentMusicBinding.inflate(inflater,container,false)
 
-        itemList.add(MusicMainData(R.drawable.music_sample,"신날 때 들을 플레이리스트"))
+        itemList.add(MusicMainData(R.drawable.music_sample,"즐겨 찾기"))
         itemList.add(MusicMainData(R.drawable.music_sample,"운동할 때 들을 플레이리스트"))
         itemList.add(MusicMainData(R.drawable.music_sample,"플레이리스트"))
 
@@ -32,7 +32,13 @@ class MusicFragment : Fragment() {
     private fun recycler() {
         musicMainAdapter=MusicMainAdapter(itemList)
         binding.rvMusic.adapter=musicMainAdapter
-        binding.rvMusic.layoutManager=GridLayoutManager(requireContext(),2)
+        val spacingVertical=resources.getDimensionPixelSize(R.dimen.item_spacing)
+        val spanCount=2
+        val spacingGrid = resources.getDimensionPixelSize(R.dimen.music_grid_spacing)
+        val includeEdge=true
+        binding.rvMusic.layoutManager=GridLayoutManager(requireContext(),spanCount)
+        binding.rvMusic.addItemDecoration(musicMainAdapter!!.MusicMainItemDecoration(spacingVertical))
+        binding.rvMusic.addItemDecoration(musicMainAdapter!!.GridSpacingItemDecoration(spanCount,spacingGrid,includeEdge))
     }
 
 }

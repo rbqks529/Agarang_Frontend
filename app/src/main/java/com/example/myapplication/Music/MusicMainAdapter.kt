@@ -1,9 +1,11 @@
 package com.example.myapplication.Music
 
+import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.myapplication.Diary.DiaryDayAdapter
 import com.example.myapplication.databinding.MusicItemBinding
 
@@ -18,6 +20,47 @@ class MusicMainAdapter(val items:ArrayList<MusicMainData>):RecyclerView.Adapter<
                 binding.ivCoverHeart.visibility= View.VISIBLE
             }else{
                 binding.ivCoverHeart.visibility= View.GONE
+            }
+        }
+    }
+
+    inner class MusicMainItemDecoration(private val height : Int) : ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            if(parent.getChildAdapterPosition(view)!=parent.adapter!!.itemCount-1){
+                outRect.bottom=height
+            }
+        }
+    }
+
+    inner class GridSpacingItemDecoration (private val spanCount: Int, private val spacing: Int, private val includeEdge: Boolean):ItemDecoration(){
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            val position = parent.getChildAdapterPosition(view) // item position
+            val column = position % spanCount // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount
+                outRect.right = (column + 1) * spacing / spanCount
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing
+                }
+                outRect.bottom = spacing // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount
+                outRect.right = spacing - (column + 1) * spacing / spanCount
+                if (position >= spanCount) {
+                    outRect.top = spacing // item top
+                }
             }
         }
     }
