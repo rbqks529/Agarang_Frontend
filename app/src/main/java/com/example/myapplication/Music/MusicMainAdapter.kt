@@ -37,6 +37,34 @@ class MusicMainAdapter(val items:ArrayList<MusicMainData>):RecyclerView.Adapter<
         }
     }
 
+    inner class GridSpacingItemDecoration (private val spanCount: Int, private val spacing: Int, private val includeEdge: Boolean):ItemDecoration(){
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            val position = parent.getChildAdapterPosition(view) // item position
+            val column = position % spanCount // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount
+                outRect.right = (column + 1) * spacing / spanCount
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing
+                }
+                outRect.bottom = spacing // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount
+                outRect.right = spacing - (column + 1) * spacing / spanCount
+                if (position >= spanCount) {
+                    outRect.top = spacing // item top
+                }
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MusicMainAdapter.ViewHolder {
         val binding=MusicItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)

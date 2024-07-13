@@ -29,12 +29,4 @@ class MusicFragment : Fragment() {
         return binding.root
     }
 
-    private fun recycler() {
-        musicMainAdapter=MusicMainAdapter(itemList)
-        binding.rvMusic.adapter=musicMainAdapter
-        binding.rvMusic.layoutManager=GridLayoutManager(requireContext(),2)
-        val spacingVertical=resources.getDimensionPixelSize(R.dimen.item_spacing)
-        binding.rvMusic.addItemDecoration(musicMainAdapter!!.MusicMainItemDecoration(spacingVertical))
-    }
-
 }
