@@ -23,9 +23,6 @@
             android:resource="@drawable/style_music_cover" />
 
         <activity
-            android:name=".Share.ShareActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
