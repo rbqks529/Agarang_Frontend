@@ -48,9 +48,7 @@ class DiaryMainDayFragment : Fragment() {
             putInt("position", diaryDayItemList.indexOf(item))
         }
         fragment.arguments = bundle
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_frm, fragment)
-            .addToBackStack(null)
+        parentFragmentManager.beginTransaction().replace(R.id.main_frm, fragment).addToBackStack(null)
             .commit()
     }
 
