@@ -4,4 +4,6 @@
     <dimen name="screen_half_width">0dp</dimen>
     <dimen name="date_item_width">60dp</dimen>
     <dimen name="card_item_width">288dp</dimen>
+    <dimen name="item_spacing">34dp</dimen>
+    <dimen name="music_grid_spacing">15dp</dimen>
 </resources>
