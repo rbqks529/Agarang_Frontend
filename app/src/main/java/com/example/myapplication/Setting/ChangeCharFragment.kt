@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
+import android.widget.ImageView
 import com.example.myapplication.R
 
 
-class ChangeCharFragment : Fragment() {
+class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
 
     private val imageResources = intArrayOf(
         R.drawable.mouse_1,
@@ -26,7 +27,7 @@ class ChangeCharFragment : Fragment() {
         R.drawable.pig_1
     )
 
-    private val charNames = arrayOf(
+    private val names = arrayOf(
         "쥐", "소", "호랑이", "토끼", "용", "뱀", "말", "양", "원숭이", "닭", "개", "돼지"
     )
     private val descriptions = arrayOf(
@@ -44,6 +45,9 @@ class ChangeCharFragment : Fragment() {
         "풍요롭고 복이 많은 아기가 될 거예요. 웃음이 넘치고 모두에게 사랑받는 작은 행복이!"
     )
 
+    private lateinit var adapter: ChangeCharAdapter
+    private lateinit var finishButton: ImageView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,8 +61,17 @@ class ChangeCharFragment : Fragment() {
 
         val gridView: GridView = view.findViewById(R.id.gv_change)
 
-        val adapter = ChangeCharAdapter(requireContext(), imageResources, charNames,descriptions)
+        finishButton = view.findViewById(R.id.finish_button)
+        adapter = ChangeCharAdapter(requireContext(), imageResources, names,descriptions, this)
         gridView.adapter = adapter
+    }
+
+    override fun onChangeSelected(imageResourceId: Int) {
+        val position = imageResources.indexOf(imageResourceId)
+        if (position != -1) {
+            adapter.setSelectedPosition(position)
+            finishButton.visibility = View.VISIBLE
+        }
     }
 }
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_weight="1"
     android:background="#F4F1EC"
-    tools:context=".Home.HomeFragment">
+    tools:context="Home.HomeFragment">
 
     <TextView
         android:id="@+id/tv_today"
@@ -95,17 +95,65 @@
 
     </FrameLayout>
 
-    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="최근 태교 카드"
+        android:textSize="12sp"
+        android:textColor="#A8A8A8"
+        app:layout_constraintBottom_toTopOf="@id/rv_recent_card"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="22dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_recent_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/fl_home_growth"
-        android:layout_marginTop="55dp"
+        app:layout_constraintBottom_toTopOf="@id/fl_music_bar"
+        android:layout_marginBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints">
     </androidx.recyclerview.widget.RecyclerView>
+
+    <FrameLayout
+        android:id="@+id/fl_music_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints">
+        <ImageView
+            android:id="@+id/iv_music_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_music_bar"/>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_music_photo"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+            android:scaleType="centerCrop"
+            android:src="@drawable/recent_card_sample"
+            android:layout_marginStart="9dp"
+            android:layout_marginTop="11dp"/>
+        <TextView
+            android:id="@+id/tv_music_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="노래 제목"
+            android:textSize="15sp"
+            android:layout_marginTop="14dp"
+            android:layout_marginStart="63dp"/>
+        <TextView
+            android:id="@+id/tv_music_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#태그1 #태그2"
+            android:textSize="12sp"
+            android:layout_marginStart="63dp"
+            android:layout_marginTop="36dp"/>
+
+    </FrameLayout>
 
 
 
