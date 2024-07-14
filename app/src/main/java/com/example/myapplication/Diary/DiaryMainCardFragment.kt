@@ -38,6 +38,7 @@ class DiaryMainCardFragment : Fragment() {
         arguments?.let {
             val data = it.getSerializable("data") as? ArrayList<DiaryMainDayData>
             val position = it.getInt("position", 0)
+
             if (data != null) {
                 setData(data, position)
             }
@@ -96,10 +97,10 @@ class DiaryMainCardFragment : Fragment() {
             val itemView = layoutManager.findViewByPosition(position)
             if (itemView == null) {
                 // View가 아직 생성되지 않았을 경우, 예상 위치로 스크롤
-                val estimatedItemWidth = resources.getDimensionPixelSize(R.dimen.card_item_width) + 24
+                /*val estimatedItemWidth = resources.getDimensionPixelSize(R.dimen.card_item_width) + 24
                 val screenWidth = resources.displayMetrics.widthPixels
-                val offset = (screenWidth - estimatedItemWidth) / 2
-                layoutManager.scrollToPositionWithOffset(position, offset)
+                val offset = (screenWidth - estimatedItemWidth) / 2*/
+                layoutManager.scrollToPosition(position)
             }
 
 
