@@ -1,9 +1,11 @@
 package com.example.myapplication.Diary
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.DateItemBinding
 import java.util.Calendar
@@ -23,14 +25,22 @@ class DateAdapter(private var items: List<DiaryMainDayData>, private val onItemC
         val item = items[position]
         holder.binding.apply {
             tvWeekday.text = getWeekday(item.year, item.month, item.day)
-            tvDay.text = item.day.toString()
 
             if (position == selectedPosition) {
+                ivDiaryThumbnail.visibility = View.GONE
+                tvDay.visibility = View.VISIBLE
+                tvDayBelow.visibility = View.GONE
+                tvDay.text = item.day.toString()
                 tvDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.selected_date_color))
                 tvDay.setBackgroundResource(R.drawable.selected_date_background)
             } else {
-                tvDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.default_date_color))
-                tvDay.setBackgroundResource(0)
+                ivDiaryThumbnail.visibility = View.VISIBLE
+                tvDay.visibility = View.GONE
+                tvDayBelow.visibility = View.VISIBLE
+                tvDayBelow.text = item.day.toString()
+                Glide.with(holder.itemView.context)
+                    .load(item.imageResId)
+                    .into(ivDiaryThumbnail)
             }
 
             root.setOnClickListener {
