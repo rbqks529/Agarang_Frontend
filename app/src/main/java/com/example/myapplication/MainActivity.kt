@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.Diary.Diary.DiaryFragment
+import com.example.myapplication.Memory.MemoryMainActivity
 import com.example.myapplication.Music.MusicFragment
-import com.example.myapplication.Share.ShareActivity
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
                     return@setOnItemSelectedListener true
                 }
 
-                R.id.ShareActivity -> {
-                    val intent = Intent(this, ShareActivity :: class.java)
+                R.id.MemoryActivity -> {
+                    val intent = Intent(this, MemoryMainActivity :: class.java)
                     startActivity(intent)
                     return@setOnItemSelectedListener true
                 }
