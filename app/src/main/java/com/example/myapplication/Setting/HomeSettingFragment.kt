@@ -65,5 +65,4 @@ class HomeSettingFragment : Fragment() {
         val versionInfoText=getString(R.string.version_info, currentVersion, latestVersion)
         binding.tvVersionInfo.text=versionInfoText
     }
-
 }

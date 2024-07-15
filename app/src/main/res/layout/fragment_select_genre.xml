@@ -8,6 +8,7 @@
     android:background="#F4F1EC">
 
     <FrameLayout
+        android:id="@+id/fl_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,5 +33,43 @@
             android:layout_gravity="center"/>
 
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_genre_q1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="취향을 알려줘!"
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@id/fl_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"
+        android:textColor="#A8A8A8"/>
+    <TextView
+        android:id="@+id/tv_genre_q2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="어떤 장르를 좋아해?"
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_genre_q1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
+    <GridView
+        android:id="@+id/gv_genre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_genre_q2"
+        android:layout_marginTop="40dp"
+        android:numColumns="3"
+        android:columnWidth="107dp"
+        android:horizontalSpacing="6.57dp"
+        android:verticalSpacing="7dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:scrollbars="vertical"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
