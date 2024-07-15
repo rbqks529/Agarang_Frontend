@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.myapplication.ChangeChar2Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeSettingBinding
 
@@ -34,7 +35,7 @@ class HomeSettingFragment : Fragment() {
         }
 
         binding.ivCharInfoPlus.setOnClickListener {
-            val fragmentChangChar= ChangeChar2Fragment() //일단 후기로 옮김
+            val fragmentChangChar= ChangeCharFragment() //일단 후기로 옮김
             val transaction=parentFragmentManager.beginTransaction()
             transaction.replace(R.id.main_frm,fragmentChangChar)
                 .commit()

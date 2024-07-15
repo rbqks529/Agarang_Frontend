@@ -15,6 +15,7 @@ class ItemDetailDialogFragment : DialogFragment() {
     private var imageResourceId: Int = 0
     private var charname: String = ""
     private var description: String = ""
+    private var changeListener: ChangeListener? = null
 
     companion object {
         private const val ARG_IMAGE_RESOURCE_ID = "image_resource_id"
@@ -61,16 +62,22 @@ class ItemDetailDialogFragment : DialogFragment() {
             dismiss()
         }
 
-        /*changeButton.setOnClickListener {
-            (activity as? ChangeCharAdapter.ChangeListener)?.onChangeSelected(imageResourceId, charname)
+        changeButton.setOnClickListener {
+            changeListener?.onChangeSelected(imageResourceId)
             dismiss()
-        }*/
-
+        }
         return view
     }
 
     override fun onStart() {
         super.onStart()
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+    }
+    //변경하기버튼->추가
+    interface ChangeListener {
+        fun onChangeSelected(imageResourceId: Int)
+    }
+    fun setChangeListener(listener: ChangeListener) {
+        changeListener = listener
     }
 }

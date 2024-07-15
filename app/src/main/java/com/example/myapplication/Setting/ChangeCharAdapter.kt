@@ -13,9 +13,12 @@ import com.example.myapplication.R
 class ChangeCharAdapter(
     private val context: Context,
     private val items: IntArray,
-    private val charnames: Array<String>,
-    private val descriptions: Array<String>
+    private val names: Array<String>,
+    private val descriptions: Array<String>,
+    private val changeListener: ItemDetailDialogFragment.ChangeListener
 ) : BaseAdapter() {
+
+    private var selectedPosition = -1
 
     override fun getCount(): Int {
         return items.size
@@ -30,40 +33,48 @@ class ChangeCharAdapter(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view: View
-        val holder: ViewHolder
+        var view = convertView
+        if (view == null) {
+            val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            view = inflater.inflate(R.layout.char_item, parent, false)
+        }
+//추가
+        val backgroundSelected = view?.findViewById<ImageView>(R.id.background_selected)
+        val checkOrange = view?.findViewById<ImageView>(R.id.check_orange)
+        val checkGray = view?.findViewById<ImageView>(R.id.check_gray)
+        val iconImageView = view?.findViewById<ImageView>(R.id.icon_image)
+        iconImageView?.setImageResource(items[position])
 
-        if (convertView == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.char_item, parent, false)
-            holder = ViewHolder()
-            holder.imageView = view.findViewById(R.id.icon_image)
-            holder.textView = view.findViewById(R.id.tv_char_name)
-            holder.textView = view.findViewById(R.id.description_text_view)
-            view.tag = holder
+// 추가. 선택된 아이템의 배경 표시
+        backgroundSelected?.visibility = if (selectedPosition == position) View.VISIBLE else View.GONE
+
+//체크표시 추가
+        if (position == selectedPosition) {
+            checkOrange?.visibility = View.VISIBLE
+            checkGray?.visibility = View.GONE
         } else {
-            view = convertView
-            holder = view.tag as ViewHolder
+            checkOrange?.visibility = View.GONE
+            checkGray?.visibility = View.VISIBLE
         }
 
-        holder.imageView.setImageResource(items[position])
-        holder.textView.text = charnames[position]
-        holder.textView.text = descriptions[position]
-
-        view.setOnClickListener {
-            val fragmentActivity = context as FragmentActivity
+        // 아이템 클릭 이벤트 처리
+        iconImageView?.setOnClickListener {
+            val activity = context as FragmentActivity
             val dialogFragment = ItemDetailDialogFragment.newInstance(
                 items[position],
-                charnames[position],
+                names[position],
                 descriptions[position]
-            )
-            dialogFragment.show(fragmentActivity.supportFragmentManager, "item_detail_dialog")
+            ).apply {
+                setChangeListener(changeListener)
+            }
+            dialogFragment.show(activity.supportFragmentManager, "ItemDetailDialogFragment")
         }
 
-        return view
+        return view ?: throw IllegalStateException("View should not be null")
     }
-
-    private class ViewHolder {
-        lateinit var imageView: ImageView
-        lateinit var textView: TextView
+    //추가 함수
+    fun setSelectedPosition(position: Int) {
+        selectedPosition = position
+        notifyDataSetChanged()
     }
 }

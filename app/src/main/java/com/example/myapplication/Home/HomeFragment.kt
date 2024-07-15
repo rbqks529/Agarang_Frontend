@@ -12,6 +12,9 @@ import com.example.myapplication.R
 import com.example.myapplication.Setting.ChildInfoChangeFragment
 import com.example.myapplication.Setting.HomeSettingFragment
 import com.example.myapplication.databinding.FragmentHomeBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class HomeFragment: Fragment() {
 
@@ -26,9 +29,7 @@ class HomeFragment: Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        //데이터 생성
         initData()
-        //RecyclerView 생성
         initRecyclerView()
 
         binding.ivSetting.setOnClickListener {
@@ -37,6 +38,14 @@ class HomeFragment: Fragment() {
             transaction.replace(R.id.main_frm,fragmentSetting)
                 .commit()
         }
+
+        // 현재 날짜 가져오기
+        val calendar = Calendar.getInstance()
+        val currentDate = calendar.time
+        // 날짜를 특정 형식의 문자열로 변환
+        val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
+        val formattedDate = dateFormat.format(currentDate)
+        binding.tvToday.text = formattedDate
 
         return binding.root
     }
