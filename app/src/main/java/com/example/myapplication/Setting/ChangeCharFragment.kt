@@ -9,7 +9,7 @@ import android.widget.GridView
 import android.widget.ImageView
 import com.example.myapplication.R
 
-
+//캐릭터 변경 -> 초기
 class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
 
     private val imageResources = intArrayOf(
@@ -64,6 +64,14 @@ class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
         finishButton = view.findViewById(R.id.finish_button)
         adapter = ChangeCharAdapter(requireContext(), imageResources, names,descriptions, this)
         gridView.adapter = adapter
+
+        finishButton.setOnClickListener{
+            val fragment = HomeSettingFragment()
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_frm, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
     override fun onChangeSelected(imageResourceId: Int) {
