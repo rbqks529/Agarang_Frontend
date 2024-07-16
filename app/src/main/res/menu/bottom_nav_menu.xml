@@ -21,7 +21,7 @@
         />
 
     <item
-        android:id="@+id/ShareActivity"
+        android:id="@+id/MemoryActivity"
         android:icon="@drawable/btn_share"
         tools:ignore="MenuTitle"
         android:title="추억공유"
