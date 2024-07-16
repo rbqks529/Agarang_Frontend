@@ -64,7 +64,7 @@
 
 
     <ImageView
-        android:id="@+id/iv_gallery"
+        android:id="@+id/iv_record_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_record_btn"
@@ -111,6 +111,7 @@
         />
 
     <TextView
+        android:id="@+id/tv_record_notice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="녹음을 하는 중입니다."
