@@ -38,6 +38,7 @@ class DiaryMainCardFragment : Fragment() {
         arguments?.let {
             val data = it.getSerializable("data") as? ArrayList<DiaryMainDayData>
             val position = it.getInt("position", 0)
+
             if (data != null) {
                 setData(data, position)
             }
@@ -65,7 +66,7 @@ class DiaryMainCardFragment : Fragment() {
             // 패딩 설정으로 첫 번째와 마지막 아이템도 중앙에 올 수 있게 함
             val padding = resources.displayMetrics.widthPixels / 2 -
                     resources.getDimensionPixelSize(R.dimen.card_item_width) / 2
-            setPadding(padding, 0, padding, 0)
+            setPadding(padding - 12, 0, padding - 12, 0)
             clipToPadding = false
 
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -96,10 +97,10 @@ class DiaryMainCardFragment : Fragment() {
             val itemView = layoutManager.findViewByPosition(position)
             if (itemView == null) {
                 // View가 아직 생성되지 않았을 경우, 예상 위치로 스크롤
-                val estimatedItemWidth = resources.getDimensionPixelSize(R.dimen.card_item_width) + 24
+                /*val estimatedItemWidth = resources.getDimensionPixelSize(R.dimen.card_item_width) + 24
                 val screenWidth = resources.displayMetrics.widthPixels
-                val offset = (screenWidth - estimatedItemWidth) / 2
-                layoutManager.scrollToPositionWithOffset(position, offset)
+                val offset = (screenWidth - estimatedItemWidth) / 2*/
+                layoutManager.scrollToPosition(position)
             }
 
 
