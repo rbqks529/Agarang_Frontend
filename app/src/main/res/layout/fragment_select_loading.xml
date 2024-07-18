@@ -22,8 +22,7 @@
             android:id="@+id/iv_circle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/img_circle"
-            />
+            android:src="@drawable/img_circle"/>
 
         <ImageView
             android:id="@+id/iv_baby_character"
@@ -35,42 +34,19 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/tv_mood_q1"
+        android:id="@+id/tv_mood_q2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="어떤 장르를 좋아해?"
+        android:text="음악이 생성되는 중이야\n(최대 3분)"
         android:textSize="17sp"
         app:layout_constraintTop_toBottomOf="@id/fl_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="40dp"
-        android:textColor="#A8A8A8"/>
-    <TextView
-        android:id="@+id/tv_mood_q2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="오늘의 기분과\n어울리는 단어를 골라줘!"
-        android:textSize="17sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_mood_q1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:gravity="center"/>
 
-    <GridView
-        android:id="@+id/gv_mood"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_mood_q2"
-        android:layout_marginTop="40dp"
-        android:numColumns="3"
-        android:columnWidth="107dp"
-        android:horizontalSpacing="6.57dp"
-        android:verticalSpacing="7dp"
-        android:stretchMode="columnWidth"
-        android:gravity="center"
-        android:scrollbars="vertical"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

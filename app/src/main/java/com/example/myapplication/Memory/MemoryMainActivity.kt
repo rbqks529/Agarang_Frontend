@@ -10,7 +10,8 @@ class MemoryMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memory_main)
 
-        val fragment=FinFragment()
+
+        val fragment=SelectLoadingFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.memory_frm,fragment)
             .commit()
