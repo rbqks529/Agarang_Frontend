@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.ImageView
+import com.example.myapplication.Setting.HomeSettingFragment
 import com.example.myapplication.Setting.ItemDetailDialogFragment
 
-
+//캐릭터 변경 -> 후기
 class ChangeChar2Fragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
 
     private val imageResources = intArrayOf(
@@ -53,6 +54,14 @@ class ChangeChar2Fragment : Fragment(), ItemDetailDialogFragment.ChangeListener 
         finishButton = view.findViewById(R.id.finish_button)
         adapter = ChangeChar2Adapter(requireContext(), imageResources, names, descriptions,this)
         gridView.adapter = adapter
+
+        finishButton.setOnClickListener{
+            val fragment = HomeSettingFragment()
+            val transaction = parentFragmentManager.beginTransaction()
+            transaction.replace(R.id.main_frm, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
     override fun onChangeSelected(imageResourceId: Int) {

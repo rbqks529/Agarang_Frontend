@@ -58,6 +58,105 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <FrameLayout
+        android:id="@+id/fl_speed_fast"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="39dp"
+        android:layout_marginStart="13dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/background_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_genre_rectangle"/>
+        <ImageView
+            android:id="@+id/background_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_genre_rectangle_selected"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/genre_option"
+            android:text="빠르게"
+            android:fontFamily="@font/pretendard500"
+            android:textSize="20sp"
+            android:textColor="#787878"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_speed_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="39dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/background_image2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_genre_rectangle"/>
+        <ImageView
+            android:id="@+id/background_selected2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_genre_rectangle_selected"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/genre_option2"
+            android:text="중간"
+            android:fontFamily="@font/pretendard500"
+            android:textSize="20sp"
+            android:textColor="#787878"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_speed_slow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="39dp"
+        android:layout_marginEnd="13dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/background_image3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_genre_rectangle"/>
+        <ImageView
+            android:id="@+id/background_selected3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_genre_rectangle_selected"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/genre_option3"
+            android:text="느리게"
+            android:fontFamily="@font/pretendard500"
+            android:textSize="20sp"
+            android:textColor="#787878"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+    </FrameLayout>
+
 
 
 
