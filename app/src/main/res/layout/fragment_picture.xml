@@ -8,6 +8,7 @@
     android:background="#F4F1EC">
 
     <FrameLayout
+        android:id="@+id/fl_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +34,16 @@
 
     </FrameLayout>
 
+    <ImageView
+        android:id="@+id/iv_gallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_gallery_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="627.34dp"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
