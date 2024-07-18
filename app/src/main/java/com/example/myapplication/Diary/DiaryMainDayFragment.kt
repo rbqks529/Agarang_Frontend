@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.R
+import com.example.myapplication.Retrofit.DiaryIF
+import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentDiaryMainDayBinding
 
 class DiaryMainDayFragment : Fragment() {
@@ -20,8 +22,10 @@ class DiaryMainDayFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDiaryMainDayBinding.inflate(inflater, container, false)
+
         initData()
         initRecyclerView()
+
         return binding.root
     }
 

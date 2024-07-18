@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
+import com.example.myapplication.Retrofit.DiaryIF
+import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentDiaryMainMonthBinding
 
 class DiaryMainMonthFragment : Fragment() {
@@ -21,6 +23,10 @@ class DiaryMainMonthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDiaryMainMonthBinding.inflate(inflater, container, false)
+
+
+        val retrofit = RetrofitService.retrofit
+        val service = retrofit.create(DiaryIF::class.java)
 
         //데이터 생성
         initData()
