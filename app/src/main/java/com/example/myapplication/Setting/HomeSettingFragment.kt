@@ -1,5 +1,6 @@
 package com.example.myapplication.Setting
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,9 @@ import android.view.ViewGroup
 import com.example.myapplication.ChangeChar2Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeSettingBinding
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class HomeSettingFragment : Fragment() {
     lateinit var binding: FragmentHomeSettingBinding
@@ -45,24 +49,51 @@ class HomeSettingFragment : Fragment() {
     }
 
     private fun infoinit() {
+
         //baby name
-        val babyname="아깽이"
-        val babyNameText=getString(R.string.baby_name,babyname)
-        binding.tvProfileName.text=babyNameText
+        val babyname=arguments?.getString("birthName")
+        binding.tvProfileName.text=babyname?: "아깽이"
         //d-day
         val d_day="DAY"
         val d_dayText=getString(R.string.d_day,d_day)
         binding.tvProfileDday.text=d_dayText
         //due date
-        val year = 2024
-        val month = 2
-        val day = 4
-        val dueDateText=getString(R.string.due_date,year.toString(),month.toString(),day.toString())
-        binding.tvProfileDueDate.text=dueDateText
+        val birthDate = arguments?.getString("birthDate")
+        binding.tvProfileDueDate.text = birthDate ?: "정보를 입력해주세요."
+
+        if (birthDate != null) {
+            try {
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val birthDate = dateFormat.parse(birthDate)
+
+                if (birthDate != null) {
+                    val daysUntilBirthDate = calculateDaysUntilDate(birthDate)
+                    if(daysUntilBirthDate==0){
+                        binding.tvProfileDday.text = "D-DAY"
+                    }else if (daysUntilBirthDate>0){
+                        binding.tvProfileDday.text = "D- $daysUntilBirthDate"
+                    }
+                } else {
+                    binding.tvProfileDday.text = "Invalid date format"
+                }
+            } catch (e: Exception) {
+                binding.tvProfileDday.text = "Error parsing date"
+            }
+        } else {
+            binding.tvProfileDday.text = "No birth date provided"
+        }
+
         //version init
         val currentVersion = "1.2.0"
         val latestVersion="1.5.0"
         val versionInfoText=getString(R.string.version_info, currentVersion, latestVersion)
         binding.tvVersionInfo.text=versionInfoText
+    }
+
+    private fun calculateDaysUntilDate(targetDate: Date): Int {
+        val today = Calendar.getInstance().time
+        val diffInMillis = targetDate.time - today.time
+        val diffInDays = (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
+        return diffInDays
     }
 }
