@@ -1,6 +1,5 @@
 package com.example.myapplication.Retrofit
 
-
 import com.example.myapplication.Data.Response.FavoriteResponse
 import retrofit2.http.GET
 import retrofit2.http.Query

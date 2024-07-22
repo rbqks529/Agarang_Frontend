@@ -19,3 +19,20 @@ data class DiaryCardResponse(
     val message: String,
     val result: Result
 )
+
+data class DiaryMonthResponse<T>(
+    val isSuccess: Boolean,
+    val code: Int,
+    val message: String,
+    val result: T
+)
+
+
+
+
+
+
+
+
+
+
