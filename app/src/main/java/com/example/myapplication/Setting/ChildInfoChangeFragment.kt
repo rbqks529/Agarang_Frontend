@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentChildInfoChangeBinding
 
 class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListener {
@@ -43,7 +44,21 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
 
         binding.ivOkBox.setOnClickListener {
             saveData()
-            parentFragmentManager.popBackStack()
+
+            val newFragment = HomeSettingFragment()
+            val bundle = Bundle().apply {
+                val sharedPreferences = requireActivity().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+                val birthName = sharedPreferences.getString("birthName", "")
+                val birthDate = sharedPreferences.getString("birthDate", "")
+                putString("birthName", birthName)
+                putString("birthDate", birthDate)
+            }
+            newFragment.arguments = bundle
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.main_frm, newFragment)
+                .addToBackStack(null)
+                .commit()
         }
 
         binding.etWeight.addTextChangedListener(object : TextWatcher {
@@ -61,6 +76,7 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
 
         return binding.root
     }
+
 
     override fun onDateSelected(date: String) {
         binding.tvBirthDate.text = date
@@ -86,5 +102,7 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
         binding.etBirthName.setText(birthName)
         binding.tvBirthDate.text = birthDate
         binding.etWeight.setText(if (weight.isNullOrEmpty()) "" else "$weight kg")
+
+
     }
 }
