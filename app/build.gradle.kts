@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -53,7 +54,13 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.11.0")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
-
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3")
+
+    implementation("com.naver.speech.clientapi:naverspeech-ncp-sdk-android:1.1.6")
 }
+
