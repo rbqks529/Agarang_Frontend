@@ -1,13 +1,18 @@
 package com.example.myapplication.Diary
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.CardviewItemBinding
+import com.example.myapplication.databinding.FragmentBottomSheetDialogBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class CardviewAdapter(private var items: MutableList<DiaryMainDayData>) : RecyclerView.Adapter<CardviewAdapter.ViewHolder>() {
+class CardviewAdapter(
+    private var items: MutableList<DiaryMainDayData>
+) : RecyclerView.Adapter<CardviewAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: CardviewItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -26,28 +31,61 @@ class CardviewAdapter(private var items: MutableList<DiaryMainDayData>) : Recycl
                 .into(ivDiaryImage)
             tvContent.text = item.content
 
-            // 북마크 상태에 따라 이미지 설정
             ivBookmark.setImageResource(
                 if (item.bookmark == 1) R.drawable.ic_heart_red
                 else R.drawable.ic_heart_gray
             )
 
             ivBookmark.setOnClickListener {
-                // 북마크 상태 토글
                 item.bookmark = if (item.bookmark == 0) 1 else 0
-
-                // 이미지 업데이트
                 ivBookmark.setImageResource(
                     if (item.bookmark == 1) R.drawable.ic_heart_red
                     else R.drawable.ic_heart_gray
                 )
-
-                // 데이터 변경 알림
                 notifyItemChanged(position)
+            }
+
+            ivOption.setOnClickListener {
+                showOptionsBottomSheet(holder.itemView.context, item)
             }
         }
     }
 
     override fun getItemCount() = items.size
 
+    private fun showOptionsBottomSheet(context: Context, item: DiaryMainDayData) {
+        val bottomSheetDialog = BottomSheetDialog(context)
+        val bottomSheetBinding = FragmentBottomSheetDialogBinding.inflate(LayoutInflater.from(context))
+
+        bottomSheetBinding.apply {
+            layoutEditOption.setOnClickListener {
+                // 추억 수정 로직
+                bottomSheetDialog.dismiss()
+            }
+
+            layoutDeleteOption.setOnClickListener {
+                // 추억 지우기 로직
+                bottomSheetDialog.dismiss()
+            }
+
+            layoutChangeNoteOption.setOnClickListener {
+                // 노래 변경 로직
+                bottomSheetDialog.dismiss()
+            }
+
+            layoutShareOption.setOnClickListener {
+                // 카카오톡으로 공유 로직
+                bottomSheetDialog.dismiss()
+            }
+        }
+
+        bottomSheetDialog.setContentView(bottomSheetBinding.root)
+        // BottomSheet의 너비를 조절
+        bottomSheetDialog.show()
+        bottomSheetDialog.window?.let { window ->
+            val displayMetrics = context.resources.displayMetrics
+            val width = (displayMetrics.widthPixels * 0.8).toInt() // 화면 너비의 80%
+            window.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
+    }
 }
