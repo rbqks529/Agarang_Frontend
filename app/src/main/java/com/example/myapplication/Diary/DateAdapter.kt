@@ -10,7 +10,10 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.DateItemBinding
 import java.util.Calendar
 
-class DateAdapter(private var items: List<DiaryMainDayData>, private val onItemClick: (Int) -> Unit) : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
+class DateAdapter(
+    private val items: List<DiaryMainDayData>,
+    private val onItemClick: (Int) -> Unit
+) : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
 
     var selectedPosition = RecyclerView.NO_POSITION
 
@@ -34,13 +37,22 @@ class DateAdapter(private var items: List<DiaryMainDayData>, private val onItemC
                 tvDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.selected_date_color))
                 tvDay.setBackgroundResource(R.drawable.selected_date_background)
             } else {
-                ivDiaryThumbnail.visibility = View.VISIBLE
-                tvDay.visibility = View.GONE
-                tvDayBelow.visibility = View.VISIBLE
-                tvDayBelow.text = item.day.toString()
-                Glide.with(holder.itemView.context)
-                    .load(item.imageResId)
-                    .into(ivDiaryThumbnail)
+                if (item.imageResId != null) {
+                    ivDiaryThumbnail.visibility = View.VISIBLE
+                    tvDay.visibility = View.GONE
+                    tvDayBelow.visibility = View.VISIBLE
+                    tvDayBelow.text = item.day.toString()
+                    Glide.with(holder.itemView.context)
+                        .load(item.imageResId)
+                        .into(ivDiaryThumbnail)
+                } else {
+                    ivDiaryThumbnail.visibility = View.GONE
+                    tvDay.visibility = View.VISIBLE
+                    tvDayBelow.visibility = View.GONE
+                    tvDay.text = item.day.toString()
+                    tvDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.default_date_color))
+                    tvDay.setBackgroundResource(0)
+                }
             }
 
             root.setOnClickListener {
@@ -74,3 +86,5 @@ class DateAdapter(private var items: List<DiaryMainDayData>, private val onItemC
         }
     }
 }
+
+
