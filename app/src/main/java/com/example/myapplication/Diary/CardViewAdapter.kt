@@ -65,7 +65,6 @@ class CardViewAdapter(
             }
 
             layoutDeleteOption.setOnClickListener {
-                // 추억 지우기 로직
                 showDeleteConfirmationDialog(context, item)
                 bottomSheetDialog.dismiss()
             }
@@ -82,11 +81,10 @@ class CardViewAdapter(
         }
 
         bottomSheetDialog.setContentView(bottomSheetBinding.root)
-        // BottomSheet의 너비를 조절
         bottomSheetDialog.show()
         bottomSheetDialog.window?.let { window ->
             val displayMetrics = context.resources.displayMetrics
-            val width = (displayMetrics.widthPixels * 0.8).toInt() // 화면 너비의 80%
+            val width = (displayMetrics.widthPixels * 0.8).toInt()
             window.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }

@@ -66,11 +66,9 @@ class DiaryMainCardFragment : Fragment() {
             adapter = cardAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-            // PagerSnapHelper 추가
             val snapHelper = PagerSnapHelper()
             snapHelper.attachToRecyclerView(this)
 
-            // 패딩 설정으로 첫 번째와 마지막 아이템도 중앙에 올 수 있게 함
             val padding = resources.displayMetrics.widthPixels / 2 -
                     resources.getDimensionPixelSize(R.dimen.card_item_width) / 2
             setPadding(padding - 12, 0, padding - 12, 0)
@@ -99,25 +97,24 @@ class DiaryMainCardFragment : Fragment() {
         scrollJob = MainScope().launch {
             delay(100) // debounce
 
-            // CardView를 중앙으로 스크롤
             val layoutManager = binding.rvDiaryCardView.layoutManager as LinearLayoutManager
             layoutManager.scrollToPosition(position)
 
-            // 날짜 RecyclerView를 중앙으로 스크롤
             val dateLayoutManager = binding.rvDiaryDate.layoutManager as LinearLayoutManager
             val smoothScroller = CenterSmoothScroller(requireContext())
-            smoothScroller.targetPosition = position
+            smoothScroller.targetPosition = diaryDataList[position].day - 1
             dateLayoutManager.startSmoothScroll(smoothScroller)
-            dateAdapter.updateSelectedPosition(position)
+            dateAdapter.updateSelectedPosition(diaryDataList[position].day - 1)
         }
     }
 
     private fun updateDateSelection(position: Int) {
-        dateAdapter.updateSelectedPosition(position)
+        val day = diaryDataList[position].day
+        dateAdapter.updateSelectedPosition(day - 1)
 
         val layoutManager = binding.rvDiaryDate.layoutManager as LinearLayoutManager
         val smoothScroller = CenterSmoothScroller(requireContext())
-        smoothScroller.targetPosition = position
+        smoothScroller.targetPosition = day - 1
         layoutManager.startSmoothScroll(smoothScroller)
     }
 

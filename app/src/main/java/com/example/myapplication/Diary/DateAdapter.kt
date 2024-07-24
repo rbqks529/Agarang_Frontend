@@ -35,7 +35,7 @@ class DateAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val day = position + 1
-        val diaryItem = items.find {it.day == day }
+        val diaryItem = items.find { it.day == day }
 
         holder.binding.apply {
             tvWeekday.text = getWeekday(year, month, day)
@@ -65,8 +65,11 @@ class DateAdapter(
             }
 
             root.setOnClickListener {
-                onItemClick(position)
-                updateSelectedPosition(position)
+                if (diaryItem != null) {
+                    val diaryItemPosition = items.indexOf(diaryItem)
+                    onItemClick(diaryItemPosition)
+                    updateSelectedPosition(position)
+                }
             }
         }
     }
@@ -76,6 +79,11 @@ class DateAdapter(
         selectedPosition = position
         notifyItemChanged(previousPosition)
         notifyItemChanged(selectedPosition)
+    }
+
+    fun updateItems(newItems: List<DiaryMainDayData>) {
+        items = newItems
+        notifyDataSetChanged()
     }
 
     override fun getItemCount() = daysInMonth
@@ -94,5 +102,3 @@ class DateAdapter(
         }
     }
 }
-
-
