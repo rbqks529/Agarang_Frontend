@@ -50,7 +50,6 @@ class PicAssociationFragment : Fragment() {
         binding.ivRecordBtn.setOnClickListener {
             startRecording()
             binding.ivRecordBtn.visibility=View.GONE
-            binding.tvRecordNotice.visibility=View.VISIBLE
             binding.ivRecordCancleBtn.visibility=View.VISIBLE
             binding.ivRecordArrowBtn.visibility=View.VISIBLE
             binding.ivRecordIng.visibility=View.VISIBLE
@@ -67,7 +66,6 @@ class PicAssociationFragment : Fragment() {
         binding.ivRecordCancleBtn.setOnClickListener {
             stopRecording()
             binding.ivRecordBtn.visibility=View.VISIBLE
-            binding.tvRecordNotice.visibility=View.GONE
             binding.ivRecordCancleBtn.visibility=View.GONE
             binding.ivRecordArrowBtn.visibility=View.GONE
             binding.ivRecordIng.visibility=View.GONE
@@ -77,7 +75,6 @@ class PicAssociationFragment : Fragment() {
         binding.ivRecordArrowBtn.setOnClickListener {
             stopRecording()
             binding.ivRecordBtn.visibility=View.GONE
-            binding.tvRecordNotice.visibility=View.GONE
             binding.ivRecordCancleBtn.visibility=View.GONE
             binding.ivRecordArrowBtn.visibility=View.GONE
             binding.ivRecordIng.visibility=View.GONE

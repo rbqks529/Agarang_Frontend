@@ -45,7 +45,9 @@ class DiaryMainBookmarkFragment : Fragment() {
     }
 
     private fun fetchFavoriteData() {
-        FavoriteRetrofit.FavoriteService.getFavorite("favorite").enqueue(object : Callback<FavoriteResponse> {
+        //다이어리 수정하려고 주석처리함
+        
+        /*FavoriteRetrofit.FavoriteService.getFavorite("favorite").enqueue(object : Callback<FavoriteResponse> {
             override fun onResponse(call: Call<FavoriteResponse>, response: Response<FavoriteResponse>) {
                 if (response.isSuccessful) {
                     response.body()?.result?.memories?.let { memories ->
@@ -55,7 +57,7 @@ class DiaryMainBookmarkFragment : Fragment() {
                         DiaryBookmarkAdapter?.notifyDataSetChanged()
                     }
                 } else {
-                    /*Log.e("DiaryMainBookmarkFragment", "Response error: ${response.errorBody()}")*/
+                    *//*Log.e("DiaryMainBookmarkFragment", "Response error: ${response.errorBody()}")*//*
                     // 오류 응답 처리
                     val errorBody = response.errorBody()?.string()
                     Log.e("DiaryMainBookmarkFragment", "Response error: $errorBody")
@@ -65,6 +67,6 @@ class DiaryMainBookmarkFragment : Fragment() {
             override fun onFailure(call: Call<FavoriteResponse>, t: Throwable) {
                 Log.e("DiaryMainBookmarkFragment", "API call failed: ${t.message}")
             }
-        })
+        })*/
     }
 }
