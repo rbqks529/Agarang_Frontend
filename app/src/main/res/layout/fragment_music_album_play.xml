@@ -17,15 +17,47 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="50dp"/>
 
+    <TextView
+        android:id="@+id/tv_play_music_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="노래는 불빛처럼 달린다"
+        android:fontFamily="@font/pretendard600"
+        android:textSize="15sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="311dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_play_music_hash_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#신남 #산책"
+        android:fontFamily="@font/pretendard400"
+        android:textColor="#737373"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_play_music_name"
+        android:layout_marginTop="2dp"
+        app:layout_constraintStart_toStartOf="@id/tv_play_music_name"
+        />
+
+
+
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_music_album"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="435.7dp"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        tools:listitem="@layout/play_album_music_item">
     </androidx.recyclerview.widget.RecyclerView>
 
 
