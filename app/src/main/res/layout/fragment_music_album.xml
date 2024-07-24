@@ -66,6 +66,18 @@
         android:layout_marginTop="9dp"
         android:textColor="#BEBEBE"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_music_album"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_total_time"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="19dp"
+        tools:ignore="MissingConstraints">
+    </androidx.recyclerview.widget.RecyclerView>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
