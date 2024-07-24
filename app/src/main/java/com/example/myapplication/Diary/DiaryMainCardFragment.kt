@@ -14,11 +14,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class DiaryMainCardFragment : Fragment() {
     private lateinit var binding: FragmentDiaryMainCardBinding
     private lateinit var dateAdapter: DateAdapter
-    private lateinit var cardAdapter: CardviewAdapter
+    private lateinit var cardAdapter: CardViewAdapter
     private var diaryDataList: MutableList<DiaryMainDayData> = mutableListOf()
     private var currentPosition = 0
     private var scrollJob: Job? = null
@@ -46,15 +47,21 @@ class DiaryMainCardFragment : Fragment() {
     }
 
     private fun setupRecyclerViews() {
-        dateAdapter = DateAdapter(diaryDataList) { position ->
+        val currentCalendar = Calendar.getInstance()
+        dateAdapter = DateAdapter(
+            currentCalendar.get(Calendar.YEAR),
+            currentCalendar.get(Calendar.MONTH) + 1,
+            diaryDataList
+        ) { position ->
             scrollToPosition(position)
         }
+
         binding.rvDiaryDate.apply {
             adapter = dateAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
-        cardAdapter = CardviewAdapter(diaryDataList)
+        cardAdapter = CardViewAdapter(diaryDataList)
         binding.rvDiaryCardView.apply {
             adapter = cardAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -94,17 +101,9 @@ class DiaryMainCardFragment : Fragment() {
 
             // CardView를 중앙으로 스크롤
             val layoutManager = binding.rvDiaryCardView.layoutManager as LinearLayoutManager
-            val itemView = layoutManager.findViewByPosition(position)
-            if (itemView == null) {
-                // View가 아직 생성되지 않았을 경우, 예상 위치로 스크롤
-                /*val estimatedItemWidth = resources.getDimensionPixelSize(R.dimen.card_item_width) + 24
-                val screenWidth = resources.displayMetrics.widthPixels
-                val offset = (screenWidth - estimatedItemWidth) / 2*/
-                layoutManager.scrollToPosition(position)
-            }
+            layoutManager.scrollToPosition(position)
 
-
-            // 날짜 RecyclerView를 중앙으로 스크롤 (기존 코드)
+            // 날짜 RecyclerView를 중앙으로 스크롤
             val dateLayoutManager = binding.rvDiaryDate.layoutManager as LinearLayoutManager
             val smoothScroller = CenterSmoothScroller(requireContext())
             smoothScroller.targetPosition = position

@@ -8,14 +8,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.DateItemBinding
-import java.util.Calendar
+import java.util.*
 
 class DateAdapter(
-    private val items: List<DiaryMainDayData>,
+    private var year: Int,
+    private var month: Int,
+    private var items: List<DiaryMainDayData>,
     private val onItemClick: (Int) -> Unit
 ) : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
 
     var selectedPosition = RecyclerView.NO_POSITION
+    private val calendar: Calendar = Calendar.getInstance()
+    private val daysInMonth: Int
+
+    init {
+        calendar.set(year, month - 1, 1)
+        daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+    }
 
     inner class ViewHolder(val binding: DateItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -25,34 +34,34 @@ class DateAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
+        val day = position + 1
+        val diaryItem = items.find {it.day == day }
+
         holder.binding.apply {
-            tvWeekday.text = getWeekday(item.year, item.month, item.day)
+            tvWeekday.text = getWeekday(year, month, day)
 
             if (position == selectedPosition) {
                 ivDiaryThumbnail.visibility = View.GONE
                 tvDay.visibility = View.VISIBLE
                 tvDayBelow.visibility = View.GONE
-                tvDay.text = item.day.toString()
+                tvDay.text = day.toString()
                 tvDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.selected_date_color))
                 tvDay.setBackgroundResource(R.drawable.selected_date_background)
+            } else if (diaryItem != null) {
+                ivDiaryThumbnail.visibility = View.VISIBLE
+                tvDay.visibility = View.GONE
+                tvDayBelow.visibility = View.VISIBLE
+                tvDayBelow.text = day.toString()
+                Glide.with(holder.itemView.context)
+                    .load(diaryItem.imageResId)
+                    .into(ivDiaryThumbnail)
             } else {
-                if (item.imageResId != null) {
-                    ivDiaryThumbnail.visibility = View.VISIBLE
-                    tvDay.visibility = View.GONE
-                    tvDayBelow.visibility = View.VISIBLE
-                    tvDayBelow.text = item.day.toString()
-                    Glide.with(holder.itemView.context)
-                        .load(item.imageResId)
-                        .into(ivDiaryThumbnail)
-                } else {
-                    ivDiaryThumbnail.visibility = View.GONE
-                    tvDay.visibility = View.VISIBLE
-                    tvDayBelow.visibility = View.GONE
-                    tvDay.text = item.day.toString()
-                    tvDay.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.default_date_color))
-                    tvDay.setBackgroundResource(0)
-                }
+                ivDiaryThumbnail.visibility = View.GONE
+                tvDay.visibility = View.VISIBLE
+                tvDayBelow.visibility = View.GONE
+                tvDay.text = day.toString()
+                tvDay.setBackgroundResource(android.R.color.transparent)
+                tvDay.setTextColor(ContextCompat.getColor(holder.itemView.context, android.R.color.black))
             }
 
             root.setOnClickListener {
@@ -69,10 +78,9 @@ class DateAdapter(
         notifyItemChanged(selectedPosition)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = daysInMonth
 
     private fun getWeekday(year: Int, month: Int, day: Int): String {
-        val calendar = Calendar.getInstance()
         calendar.set(year, month - 1, day)
         return when (calendar.get(Calendar.DAY_OF_WEEK)) {
             Calendar.SUNDAY -> "일"
