@@ -14,7 +14,7 @@ class DiaryMainBookmarkAdapter (val context: Context, val items: ArrayList<Diary
         fun bind(item : DiaryMainDayData){
 
             Glide.with(context)
-                .load(item.imageResId)
+                .load(item.imageUrl)
                 .centerCrop()
                 .into(binding.ivDay)
         }

@@ -35,7 +35,7 @@ class DiaryMonthAdapter(val context: Context, val items: List<DiaryMainDayData>)
             binding.tvMonth.text = "${item.year} / ${item.month.toString().padStart(2, '0')}"
 
             Glide.with(context)
-                .load(item.imageResId)
+                .load(item.imageUrl)
                 .centerCrop()
                 .into(binding.ivMonth)
         }

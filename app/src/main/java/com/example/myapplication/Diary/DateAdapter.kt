@@ -39,7 +39,7 @@ class DateAdapter(private var items: List<DiaryMainDayData>, private val onItemC
                 tvDayBelow.visibility = View.VISIBLE
                 tvDayBelow.text = item.day.toString()
                 Glide.with(holder.itemView.context)
-                    .load(item.imageResId)
+                    .load(item.imageUrl)
                     .into(ivDiaryThumbnail)
             }
 

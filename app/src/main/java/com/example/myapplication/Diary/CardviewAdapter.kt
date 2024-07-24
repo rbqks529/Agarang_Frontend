@@ -22,7 +22,7 @@ class CardviewAdapter(private var items: MutableList<DiaryMainDayData>) : Recycl
             tvDate.text = "${item.year}.${item.month}.${item.day}"
 
             Glide.with(holder.itemView.context)
-                .load(item.imageResId)
+                .load(item.imageUrl)
                 .into(ivDiaryImage)
             tvContent.text = item.content
 

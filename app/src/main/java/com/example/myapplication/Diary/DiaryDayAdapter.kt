@@ -25,7 +25,7 @@ class DiaryDayAdapter (val context: Context, val items: ArrayList<DiaryMainDayDa
             binding.tvDay.text = item.day.toString()
 
             Glide.with(context)
-                .load(item.imageResId)
+                .load(item.imageUrl)
                 .centerCrop()
                 .into(binding.ivDay)
 

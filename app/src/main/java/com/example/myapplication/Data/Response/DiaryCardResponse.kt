@@ -20,16 +20,21 @@ data class DiaryCardResponse(
     val result: Result
 )
 
-data class DiaryMonthResponse<T>(
+data class DiaryMonthResponse(
     val isSuccess: Boolean,
     val code: Int,
     val message: String,
-    val result: T
+    val result: MonthResult
 )
 
+data class MonthResult(
+    val monthlyMemories: List<MonthlyMemory>
+)
 
-
-
+data class MonthlyMemory(
+    val date: String,
+    val imageUrl: String
+)
 
 
 

@@ -41,31 +41,6 @@ class DiaryMainBookmarkFragment : Fragment() {
     }
 
     private fun initData() {
-        DiaryBookmarkitemList.addAll(
-            arrayListOf(
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 1"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 2"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 4"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 5"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 6"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 7"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 8"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 9"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 10"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 11"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 12"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 13"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 14"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 15"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 16"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 17"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 18"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 19"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 20"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 21"),
-                DiaryMainDayData(R.drawable.post_sample1, "2024 / 5 / 22")
-            )
-        )
     }
 
 
