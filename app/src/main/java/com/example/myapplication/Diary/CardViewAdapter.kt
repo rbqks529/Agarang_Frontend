@@ -12,8 +12,9 @@ import com.example.myapplication.databinding.FragmentBottomSheetDialogBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class CardViewAdapter(
-    private var items: MutableList<DiaryMainDayData>
-) : RecyclerView.Adapter<CardViewAdapter.ViewHolder>() {
+    private var items: MutableList<DiaryMainDayData>,
+    private val onItemDeleted: (DiaryMainDayData) -> Unit
+) : RecyclerView.Adapter<CardViewAdapter.ViewHolder>(), DiaryCardEditFragment.OnEditCompleteListener {
 
     inner class ViewHolder(val binding: CardviewItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -60,7 +61,13 @@ class CardViewAdapter(
 
         bottomSheetBinding.apply {
             layoutEditOption.setOnClickListener {
-                // 추억 수정 로직
+                val editFragment = DiaryCardEditFragment.newInstance(item, items.indexOf(item))
+                editFragment.setOnEditCompleteListener(this@CardViewAdapter)
+                val fragmentManager = (context as FragmentActivity).supportFragmentManager
+                fragmentManager.beginTransaction()
+                    .replace(R.id.main_frm, editFragment)
+                    .addToBackStack(null)
+                    .commit()
                 bottomSheetDialog.dismiss()
             }
 
@@ -89,6 +96,13 @@ class CardViewAdapter(
         }
     }
 
+    override fun onEditComplete(position: Int, editedItem: DiaryMainDayData) {
+        if (position in 0 until items.size) {
+            items[position] = editedItem
+            notifyItemChanged(position)
+        }
+    }
+
     private fun showDeleteConfirmationDialog(context: Context, item: DiaryMainDayData) {
         val fragmentManager = (context as FragmentActivity).supportFragmentManager
         val dialogFragment = DiaryDeleteDialogFragment()
@@ -100,11 +114,14 @@ class CardViewAdapter(
         dialogFragment.show(fragmentManager, DiaryDeleteDialogFragment.TAG)
     }
 
+
+
     private fun deleteMemory(item: DiaryMainDayData) {
         val position = items.indexOf(item)
         if (position != -1) {
             items.removeAt(position)
             notifyItemRemoved(position)
+            onItemDeleted(item)  // 삭제 시 콜백 호출
             // 여기에 데이터베이스나 서버에서 실제로 데이터를 삭제하는 로직을 추가할 수 있습니다.
         }
     }

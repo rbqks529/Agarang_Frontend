@@ -35,6 +35,16 @@ class DiaryCardEditFragment : Fragment() {
         }
     }
 
+    interface OnEditCompleteListener {
+        fun onEditComplete(position: Int, editedItem: DiaryMainDayData)
+    }
+
+    private var editCompleteListener: OnEditCompleteListener? = null
+
+    fun setOnEditCompleteListener(listener: OnEditCompleteListener) {
+        this.editCompleteListener = listener
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDiaryCardEditBinding.inflate(inflater, container, false)
         return binding.root
@@ -49,7 +59,9 @@ class DiaryCardEditFragment : Fragment() {
 
         // 완료 버튼 클릭 리스너
         binding.tvDiaryCardEditComplete.setOnClickListener {
-
+            val editedContent = binding.tvDiaryCardEditContent.text.toString()
+            val editedItem = item.copy(content = editedContent)
+            editCompleteListener?.onEditComplete(position, editedItem)
 
             // 이전 화면으로 돌아가기
             parentFragmentManager.popBackStack()

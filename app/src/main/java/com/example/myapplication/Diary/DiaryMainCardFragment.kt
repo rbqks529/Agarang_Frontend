@@ -55,13 +55,15 @@ class DiaryMainCardFragment : Fragment() {
         ) { position ->
             scrollToPosition(position)
         }
-
         binding.rvDiaryDate.apply {
             adapter = dateAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
-        cardAdapter = CardViewAdapter(diaryDataList)
+        cardAdapter = CardViewAdapter(diaryDataList) { deletedItem ->
+            // 항목이 삭제되었을 때 호출되는 콜백
+            updateDateAdapterAfterDeletion(deletedItem)
+        }
         binding.rvDiaryCardView.apply {
             adapter = cardAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -97,14 +99,53 @@ class DiaryMainCardFragment : Fragment() {
         scrollJob = MainScope().launch {
             delay(100) // debounce
 
-            val layoutManager = binding.rvDiaryCardView.layoutManager as LinearLayoutManager
-            layoutManager.scrollToPosition(position)
+            if (position != RecyclerView.NO_POSITION && position < diaryDataList.size) {
+                currentPosition = position
 
-            val dateLayoutManager = binding.rvDiaryDate.layoutManager as LinearLayoutManager
-            val smoothScroller = CenterSmoothScroller(requireContext())
-            smoothScroller.targetPosition = diaryDataList[position].day - 1
-            dateLayoutManager.startSmoothScroll(smoothScroller)
-            dateAdapter.updateSelectedPosition(diaryDataList[position].day - 1)
+                // CardView를 중앙으로 스크롤
+                val cardLayoutManager = binding.rvDiaryCardView.layoutManager as LinearLayoutManager
+                cardLayoutManager.scrollToPositionWithOffset(position, 0)
+
+                // 날짜 RecyclerView를 중앙으로 스크롤
+                val dateLayoutManager = binding.rvDiaryDate.layoutManager as LinearLayoutManager
+                val smoothScroller = CenterSmoothScroller(requireContext())
+                smoothScroller.targetPosition = diaryDataList[position].day - 1
+                dateLayoutManager.startSmoothScroll(smoothScroller)
+
+                // DateAdapter의 선택된 위치 업데이트
+                dateAdapter.updateSelectedPosition(diaryDataList[position].day - 1)
+            } else {
+                // 모든 아이템이 삭제된 경우
+                currentPosition = RecyclerView.NO_POSITION
+                dateAdapter.updateSelectedPosition(RecyclerView.NO_POSITION)
+            }
+        }
+    }
+
+    private fun updateDateAdapterAfterDeletion(deletedItem: DiaryMainDayData) {
+        // diaryDataList에서 삭제된 항목 제거
+        diaryDataList.remove(deletedItem)
+
+        // DateAdapter 업데이트
+        dateAdapter.updateItems(diaryDataList)
+
+        // 현재 위치가 유효한지 확인하고 필요하다면 조정
+        if (currentPosition >= diaryDataList.size) {
+            currentPosition = diaryDataList.size - 1
+        }
+
+        // DateAdapter의 선택된 위치 업데이트
+        if (diaryDataList.isNotEmpty()) {
+            val day = diaryDataList[currentPosition].day
+            dateAdapter.updateSelectedPosition(day - 1)
+            scrollToPosition(currentPosition)
+        } else {
+            dateAdapter.updateSelectedPosition(RecyclerView.NO_POSITION)
+        }
+
+        // CardView의 위치 조정
+        if (diaryDataList.isNotEmpty()) {
+            binding.rvDiaryCardView.scrollToPosition(currentPosition)
         }
     }
 
@@ -123,4 +164,5 @@ class DiaryMainCardFragment : Fragment() {
         currentPosition = initialPosition
         setupRecyclerViews()
     }
+
 }
