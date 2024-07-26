@@ -32,9 +32,15 @@ class AlbumPlayFragment : Fragment() {
         playlist?.let{
             itemList.addAll(it)
         }
+
+
         musicAlbumPlayAdapter=MusicAlbumAdapter(itemList,requireActivity(),object :MusicAlbumAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
-                Log.d("MusicAlbumPlayFragment","Item clicked")
+                val item=itemList[position]
+                binding.ivAlbumCover.setImageResource(item.musicImgId)
+                binding.tvPlayMusicName.text=item.musicTitle
+                binding.tvPlayMusicHashTag.text=item.musicTag1
+                binding.tvPlayMusicHashTag2.text=item.musicTag2
             }
         })
         binding.rvMusicAlbum.adapter = musicAlbumPlayAdapter
