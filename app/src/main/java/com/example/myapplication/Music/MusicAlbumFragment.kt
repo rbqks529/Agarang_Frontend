@@ -42,9 +42,14 @@ class MusicAlbumFragment : Fragment() {
     private fun recycler() {
         musicAlbumAdapter=MusicAlbumAdapter(itemList,requireActivity(), object :MusicAlbumAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
-                Log.d("FragmentTransition", "Item clicked at position: $position")
-                val fragment=AlbumPlayFragment()
-
+                val item=itemList[position]
+                val bundle=Bundle().apply {
+                    putParcelable("music_album_data", item)
+                    putParcelableArrayList("play_list", itemList)
+                }
+                val fragment=AlbumPlayFragment().apply {
+                    arguments=bundle
+                }
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.container,fragment)
                     .addToBackStack(null)
