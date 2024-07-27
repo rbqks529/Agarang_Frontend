@@ -15,7 +15,8 @@ import com.example.myapplication.databinding.AlbumMusicItemBinding
 class MusicAlbumAdapter(
     private val items:ArrayList<MusicAlbumData>,
     private val itemClickListener: OnItemClickListener
-):RecyclerView.Adapter<MusicAlbumAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MusicAlbumAdapter.ViewHolder>() {
+
 
     interface OnItemClickListener{
         fun onItemClick(position: Int)
