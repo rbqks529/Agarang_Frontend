@@ -51,7 +51,7 @@ class MusicAlbumFragment : Fragment() {
                     arguments=bundle
                 }
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.container,fragment)
+                    .replace(R.id.main_frm,fragment)
                     .addToBackStack(null)
                     .commit()
             }

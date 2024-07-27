@@ -41,7 +41,7 @@ class MusicMainAdapter(val items:ArrayList<MusicMainData>, private val fragmentA
 
             val fragmentManager: FragmentManager = fragmentActivity.supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.container, musicAlbumFragment)
+            fragmentTransaction.replace(R.id.main_frm, musicAlbumFragment)
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
