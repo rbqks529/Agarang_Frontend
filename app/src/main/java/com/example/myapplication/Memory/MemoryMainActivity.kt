@@ -14,7 +14,7 @@ class MemoryMainActivity : AppCompatActivity() {
         val window=window
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
-        val fragment=PictureFragment()
+        val fragment=SelectGenreFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.memory_frm,fragment)
             .commit()
