@@ -181,14 +181,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_music_album"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="435dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/album_music_item"
-        tools:ignore="MissingConstraints">
+        tools:listitem="@layout/album_music_item">
     </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

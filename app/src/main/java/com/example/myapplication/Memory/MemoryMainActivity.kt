@@ -16,7 +16,7 @@ class MemoryMainActivity : AppCompatActivity() {
 
         
 
-        val fragment=PictureFragment()
+        val fragment=SelectGenreFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.memory_frm,fragment)
             .commit()

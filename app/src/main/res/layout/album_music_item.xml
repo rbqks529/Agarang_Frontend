@@ -59,7 +59,7 @@
         android:id="@+id/iv_item_heart_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_heart_red"
+        android:src="@drawable/ic_heart_red_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="25dp"

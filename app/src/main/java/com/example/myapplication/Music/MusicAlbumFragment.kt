@@ -40,7 +40,7 @@ class MusicAlbumFragment : Fragment() {
         return binding.root
     }
     private fun recycler() {
-        musicAlbumAdapter=MusicAlbumAdapter(itemList,requireActivity(), object :MusicAlbumAdapter.OnItemClickListener{
+        musicAlbumAdapter=MusicAlbumAdapter(itemList, object :MusicAlbumAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
                 val item=itemList[position]
                 val bundle=Bundle().apply {

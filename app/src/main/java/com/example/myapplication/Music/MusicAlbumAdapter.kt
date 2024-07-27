@@ -14,9 +14,9 @@ import com.example.myapplication.databinding.AlbumMusicItemBinding
 
 class MusicAlbumAdapter(
     private val items:ArrayList<MusicAlbumData>,
-    private val fragmentActivity: FragmentActivity,
     private val itemClickListener: OnItemClickListener
-):RecyclerView.Adapter<MusicAlbumAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MusicAlbumAdapter.ViewHolder>() {
+
 
     interface OnItemClickListener{
         fun onItemClick(position: Int)
@@ -40,6 +40,9 @@ class MusicAlbumAdapter(
             itemView.setOnClickListener {
                 itemClickListener.onItemClick(adapterPosition)
             }
+            binding.ivItemOption.setOnClickListener {
+
+            }
         }
     }
 
@@ -47,6 +50,7 @@ class MusicAlbumAdapter(
         val binding=AlbumMusicItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding)
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])
     }

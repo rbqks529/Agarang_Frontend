@@ -6,10 +6,9 @@ import android.os.Build
 import com.example.myapplication.Home.HomeFragment
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import com.example.myapplication.Diary.Diary.DiaryFragment
 import com.example.myapplication.Memory.MemoryMainActivity
 import com.example.myapplication.Music.MusicFragment

@@ -14,7 +14,7 @@ import com.example.myapplication.databinding.FragmentMusicAlbumBinding
 class AlbumPlayFragment : Fragment() {
     lateinit var binding:FragmentAlbumPlayBinding
     private var itemList: ArrayList<MusicAlbumData> = arrayListOf()
-    private var musicAlbumPlayAdapter: MusicAlbumAdapter? = null
+    private var musicAlbumPlayAdapter: MusicPlayAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +33,7 @@ class AlbumPlayFragment : Fragment() {
             itemList.addAll(it)
         }
 
-        musicAlbumPlayAdapter=MusicAlbumAdapter(itemList,requireActivity(),object :MusicAlbumAdapter.OnItemClickListener{
+        musicAlbumPlayAdapter = MusicPlayAdapter(itemList, binding.rvMusicAlbum, object :MusicPlayAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
                 val item=itemList[position]
                 binding.ivAlbumCover.setImageResource(item.musicImgId)
