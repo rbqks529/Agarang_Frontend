@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.example.myapplication.ChangeChar2Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeSettingBinding
@@ -95,5 +96,14 @@ class HomeSettingFragment : Fragment() {
         val diffInMillis = targetDate.time - today.time
         val diffInDays = (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
         return diffInDays
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val selectedImageResourceId = arguments?.getInt("selected_char") ?: return
+        val imageView: ImageView = view.findViewById(R.id.siv_property)
+        imageView.setImageResource(selectedImageResourceId)
     }
 }

@@ -34,7 +34,7 @@ class AlbumPlayFragment : Fragment() {
         }
 
 
-        musicAlbumPlayAdapter=MusicAlbumAdapter(itemList,requireActivity(),object :MusicAlbumAdapter.OnItemClickListener{
+        musicAlbumPlayAdapter=MusicAlbumAdapter(itemList,object :MusicAlbumAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
                 val item=itemList[position]
                 binding.ivAlbumCover.setImageResource(item.musicImgId)
