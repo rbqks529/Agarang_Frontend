@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.myapplication.R
 
 class GenreAdapter(
     private val context: Context,
-    private val items: Array<String>
+    private val items: Array<String>,
+    private val fragmentManager: FragmentManager
 ) : BaseAdapter() {
 
     // 선택된 아이템의 인덱스를 저장할 변수
@@ -53,6 +56,12 @@ class GenreAdapter(
         view?.setOnClickListener {
             selectedPosition = position
             notifyDataSetChanged()  // 뷰 갱신
+
+            // SelectMoodFragment로 전환
+            val transaction: FragmentTransaction = fragmentManager.beginTransaction()
+            transaction.replace(R.id.memory_frm, SelectMoodFragment())
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
 
         return view!!
