@@ -33,7 +33,6 @@ class AlbumPlayFragment : Fragment() {
             itemList.addAll(it)
         }
 
-
         musicAlbumPlayAdapter=MusicAlbumAdapter(itemList,requireActivity(),object :MusicAlbumAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
                 val item=itemList[position]
