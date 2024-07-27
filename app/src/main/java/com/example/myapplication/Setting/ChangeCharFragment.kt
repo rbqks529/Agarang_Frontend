@@ -26,6 +26,10 @@ class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
         R.drawable.dog_1,
         R.drawable.pig_1
     )
+    private val imageResources2 = intArrayOf(
+        R.drawable.mouse_2,R.drawable.cow_2,R.drawable.tiger_2,R.drawable.rabbit_2,R.drawable.dragon_2, R.drawable.snake_2,
+        R.drawable.horse_2,R.drawable.sheep_2,R.drawable.monkey_2,R.drawable.chick_2,R.drawable.dog_2,R.drawable.pig_2
+    )
 
     private val names = arrayOf(
         "쥐", "소", "호랑이", "토끼", "용", "뱀", "말", "양", "원숭이", "닭", "개", "돼지"
@@ -66,18 +70,37 @@ class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
         gridView.adapter = adapter
 
         finishButton.setOnClickListener{
-            val fragment = HomeSettingFragment()
+            /*val fragment = HomeSettingFragment()
             val transaction = parentFragmentManager.beginTransaction()
             transaction.replace(R.id.main_frm, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
+*/
+            selectedImageResourceId?.let {
+                val position = imageResources.indexOf(it)
+                if (position != -1) {
+                    val newImageResourceId = imageResources2[position]
+                    val fragment = HomeSettingFragment().apply {
+                        arguments = Bundle().apply {
+                            putInt("selected_char", newImageResourceId)
+                        }
+                    }
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.main_frm, fragment)
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
+            }
+
         }
     }
 
+    private var selectedImageResourceId: Int? = null
     override fun onChangeSelected(imageResourceId: Int) {
         val position = imageResources.indexOf(imageResourceId)
         if (position != -1) {
             adapter.setSelectedPosition(position)
+            selectedImageResourceId = imageResourceId
             finishButton.visibility = View.VISIBLE
         }
     }

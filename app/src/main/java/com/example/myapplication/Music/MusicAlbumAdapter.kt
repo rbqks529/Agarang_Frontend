@@ -40,6 +40,9 @@ class MusicAlbumAdapter(
             itemView.setOnClickListener {
                 itemClickListener.onItemClick(adapterPosition)
             }
+            binding.ivItemOption.setOnClickListener {
+
+            }
         }
     }
 
