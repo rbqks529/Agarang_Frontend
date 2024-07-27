@@ -18,7 +18,7 @@ class SelectGenreFragment : Fragment() {
 
         val gridView = view.findViewById<GridView>(R.id.gv_genre)
         val genres = arrayOf("발라드", "팝", "재즈", "어쿠스틱", "알앤비", "일렉트로닉","락", "인디고", "힙합")
-        val adapter = GenreAdapter(requireContext(), genres)
+        val adapter = GenreAdapter(requireContext(), genres, requireActivity().supportFragmentManager)
 
         gridView.adapter = adapter
 
