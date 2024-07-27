@@ -149,7 +149,7 @@ class PicAssociationFragment : Fragment() {
                         val text = jsonObject.optString("text")
                         activity?.runOnUiThread {
                             // UI 업데이트
-                            binding.tvRecordNotice.text = "text"
+                            binding.tvRecordNotice.text = text.toString()
                         }
                     } catch (e: JSONException) {
                         Log.e("UploadAudio", "JSON parsing error", e)
