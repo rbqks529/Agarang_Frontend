@@ -109,7 +109,7 @@
         android:id="@+id/rv_recent_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/fl_music_bar"
+        app:layout_constraintBottom_toTopOf="@id/iv_music_background"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -117,73 +117,90 @@
         tools:ignore="MissingConstraints">
     </androidx.recyclerview.widget.RecyclerView>
 
-    <FrameLayout
-        android:id="@+id/fl_music_bar"
+
+
+    <View
+        android:id="@+id/iv_music_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="62dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints">
-        <ImageView
-            android:id="@+id/iv_music_background"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_music_bar"/>
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/siv_music_photo"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
-            android:scaleType="centerCrop"
-            android:src="@drawable/recent_card_sample"
-            android:layout_marginStart="9dp"
-            android:layout_marginTop="11dp"/>
-        <TextView
-            android:id="@+id/tv_music_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="노래 제목"
-            android:textSize="15sp"
-            android:layout_marginTop="14dp"
-            android:layout_marginStart="63dp"/>
-        <TextView
-            android:id="@+id/tv_music_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="#태그1 #태그2"
-            android:textSize="12sp"
-            android:layout_marginStart="63dp"
-            android:layout_marginTop="36dp"/>
+        android:background="@drawable/style_rounded" />
 
-        <ImageView
-            android:id="@+id/iv_music_bar_option"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_music_bar_option"
-            android:layout_marginStart="330dp"
-            android:layout_marginTop="22dp"/>
-        <ImageView
-            android:id="@+id/iv_music_bar_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/music_bar_next"
-            android:layout_marginStart="295dp"
-            android:layout_marginTop="24dp"/>
-        <ImageView
-            android:id="@+id/iv_music_bar_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/music_bar_play"
-            android:layout_marginStart="253dp"
-            android:layout_marginTop="20dp"/>
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/siv_music_photo"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+        android:scaleType="centerCrop"
+        android:src="@drawable/recent_card_sample"
+        app:layout_constraintStart_toStartOf="@id/iv_music_background"
+        app:layout_constraintTop_toTopOf="@id/iv_music_background"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="9dp"/>
+    <TextView
+        android:id="@+id/tv_music_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="노래 제목"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@id/siv_music_photo"
+        app:layout_constraintTop_toTopOf="@id/siv_music_photo"
+        android:layout_marginTop="7dp"
+        android:layout_marginStart="9dp"/>
+    <TextView
+        android:id="@+id/tv_music_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#태그1 #태그2"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/siv_music_photo"
+        app:layout_constraintTop_toTopOf="@id/siv_music_photo"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="29dp"
+        />
 
-        <ImageView
-            android:id="@+id/iv_music_bar_previous"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_music_bar_previous"
-            android:layout_marginStart="205dp"
-            android:layout_marginTop="24dp"/>
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/iv_music_bar_option"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_music_bar_option"
+        app:layout_constraintTop_toTopOf="@id/iv_music_background"
+        app:layout_constraintEnd_toEndOf="@id/iv_music_background"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="25dp"
+        />
+    <ImageView
+        android:id="@+id/iv_music_bar_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/music_bar_next"
+        app:layout_constraintTop_toTopOf="@id/iv_music_background"
+        app:layout_constraintEnd_toEndOf="@id/iv_music_background"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="44dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_music_bar_play"
+        android:layout_width="13dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="88dp"
+        android:src="@drawable/music_bar_play"
+        app:layout_constraintEnd_toEndOf="@id/iv_music_background"
+        app:layout_constraintTop_toTopOf="@id/iv_music_background" />
+
+    <ImageView
+        android:id="@+id/iv_music_bar_previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_music_bar_previous"
+        app:layout_constraintTop_toTopOf="@id/iv_music_background"
+        app:layout_constraintEnd_toEndOf="@id/iv_music_background"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="133dp"
+        />
 
 
 
