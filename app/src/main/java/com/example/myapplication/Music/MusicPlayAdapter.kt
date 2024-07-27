@@ -1,5 +1,6 @@
 package com.example.myapplication.Music
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
@@ -12,13 +13,14 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Diary.DiaryDayAdapter
+import com.example.myapplication.R
 import com.example.myapplication.databinding.AlbumMusicItemBinding
 import java.util.Collections
 
 class MusicPlayAdapter(
     private val items: ArrayList<MusicAlbumData>,
     private val dragRecyclerview: RecyclerView,
-    private val itemClickListener: OnItemClickListener
+    private val itemClickListener: OnItemClickListener,
 ) : RecyclerView.Adapter<MusicPlayAdapter.ViewHolder>() {
 
     interface OnItemClickListener {
@@ -50,15 +52,35 @@ class MusicPlayAdapter(
             binding.tvItemTag2.text = item.musicTag2
 
             binding.ivItemHeartEmpty.setOnClickListener {
-                binding.ivItemHeartEmpty.visibility = View.GONE
-                binding.ivItemHeartSelected.visibility = View.VISIBLE
+                toggleHeart()
             }
-            binding.ivItemHeartSelected.setOnClickListener {
-                binding.ivItemHeartSelected.visibility = View.GONE
-                binding.ivItemHeartEmpty.visibility = View.VISIBLE
-            }
-            itemView.setOnClickListener {
+
+            binding.ivItemCover.setOnClickListener {
                 itemClickListener.onItemClick(adapterPosition)
+            }
+            binding.tvItemTag1.setOnClickListener {
+                itemClickListener.onItemClick(adapterPosition)
+            }
+            binding.tvItemTag2.setOnClickListener {
+                itemClickListener.onItemClick(adapterPosition)
+            }
+            binding.tvItemTitle.setOnClickListener {
+                itemClickListener.onItemClick(adapterPosition)
+            }
+
+            binding.ivItemOption.setOnClickListener {
+                showDeleteConfirmationDialog(itemView.context, item)
+            }
+
+        }
+
+        private fun toggleHeart() {
+            if (binding.ivItemHeartEmpty.tag == null || binding.ivItemHeartEmpty.tag == "empty") {
+                binding.ivItemHeartEmpty.setImageResource(R.drawable.ic_music_heart)
+                binding.ivItemHeartEmpty.tag = "filled"
+            } else {
+                binding.ivItemHeartEmpty.setImageResource(R.drawable.icon_heart_gray_empty)
+                binding.ivItemHeartEmpty.tag = "empty"
             }
         }
     }
@@ -99,5 +121,24 @@ class MusicPlayAdapter(
 
         // 꾹 누르면 드래그가 시작되도록 설정
         override fun isLongPressDragEnabled(): Boolean = true
+    }
+    private fun showDeleteConfirmationDialog(context: Context, item: MusicAlbumData) {
+        Log.d("MusicAlbumAdapter", "Showing delete dialog for item: ${item.musicTitle}")
+        val fragmentManager = (context as FragmentActivity).supportFragmentManager
+        val dialogFragment = MusicDeleteDialogFragment()
+
+        dialogFragment.onDeleteConfirmed = {
+            deleteMemory(item)
+        }
+
+        dialogFragment.show(fragmentManager, MusicDeleteDialogFragment.TAG)
+    }
+
+    private fun deleteMemory(item: MusicAlbumData) {
+        val position = items.indexOf(item)
+        if (position != -1) {
+            items.removeAt(position)
+            notifyItemRemoved(position)
+        }
     }
 }
