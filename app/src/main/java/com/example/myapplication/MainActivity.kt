@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.content.Intent
 import com.example.myapplication.Home.HomeFragment
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.Diary.Diary.DiaryFragment

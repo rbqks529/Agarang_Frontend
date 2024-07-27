@@ -60,7 +60,6 @@ class PicAssociationFragment : Fragment() {
             binding.ivRecordArrowBtn.visibility=View.VISIBLE
             binding.ivRecordIng.visibility=View.VISIBLE
             binding.ivRecordingNextBtn.visibility=View.GONE
-
         }
         binding.ivRecordingNextBtn.setOnClickListener {
             val fragment=DeepQuestionFragment()

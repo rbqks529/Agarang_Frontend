@@ -14,7 +14,11 @@ import com.example.myapplication.Diary.DiaryDayAdapter
 import com.example.myapplication.R
 import com.example.myapplication.databinding.MusicItemBinding
 
-class MusicMainAdapter(val items:ArrayList<MusicMainData>, private val fragmentActivity: FragmentActivity):RecyclerView.Adapter<MusicMainAdapter.ViewHolder>() {
+class MusicMainAdapter(
+    val items:ArrayList<MusicMainData>,
+    private val fragmentActivity: FragmentActivity
+):RecyclerView.Adapter<MusicMainAdapter.ViewHolder>() {
+
     private lateinit var itemClickListener:DiaryDayAdapter.OnItemClickListener
     inner class ViewHolder (val binding:MusicItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(item: MusicMainData){
@@ -41,7 +45,7 @@ class MusicMainAdapter(val items:ArrayList<MusicMainData>, private val fragmentA
 
             val fragmentManager: FragmentManager = fragmentActivity.supportFragmentManager
             val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.container, musicAlbumFragment)
+            fragmentTransaction.replace(R.id.main_frm, musicAlbumFragment)
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
