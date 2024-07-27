@@ -7,13 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
 import com.example.myapplication.R
+import com.example.myapplication.databinding.FragmentSelectGenreBinding
 
 class SelectGenreFragment : Fragment() {
+
+    lateinit var binding: FragmentSelectGenreBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentSelectGenreBinding.inflate(inflater, container, false)
         val view = inflater.inflate(R.layout.fragment_select_genre, container, false)
 
         val gridView = view.findViewById<GridView>(R.id.gv_genre)
