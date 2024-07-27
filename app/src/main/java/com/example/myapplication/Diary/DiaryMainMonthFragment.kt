@@ -29,7 +29,6 @@ class DiaryMainMonthFragment : Fragment() {
     ): View? {
         binding = FragmentDiaryMainMonthBinding.inflate(inflater, container, false)
 
-        NetworkModule.initialize(requireContext())
         fetchMonthlyMemories()
         initRecyclerView()
 
@@ -56,7 +55,6 @@ class DiaryMainMonthFragment : Fragment() {
                         // 에러 처리
                     }
                 } else {
-                    /*Log.e("DiaryMainBookmarkFragment", "Response error: ${response.errorBody()}")*/
                     // 오류 응답 처리
                     val errorBody = response.errorBody()?.string()
                     Log.e("오류", "Response error: $errorBody")

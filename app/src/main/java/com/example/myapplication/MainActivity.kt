@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.Diary.Diary.DiaryFragment
 import com.example.myapplication.Memory.MemoryMainActivity
 import com.example.myapplication.Music.MusicFragment
+import com.example.myapplication.Retrofit.NetworkModule
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        NetworkModule.initialize(this)
 
         initBottomNavigation()
     }
