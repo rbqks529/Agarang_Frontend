@@ -1,8 +1,6 @@
 package com.example.myapplication.Memory
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
@@ -17,8 +15,7 @@ class MemoryMainActivity : AppCompatActivity() {
         val window=window
         window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
 
-        val fragment=PicAssociationFragment()
-
+        val fragment=SelectGenreFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.memory_frm,fragment)
             .commit()
