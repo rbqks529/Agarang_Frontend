@@ -58,13 +58,27 @@ class DiaryMainDayFragment : Fragment() {
 
     private fun initData() {
         // 실제 애플리케이션에서는 이 부분을 데이터베이스나 API에서 데이터를 가져오는 로직으로 대체해야 합니다.
-        for (i in 1..25) {
-            diaryDayItemList.add(
-                DiaryMainDayData(
-                    R.drawable.post_sample,
-                    "2024 / 5 / $i"
-                )
+        diaryDayItemList.addAll(
+            arrayListOf(
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 2"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 4"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 6"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 7"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 8"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 9"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 10"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 11"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 12"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 13"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 14"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 15"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 16"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 17"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 18"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 20"),
+                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 21")
             )
-        }
+        )
+
     }
 }
