@@ -37,13 +37,8 @@ class MusicFragment : Fragment() {
     private fun recycler() {
         musicMainAdapter=MusicMainAdapter(itemList,requireActivity())
         binding.rvMusic.adapter=musicMainAdapter
-        val spacingVertical=resources.getDimensionPixelSize(R.dimen.item_spacing)
         val spanCount=2
-        val spacingGrid = resources.getDimensionPixelSize(R.dimen.music_grid_spacing)
-        val includeEdge=true
         binding.rvMusic.layoutManager=GridLayoutManager(requireContext(),spanCount)
-//        binding.rvMusic.addItemDecoration(musicMainAdapter!!.MusicMainItemDecoration(spacingVertical))
-//        binding.rvMusic.addItemDecoration(musicMainAdapter!!.GridSpacingItemDecoration(spanCount,spacingGrid,includeEdge))
     }
 
 }
