@@ -1,5 +1,6 @@
 package com.example.myapplication.Setting
 
+import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -45,6 +46,16 @@ class HomeSettingFragment : Fragment() {
             transaction.replace(R.id.main_frm,fragmentChangChar)
                 .commit()
         }
+
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val selectedChar = sharedPreferences.getInt("selected_char", -1)
+
+        if (selectedChar != -1) {
+            // selectedChar 값을 사용하여 작업 수행
+            binding.sivProperty.setImageResource(selectedChar)
+        }
+
+
 
         return binding.root
     }

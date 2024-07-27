@@ -1,11 +1,14 @@
 package com.example.myapplication.Memory
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSelectInstrumentBinding
 
@@ -14,9 +17,21 @@ class SelectInstrumentFragment : Fragment(), InstrumentAdapter.OnItemClickListen
 
     private var _binding: FragmentSelectInstrumentBinding? = null
     private val binding get() = _binding!!
+    private lateinit var rvInstruments: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSelectInstrumentBinding.inflate(inflater, container, false)
+        rvInstruments=binding.rvInstruments
+
+        val imageView =binding.ivCircle
+
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val selectedChar = sharedPreferences.getInt("selected_char", -1)
+
+        if (selectedChar != -1) {
+            // selectedChar 값을 사용하여 작업 수행
+            imageView.setImageResource(selectedChar)
+        }
         return binding.root
     }
 

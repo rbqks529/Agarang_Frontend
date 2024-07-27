@@ -110,7 +110,6 @@ class CardViewAdapter(
         dialogFragment.onDeleteConfirmed = {
             deleteMemory(item)
         }
-
         dialogFragment.show(fragmentManager, DiaryDeleteDialogFragment.TAG)
     }
 

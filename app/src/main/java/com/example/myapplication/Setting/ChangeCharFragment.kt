@@ -1,5 +1,6 @@
 package com.example.myapplication.Setting
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -75,12 +76,24 @@ class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
             transaction.replace(R.id.main_frm, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
-*/
+            */
+            val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
             selectedImageResourceId?.let {
                 val position = imageResources.indexOf(it)
                 if (position != -1) {
                     val newImageResourceId = imageResources2[position]
-                    val fragment = HomeSettingFragment().apply {
+
+                    editor.putInt("selected_char", newImageResourceId)
+                    editor.apply()
+
+                    val fragment = HomeSettingFragment()
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.main_frm, fragment)
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+
+                    /*val fragment = HomeSettingFragment().apply {
                         arguments = Bundle().apply {
                             putInt("selected_char", newImageResourceId)
                         }
@@ -88,7 +101,7 @@ class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
                     val transaction = parentFragmentManager.beginTransaction()
                     transaction.replace(R.id.main_frm, fragment)
                     transaction.addToBackStack(null)
-                    transaction.commit()
+                    transaction.commit()*/
                 }
             }
 

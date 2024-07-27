@@ -21,9 +21,14 @@ class MusicFragment : Fragment() {
     ): View? {
         binding=FragmentMusicBinding.inflate(inflater,container,false)
 
-        itemList.add(MusicMainData(R.drawable.music_sample,"즐겨 찾기"))
-        itemList.add(MusicMainData(R.drawable.music_sample,"운동할 때 들을 플레이리스트"))
-        itemList.add(MusicMainData(R.drawable.music_sample,"플레이리스트"))
+        itemList.add(MusicMainData(R.drawable.playlist_bookmark,"즐겨 찾기"))
+        itemList.add(MusicMainData(R.drawable.playlist_all,"전체 플레이리스트"))
+        itemList.add(MusicMainData(R.drawable.playlist_alone,"혼자만의 시간을 가지는"))
+        itemList.add(MusicMainData(R.drawable.playlist_day,"하루를 정리하며 듣는"))
+        itemList.add(MusicMainData(R.drawable.playlist_exercise,"운동하며 듣는"))
+        itemList.add(MusicMainData(R.drawable.playlist_fetal_movement,"태동이 느껴질 때 듣는"))
+        itemList.add(MusicMainData(R.drawable.playlist_morning,"아침을 시작하며 듣는"))
+        itemList.add(MusicMainData(R.drawable.playlist_day,"마음을 편안하게 하는"))
 
         recycler()
         return binding.root
@@ -32,13 +37,8 @@ class MusicFragment : Fragment() {
     private fun recycler() {
         musicMainAdapter=MusicMainAdapter(itemList,requireActivity())
         binding.rvMusic.adapter=musicMainAdapter
-        val spacingVertical=resources.getDimensionPixelSize(R.dimen.item_spacing)
         val spanCount=2
-        val spacingGrid = resources.getDimensionPixelSize(R.dimen.music_grid_spacing)
-        val includeEdge=true
         binding.rvMusic.layoutManager=GridLayoutManager(requireContext(),spanCount)
-//        binding.rvMusic.addItemDecoration(musicMainAdapter!!.MusicMainItemDecoration(spacingVertical))
-//        binding.rvMusic.addItemDecoration(musicMainAdapter!!.GridSpacingItemDecoration(spanCount,spacingGrid,includeEdge))
     }
 
 }
