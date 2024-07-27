@@ -6,16 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.R
 import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentDiaryMainMonthBinding
-import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.Data.Response.DiaryMonthResponse
 import com.example.myapplication.Data.Response.MonthlyMemory
-import kotlinx.coroutines.launch
+import com.example.myapplication.Retrofit.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +29,7 @@ class DiaryMainMonthFragment : Fragment() {
     ): View? {
         binding = FragmentDiaryMainMonthBinding.inflate(inflater, container, false)
 
+        NetworkModule.initialize(requireContext())
         fetchMonthlyMemories()
         initRecyclerView()
 
