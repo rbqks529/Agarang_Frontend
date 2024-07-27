@@ -1,5 +1,6 @@
 package com.example.myapplication.Memory
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -19,6 +20,13 @@ class SelectSpeedFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSelectSpeedBinding.inflate(inflater, container, false)
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val selectedChar = sharedPreferences.getInt("selected_char", -1)
+
+        if (selectedChar != -1) {
+            // selectedChar 값을 사용하여 작업 수행
+            binding.ivBabyCharacter.setImageResource(selectedChar)
+        }
         return binding.root
     }
 
