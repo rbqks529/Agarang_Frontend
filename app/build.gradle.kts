@@ -64,5 +64,6 @@ dependencies {
     implementation ("com.google.android.material:material:1.5.0")
 
     implementation("com.naver.speech.clientapi:naverspeech-ncp-sdk-android:1.1.6")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.0")
 }
 

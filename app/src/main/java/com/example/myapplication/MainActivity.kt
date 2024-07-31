@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.Diary.Diary.DiaryFragment
 import com.example.myapplication.Memory.MemoryMainActivity
 import com.example.myapplication.Music.MusicFragment
+import com.example.myapplication.Retrofit.NetworkModule
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.decorView.systemUiVisibility =
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
@@ -32,6 +34,7 @@ class MainActivity : AppCompatActivity() {
             window.navigationBarColor = Color.WHITE
         }
 
+        NetworkModule.initialize(this)
         initBottomNavigation()
     }
 
