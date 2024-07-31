@@ -1,11 +1,13 @@
 package com.example.myapplication.Setting
 
+import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.example.myapplication.ChangeChar2Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeSettingBinding
@@ -44,6 +46,16 @@ class HomeSettingFragment : Fragment() {
             transaction.replace(R.id.main_frm,fragmentChangChar)
                 .commit()
         }
+
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val selectedChar = sharedPreferences.getInt("selected_char", -1)
+
+        if (selectedChar != -1) {
+            // selectedChar 값을 사용하여 작업 수행
+            binding.sivProperty.setImageResource(selectedChar)
+        }
+
+
 
         return binding.root
     }
@@ -95,5 +107,14 @@ class HomeSettingFragment : Fragment() {
         val diffInMillis = targetDate.time - today.time
         val diffInDays = (diffInMillis / (1000 * 60 * 60 * 24)).toInt()
         return diffInDays
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val selectedImageResourceId = arguments?.getInt("selected_char") ?: return
+        val imageView: ImageView = view.findViewById(R.id.siv_property)
+        imageView.setImageResource(selectedImageResourceId)
     }
 }

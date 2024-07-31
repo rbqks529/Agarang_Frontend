@@ -1,5 +1,6 @@
 package com.example.myapplication.Home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +47,14 @@ class HomeFragment: Fragment() {
         val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
         val formattedDate = dateFormat.format(currentDate)
         binding.tvToday.text = formattedDate
+
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val selectedChar = sharedPreferences.getInt("selected_char", -1)
+
+        if (selectedChar != -1) {
+            // selectedChar 값을 사용하여 작업 수행
+            binding.ivBabyTiger.setImageResource(selectedChar)
+        }
 
         return binding.root
     }

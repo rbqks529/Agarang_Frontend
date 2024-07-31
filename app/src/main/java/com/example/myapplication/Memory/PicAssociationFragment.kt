@@ -2,6 +2,7 @@ package com.example.myapplication.Memory
 
 import android.Manifest
 import android.app.VoiceInteractor
+import android.content.Context
 import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.os.Bundle
@@ -88,6 +89,14 @@ class PicAssociationFragment : Fragment() {
             uploadAudioFileAndGetText()
         }
 
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val selectedChar = sharedPreferences.getInt("selected_char", -1)
+
+        if (selectedChar != -1) {
+            // selectedChar 값을 사용하여 작업 수행
+            binding.ivBabyCharacter.setImageResource(selectedChar)
+        }
+
         return binding.root
     }
     private fun startRecording() {
@@ -149,7 +158,7 @@ class PicAssociationFragment : Fragment() {
                         val text = jsonObject.optString("text")
                         activity?.runOnUiThread {
                             // UI 업데이트
-                            binding.tvRecordNotice.text = "text"
+                            binding.tvRecordNotice.text = text.toString()
                         }
                     } catch (e: JSONException) {
                         Log.e("UploadAudio", "JSON parsing error", e)

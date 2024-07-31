@@ -1,5 +1,6 @@
 package com.example.myapplication.Memory
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -47,6 +48,14 @@ class DeepQuestionFragment : Fragment() {
             binding.ivRecordArrowBtn.visibility=View.GONE
             binding.ivRecordIng.visibility=View.GONE
             binding.ivRecordingNextBtn.visibility=View.VISIBLE
+        }
+
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val selectedChar = sharedPreferences.getInt("selected_char", -1)
+
+        if (selectedChar != -1) {
+            // selectedChar 값을 사용하여 작업 수행
+            binding.ivBabyCharacter.setImageResource(selectedChar)
         }
         return binding.root
     }

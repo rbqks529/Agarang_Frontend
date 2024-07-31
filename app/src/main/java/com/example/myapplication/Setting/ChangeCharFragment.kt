@@ -1,5 +1,6 @@
 package com.example.myapplication.Setting
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,6 +26,10 @@ class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
         R.drawable.chick_1,
         R.drawable.dog_1,
         R.drawable.pig_1
+    )
+    private val imageResources2 = intArrayOf(
+        R.drawable.mouse_2,R.drawable.cow_2,R.drawable.tiger_2,R.drawable.rabbit_2,R.drawable.dragon_2, R.drawable.snake_2,
+        R.drawable.horse_2,R.drawable.sheep_2,R.drawable.monkey_2,R.drawable.chick_2,R.drawable.dog_2,R.drawable.pig_2
     )
 
     private val names = arrayOf(
@@ -66,18 +71,49 @@ class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
         gridView.adapter = adapter
 
         finishButton.setOnClickListener{
-            val fragment = HomeSettingFragment()
+            /*val fragment = HomeSettingFragment()
             val transaction = parentFragmentManager.beginTransaction()
             transaction.replace(R.id.main_frm, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
+            */
+            val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            selectedImageResourceId?.let {
+                val position = imageResources.indexOf(it)
+                if (position != -1) {
+                    val newImageResourceId = imageResources2[position]
+
+                    editor.putInt("selected_char", newImageResourceId)
+                    editor.apply()
+
+                    val fragment = HomeSettingFragment()
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.main_frm, fragment)
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+
+                    /*val fragment = HomeSettingFragment().apply {
+                        arguments = Bundle().apply {
+                            putInt("selected_char", newImageResourceId)
+                        }
+                    }
+                    val transaction = parentFragmentManager.beginTransaction()
+                    transaction.replace(R.id.main_frm, fragment)
+                    transaction.addToBackStack(null)
+                    transaction.commit()*/
+                }
+            }
+
         }
     }
 
+    private var selectedImageResourceId: Int? = null
     override fun onChangeSelected(imageResourceId: Int) {
         val position = imageResources.indexOf(imageResourceId)
         if (position != -1) {
             adapter.setSelectedPosition(position)
+            selectedImageResourceId = imageResourceId
             finishButton.visibility = View.VISIBLE
         }
     }
