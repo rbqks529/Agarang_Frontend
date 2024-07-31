@@ -1,19 +1,13 @@
 package com.example.myapplication.Diary
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.myapplication.Data.Response.FavoriteResponse
-import com.example.myapplication.R
-import com.example.myapplication.Retrofit.FavoriteRetrofit
 import com.example.myapplication.databinding.FragmentDiaryMainBookmarkBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class DiaryMainBookmarkFragment : Fragment() {
 
