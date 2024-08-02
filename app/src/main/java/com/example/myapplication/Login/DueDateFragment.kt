@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.myapplication.R
+import com.example.myapplication.Setting.CalendarFragment
 import com.example.myapplication.databinding.FragmentDueDateBinding
 
 class DueDateFragment : Fragment() {
@@ -16,6 +17,11 @@ class DueDateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding=FragmentDueDateBinding.inflate(inflater,container,false)
+        binding.ivIcCalendar.setOnClickListener {
+            val calendarFragment = CalendarFragment()
+            calendarFragment.setTargetFragment(this, 0)
+            calendarFragment.show(parentFragmentManager, "datePicker")
+        }
         return binding.root
     }
 
