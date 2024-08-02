@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-parcelize")
+    kotlin("kapt")
 }
 
 android {
@@ -65,5 +66,8 @@ dependencies {
 
     implementation("com.naver.speech.clientapi:naverspeech-ncp-sdk-android:1.1.6")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.0")
+
+    implementation("androidx.room:androidx.room.gradle.plugin:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 }
 
