@@ -166,9 +166,8 @@ class PicAssociationFragment : Fragment() {
                             //server
                             val apiService=RetrofitService.retrofit.create(MemoryIF::class.java)
                             val request=FirstAnsRequest(
-                                id="chatcmpl-9rhwoYmo1WuQ78BtR7FV06Zub749H",
-                                text="안녕하세용"
-                                //text = text
+                                id="chatcmpl-9rhwoYmo1WuQ78BtR7FV06Zub749H", //임시 id
+                                text = text
                             )
                             apiService.sendFirstAns(request).enqueue(object : retrofit2.Callback<FirstAnsResponse>{
                                 override fun onResponse(
@@ -179,6 +178,7 @@ class PicAssociationFragment : Fragment() {
                                         val result=response.body()
                                         result?.let{
                                             Log.d("Tag",result.toString())
+                                            //심화 fragment 로 넘어가야 함 -> 응답으로 온 audioUrl을 음성으로 내보내고, text ui에 띄우기
                                         }
                                     }else{
                                         Log.e("PicAssociationFragment","Failed to get response")

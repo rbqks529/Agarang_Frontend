@@ -127,6 +127,6 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@id/view_input"
         app:layout_constraintBottom_toTopOf="@id/view_input"
-        android:gravity="left"/>
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

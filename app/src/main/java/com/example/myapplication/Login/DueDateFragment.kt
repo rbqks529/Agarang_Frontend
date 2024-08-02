@@ -9,7 +9,7 @@ import com.example.myapplication.R
 import com.example.myapplication.Setting.CalendarFragment
 import com.example.myapplication.databinding.FragmentDueDateBinding
 
-class DueDateFragment : Fragment() {
+class DueDateFragment : Fragment(),CalendarFragment.OnDateSelectedListener {
     lateinit var binding:FragmentDueDateBinding
 
     override fun onCreateView(
@@ -22,7 +22,14 @@ class DueDateFragment : Fragment() {
             calendarFragment.setTargetFragment(this, 0)
             calendarFragment.show(parentFragmentManager, "datePicker")
         }
+        binding.btnBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
         return binding.root
+    }
+
+    override fun onDateSelected(date:String){
+        binding.etDueDate.setText("  "+date)
     }
 
 }
