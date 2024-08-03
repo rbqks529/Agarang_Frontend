@@ -1,19 +1,26 @@
 package com.example.myapplication.Diary
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.myapplication.Data.Response.BookmarkMemory
+import com.example.myapplication.Data.Response.DiaryBookmarkResponse
+import com.example.myapplication.Retrofit.DiaryIF
+import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentDiaryMainBookmarkBinding
-
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DiaryMainBookmarkFragment : Fragment() {
 
-    lateinit var binding: FragmentDiaryMainBookmarkBinding
-    private var DiaryBookmarkAdapter : DiaryMainBookmarkAdapter?= null
-    private var DiaryBookmarkitemList : ArrayList<DiaryMainDayData> = arrayListOf()
+    private lateinit var binding: FragmentDiaryMainBookmarkBinding
+    private var DiaryBookmarkAdapter: DiaryMainBookmarkAdapter? = null
+    private var DiaryBookmarkitemList: ArrayList<DiaryMainBookmarkData> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,7 +29,6 @@ class DiaryMainBookmarkFragment : Fragment() {
         binding = FragmentDiaryMainBookmarkBinding.inflate(inflater, container, false)
 
         initRecyclerView()
-
         fetchFavoriteData()
 
         return binding.root
@@ -39,28 +45,43 @@ class DiaryMainBookmarkFragment : Fragment() {
     }
 
     private fun fetchFavoriteData() {
-        //다이어리 수정하려고 주석처리함
-        
-        /*FavoriteRetrofit.FavoriteService.getFavorite("favorite").enqueue(object : Callback<FavoriteResponse> {
-            override fun onResponse(call: Call<FavoriteResponse>, response: Response<FavoriteResponse>) {
+        val service = RetrofitService.retrofit.create(DiaryIF::class.java)
+
+        service.getBookmarkedMemories("bookmark").enqueue(object : Callback<DiaryBookmarkResponse> {
+            override fun onResponse(call: Call<DiaryBookmarkResponse>, response: Response<DiaryBookmarkResponse>) {
                 if (response.isSuccessful) {
-                    response.body()?.result?.memories?.let { memories ->
-                        for (memory in memories) {
-                            DiaryBookmarkitemList.add(DiaryMainDayData(imageUrl = memory.imageUrl, date = "2024/5/1"))
-                        }
-                        DiaryBookmarkAdapter?.notifyDataSetChanged()
+                    val apiResponse = response.body()
+
+                    if (apiResponse != null && apiResponse.isSuccess) {
+                        updateRecyclerView(apiResponse.result.memoires)
+                    } else {
+                        Log.e("문제", apiResponse?.message ?: "Unknown error")
                     }
                 } else {
-                    *//*Log.e("DiaryMainBookmarkFragment", "Response error: ${response.errorBody()}")*//*
                     // 오류 응답 처리
                     val errorBody = response.errorBody()?.string()
-                    Log.e("DiaryMainBookmarkFragment", "Response error: $errorBody")
+                    Log.e("오류", "Response error: $errorBody")
+                    updateRecyclerView(emptyList()) // 빈 리스트로 RecyclerView 업데이트
                 }
             }
 
-            override fun onFailure(call: Call<FavoriteResponse>, t: Throwable) {
-                Log.e("DiaryMainBookmarkFragment", "API call failed: ${t.message}")
+            override fun onFailure(call: Call<DiaryBookmarkResponse>, t: Throwable) {
+                Log.d("실패", t.message.toString())
+                updateRecyclerView(emptyList()) // 네트워크 오류 발생 시 빈 리스트로 RecyclerView 업데이트
             }
-        })*/
+        })
+    }
+
+    private fun updateRecyclerView(memories: List<BookmarkMemory>) {
+        DiaryBookmarkitemList.clear()
+        if (memories != null) {
+            DiaryBookmarkitemList.addAll(memories.map { memory ->
+                DiaryMainBookmarkData(
+                    id = memory.id,
+                    imageUrl = memory.imageUrl
+                )
+            })
+        }
+        DiaryBookmarkAdapter?.notifyDataSetChanged()
     }
 }
