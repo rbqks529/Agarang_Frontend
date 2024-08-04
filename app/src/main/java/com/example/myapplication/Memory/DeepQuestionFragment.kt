@@ -1,6 +1,7 @@
 package com.example.myapplication.Memory
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,14 +19,38 @@ import com.example.myapplication.databinding.FragmentDeepQuestionBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 
 class DeepQuestionFragment : Fragment() {
     private lateinit var binding:FragmentDeepQuestionBinding
+
+    private var mediaPlayer:MediaPlayer?=null
+    // 변수 선언
+    private var questionId: String? = null
+    private var questionText: String? = null
+    private var audioUrl: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding= FragmentDeepQuestionBinding.inflate(inflater,container,false)
+
+        // 번들로 전달된 데이터 가져오기
+        arguments?.let { bundle ->
+            questionId = bundle.getString("id")
+            questionText = bundle.getString("text")
+            audioUrl = bundle.getString("audioUrl")
+
+            Log.d("deepquestion-bundle",questionText.toString())
+
+            binding.tvQuestionTopic.text = questionText
+        }
+
+        if (audioUrl != null) {
+            playAudio()
+        }
+
         binding.ivRecordBtn.setOnClickListener {
             binding.ivRecordBtn.visibility=View.GONE
             binding.tvRecordNotice.visibility=View.VISIBLE
@@ -61,7 +86,7 @@ class DeepQuestionFragment : Fragment() {
 
 
             //서버 요청메소드 호출
-            sendMemoryDetailsToServer("chatcmpl-9pLFcRBq4O2dAS3yPlFosuWhkVTmS", "아 오늘 학교 갔다 왔는데 주희가 빵도 사주고, 축구도 보여줘서 너무 좋았어")
+            sendMemoryDetailsToServer(questionId.toString(),questionText.toString())
 
         }
 
@@ -75,6 +100,25 @@ class DeepQuestionFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun playAudio() {
+        if (audioUrl == null) {
+            Log.e("DeepQuestionFragment", "Audio URL is null")
+            return
+        }
+
+        mediaPlayer = MediaPlayer().apply {
+            setOnPreparedListener {
+                start()
+            }
+            try {
+                setDataSource(audioUrl)
+                prepareAsync()
+            } catch (e: IOException) {
+                Log.e("PicAssociationFragment", "Error playing audio", e)
+            }
+        }
     }
 
 
