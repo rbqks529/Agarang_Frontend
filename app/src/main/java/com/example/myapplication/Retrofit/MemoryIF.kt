@@ -1,5 +1,7 @@
 package com.example.myapplication.Retrofit
 
+import com.example.myapplication.Data.Request.Memory2Request
+import com.example.myapplication.Data.Response.Memory2Response
 import com.example.myapplication.Data.Request.FirstAnsRequest
 import com.example.myapplication.Data.Response.FirstAnsResponse
 import com.example.myapplication.Data.Response.MemoryImageToQuestionResponse
@@ -17,4 +19,7 @@ interface MemoryIF {
     @Multipart
     @POST("/api/memory/ai/image-to-question")
     fun sendImageToQuestion(@Part image: MultipartBody.Part): Call<MemoryImageToQuestionResponse>
+
+    @POST("/api/memory/ai/second-ans")
+    fun sendMemoryDetails(@Body request: Memory2Request): Call<Memory2Response>
 }
