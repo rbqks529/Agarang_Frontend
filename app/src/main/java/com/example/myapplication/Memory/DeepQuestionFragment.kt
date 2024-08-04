@@ -12,6 +12,7 @@ import com.example.myapplication.Data.Request.Memory2Request
 import com.example.myapplication.Data.Response.Memory2Response
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.DiaryIF
+import com.example.myapplication.Retrofit.MemoryIF
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentDeepQuestionBinding
 import retrofit2.Call
@@ -78,7 +79,7 @@ class DeepQuestionFragment : Fragment() {
 
 
     private fun sendMemoryDetailsToServer(id: String, text: String) {
-        val service = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val service = RetrofitService.retrofit.create(MemoryIF::class.java)
         val request = Memory2Request(id, text)
 
         service.sendMemoryDetails(request).enqueue(object : Callback<Memory2Response> {

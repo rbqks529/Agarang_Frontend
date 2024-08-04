@@ -1,15 +1,21 @@
 package com.example.myapplication.Diary
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.myapplication.Data.Response.DailyMemory
+import com.example.myapplication.Data.Response.DiaryDayResponse
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentDiaryMainDayBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DiaryMainDayFragment : Fragment() {
 
@@ -23,10 +29,54 @@ class DiaryMainDayFragment : Fragment() {
     ): View {
         binding = FragmentDiaryMainDayBinding.inflate(inflater, container, false)
 
-        initData()
+        fetchDailyMemories()
         initRecyclerView()
 
         return binding.root
+    }
+
+    private fun fetchDailyMemories() {
+        val service = RetrofitService.retrofit.create(DiaryIF::class.java)
+
+        val dates = listOf("20240701", "20240702", "20240703", "20240704", "20240705")
+
+        for (date in dates){
+            service.getDailyMemories("daily", date).enqueue(object : Callback<DiaryDayResponse> {
+                override fun onResponse(call: Call<DiaryDayResponse>, response: Response<DiaryDayResponse>) {
+                    if (response.isSuccessful) {
+                        val apiResponse = response.body()
+
+                        if (apiResponse != null && apiResponse.isSuccess) {
+                            updateRecyclerView(apiResponse.result.dailyMemories)
+                        } else {
+                            // 에러 처리
+                            Log.e("오류", "API 요청이 성공하지 못했습니다: ${apiResponse?.message}")
+                        }
+                    } else {
+                        // 오류 응답 처리
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("오류", "Response error: $errorBody")
+                    }
+                }
+
+                override fun onFailure(call: Call<DiaryDayResponse>, t: Throwable) {
+                    Log.e("실패", "API 요청 실패: ${t.message}")
+                }
+            })
+        }
+
+
+    }
+
+    private fun updateRecyclerView(memories: List<DailyMemory>) {
+        diaryDayItemList.addAll(memories.map { memory ->
+            DiaryMainDayData(
+                id = memory.id,
+                date = memory.date,
+                imageResId = memory.imageUrl
+            )
+        })
+        diaryDayAdapter?.notifyDataSetChanged()
     }
 
     private fun initRecyclerView() {
@@ -56,29 +106,5 @@ class DiaryMainDayFragment : Fragment() {
             .commit()
     }
 
-    private fun initData() {
-        // 실제 애플리케이션에서는 이 부분을 데이터베이스나 API에서 데이터를 가져오는 로직으로 대체해야 합니다.
-        diaryDayItemList.addAll(
-            arrayListOf(
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 2"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 4"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 6"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 7"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 8"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 9"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 10"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 11"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 12"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 13"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 14"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 15"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 16"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 17"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 18"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 20"),
-                    DiaryMainDayData(R.drawable.post_sample, "2024 / 5 / 21")
-            )
-        )
 
-    }
 }
