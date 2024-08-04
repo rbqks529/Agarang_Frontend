@@ -79,9 +79,6 @@ class HomeFragment: Fragment() {
                 RecentDiaryData("내용2", R.drawable.recent_card_sample),
                 RecentDiaryData("내용3", R.drawable.recent_card_sample)
             )
-
         )
-
     }
-
 }

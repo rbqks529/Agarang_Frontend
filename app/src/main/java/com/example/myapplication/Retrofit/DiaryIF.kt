@@ -14,8 +14,8 @@ interface DiaryIF {
     @GET("api/memory")
     fun getMonthlyMemories(@Query("viewType") viewType: String, @Query("date") date:String): Call<DiaryMonthResponse>
 
-    @POST("/api/memory/ai/second-ans")
-    fun sendMemoryDetails(@Body request: Memory2Request): Call<Memory2Response>
+
+
 
     @GET("api/memory")
     fun getBookmarkedMemories(@Query("viewType") viewType: String): Call<DiaryBookmarkResponse>
