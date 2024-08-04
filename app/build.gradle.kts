@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-parcelize")
+    kotlin("kapt")
 }
 
 android {
@@ -69,5 +70,8 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-scalars:2.5.0")
     implementation ("com.squareup.retrofit2:adapter-rxjava:2.1.0")
     implementation ("com.google.code.gson:gson:2.8.6")
+
+    implementation("androidx.room:androidx.room.gradle.plugin:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
 }
 

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Login.DueDateFragment"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이전"
+        android:textStyle="normal"
+        android:textFontWeight="400"
+        android:textColor="#A1A1A1"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="21dp"
+        android:layout_marginStart="18.5dp"
+        />
+
+    <TextView
+        android:id="@+id/btn_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="다음"
+        android:textStyle="normal"
+        android:textFontWeight="400"
+        android:textColor="#A1A1A1"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="21dp"
+        />
+
+    <View
+        android:id="@+id/view_progress_bar_1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EB5F2A"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="77dp"
+        />
+
+    <ImageView
+        android:id="@+id/iv_progress_ball"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_progress_ball"
+        app:layout_constraintStart_toStartOf="@id/view_progress_bar_1"
+        app:layout_constraintEnd_toEndOf="@id/view_progress_bar_1"
+        app:layout_constraintTop_toTopOf="@id/view_progress_bar_1"
+        app:layout_constraintBottom_toBottomOf="@id/view_progress_bar_1"/>
+
+    <TextView
+        android:id="@+id/tv_progress_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2"
+        android:fontFamily="@font/pretendard700"
+        android:textColor="#FFF"
+        app:layout_constraintStart_toStartOf="@id/iv_progress_ball"
+        app:layout_constraintEnd_toEndOf="@id/iv_progress_ball"
+        app:layout_constraintTop_toTopOf="@id/iv_progress_ball"
+        app:layout_constraintBottom_toBottomOf="@id/iv_progress_ball"
+        android:textSize="14sp"
+        />
+
+    <TextView
+        android:id="@+id/tv_due_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="출산예정일을\n알려주세요."
+        android:fontFamily="@font/pretendard700"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="140dp"/>
+
+    <EditText
+        android:id="@+id/et_due_date"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:hint="    출산예정일을 입력해주세요"
+        android:fontFamily="@font/pretendard500"
+        android:textColor="#797979"
+        app:layout_constraintStart_toStartOf="@id/tv_due_date"
+        app:layout_constraintTop_toBottomOf="@id/tv_due_date"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/edit_texxt_background"
+        />
+
+    <ImageView
+        android:id="@+id/iv_ic_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_calendar"
+        app:layout_constraintTop_toTopOf="@id/et_due_date"
+        app:layout_constraintBottom_toBottomOf="@id/et_due_date"
+        app:layout_constraintStart_toStartOf="@id/et_due_date"
+        android:layout_marginStart="264dp"
+        />
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

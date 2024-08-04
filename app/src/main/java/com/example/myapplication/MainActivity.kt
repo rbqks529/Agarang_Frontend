@@ -6,7 +6,6 @@ import android.os.Build
 import com.example.myapplication.Home.HomeFragment
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.Diary.Diary.DiaryFragment
@@ -37,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         NetworkModule.initialize(this)
         initBottomNavigation()
     }
+
 
     private fun initBottomNavigation() {
         supportFragmentManager.beginTransaction()
