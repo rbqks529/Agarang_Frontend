@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentDiaryCardEditBinding
 
@@ -57,7 +58,15 @@ class DiaryCardEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // 기존 데이터 표시
-        binding.ivCardEditImage.setImageResource(item.imageResId)
+        /*binding.ivCardEditImage.setImageResource(item.imageResId)*/
+        context?.let {
+            Glide.with(it)
+                .load(item.imageResId)
+                .centerCrop()
+                .into(binding.ivCardEditImage)
+        }
+
+
         binding.tvDiaryCardEditContent.setText(item.content)
 
         binding.tvDiaryCardEditContent.requestFocus()
