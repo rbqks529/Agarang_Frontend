@@ -23,7 +23,7 @@ class SelectInstrumentFragment : Fragment(), InstrumentAdapter.OnItemClickListen
         _binding = FragmentSelectInstrumentBinding.inflate(inflater, container, false)
         rvInstruments=binding.rvInstruments
 
-        val imageView =binding.ivCircle
+        val imageView =binding.ivBabyCharacter
 
         val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val selectedChar = sharedPreferences.getInt("selected_char", -1)

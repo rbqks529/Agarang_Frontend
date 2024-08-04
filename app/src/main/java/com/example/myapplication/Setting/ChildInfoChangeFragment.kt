@@ -47,7 +47,7 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
 
             val newFragment = HomeSettingFragment()
             val bundle = Bundle().apply {
-                val sharedPreferences = requireActivity().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+                val sharedPreferences = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
                 val birthName = sharedPreferences.getString("birthName", "")
                 val birthDate = sharedPreferences.getString("birthDate", "")
                 putString("birthName", birthName)
@@ -83,18 +83,21 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
     }
 
     private fun saveData() {
-        val sharedPreferences = requireActivity().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences("app_prefs", Context.MODE_MULTI_PROCESS)
         with(sharedPreferences.edit()) {
             putString("birthName", binding.etBirthName.text.toString())
             putString("birthDate", binding.tvBirthDate.text.toString())
             putString("weight", binding.etWeight.text.toString().replace(" kg",""))
-            apply()
+            commit()
+        }
+        if((sharedPreferences.getString("selected_char","anything").isNullOrEmpty())==false){
+
         }
     }
 
     private fun init() {
         // 초기화 작업 수행
-        val sharedPreferences = requireActivity().getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val sharedPreferences = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val birthName = sharedPreferences.getString("birthName", "")
         val birthDate = sharedPreferences.getString("birthDate", "")
         val weight = sharedPreferences.getString("weight", "")

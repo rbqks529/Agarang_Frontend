@@ -1,7 +1,6 @@
 package com.example.myapplication.Memory
 
 import android.Manifest
-import android.app.VoiceInteractor
 import android.content.Context
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
@@ -15,24 +14,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.myapplication.Data.Request.FirstAnsRequest
+import com.example.myapplication.Data.Response.FirstAnsResponse
 import com.example.myapplication.R
+import com.example.myapplication.Retrofit.MemoryIF
+import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentPicAssociationBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.Response
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.File
 import java.io.IOException
+import retrofit2.Callback as RetrofitCallback
+import retrofit2.Call as RetrofitCall
+
+
 
 class PicAssociationFragment : Fragment() {
     private lateinit var binding:FragmentPicAssociationBinding
@@ -117,6 +119,7 @@ class PicAssociationFragment : Fragment() {
             binding.ivBabyCharacter.setImageResource(selectedChar)
         }
 
+
         return binding.root
     }
     private fun startRecording() {
@@ -164,7 +167,7 @@ class PicAssociationFragment : Fragment() {
             .post(requestBody)
             .build()
 
-        client.newCall(request).enqueue(object : Callback {
+        client.newCall(request).enqueue(object : okhttp3.Callback {
             override fun onFailure(call: Call, e: IOException) {
                 Log.e("UploadAudio", "API call failed", e)
             }
@@ -179,6 +182,34 @@ class PicAssociationFragment : Fragment() {
                         activity?.runOnUiThread {
                             // UI 업데이트
                             binding.tvRecordNotice.text = text.toString()
+
+                            //server
+                            val apiService=RetrofitService.retrofit.create(MemoryIF::class.java)
+                            val request=FirstAnsRequest(
+                                id="chatcmpl-9rhwoYmo1WuQ78BtR7FV06Zub749H", //임시 id
+                                text = text
+                            )
+                            apiService.sendFirstAns(request).enqueue(object : retrofit2.Callback<FirstAnsResponse>{
+                                override fun onResponse(
+                                    call: retrofit2.Call<FirstAnsResponse>,
+                                    response: retrofit2.Response<FirstAnsResponse>
+                                ) {
+                                    if (response.isSuccessful){
+                                        val result=response.body()
+                                        result?.let{
+                                            Log.d("Tag",result.toString())
+                                            //심화 fragment 로 넘어가야 함 -> 응답으로 온 audioUrl을 음성으로 내보내고, text ui에 띄우기
+                                        }
+                                    }else{
+                                        Log.e("PicAssociationFragment","Failed to get response")
+                                    }
+                                }
+                                override fun onFailure(call: retrofit2.Call<FirstAnsResponse>, t: Throwable) {
+                                    Log.e("PicAssociationFragment","API call failed",t)
+                                }
+                            })
+
+
                         }
                     } catch (e: JSONException) {
                         Log.e("UploadAudio", "JSON parsing error", e)
