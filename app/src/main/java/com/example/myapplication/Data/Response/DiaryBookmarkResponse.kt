@@ -1,15 +1,17 @@
 package com.example.myapplication.Data.Response
 
-public final data class FavoriteResponse(
+data class DiaryBookmarkResponse(
     val isSuccess: Boolean,
     val code: Int,
     val message: String,
-    val result: FavoriteResult
+    val result: BookmarkResult
 )
-data class FavoriteResult(
-    val memories: List<Memory>
+
+data class BookmarkResult(
+    val memoires: List<BookmarkMemory>
 )
-data class Memory(
+
+data class BookmarkMemory(
     val id: Int,
     val imageUrl: String
 )

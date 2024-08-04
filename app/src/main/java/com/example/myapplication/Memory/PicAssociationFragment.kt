@@ -3,6 +3,7 @@ package com.example.myapplication.Memory
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
@@ -39,10 +40,15 @@ class PicAssociationFragment : Fragment() {
     private lateinit var binding:FragmentPicAssociationBinding
     private var mediaRecorder: MediaRecorder? = null
     private var audioFile: File? = null
+    private var mediaPlayer: MediaPlayer? = null
 
     private val clientId = "nlpxphm34l"
     private val clientSecret = "B4F7SeFMWV7UpjzOcuu6Kb0nsEuz8EUaF6HYOL44"
-    /*private val apiUrl = "https://naveropenapi.apigw.ntruss.com/recog/v1/stt"*/
+
+    // 변수 선언
+    private var questionId: String? = null
+    private var questionText: String? = null
+    private var audioUrl: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,10 +56,24 @@ class PicAssociationFragment : Fragment() {
     ): View? {
         binding=FragmentPicAssociationBinding.inflate(inflater,container,false)
 
+        // 번들로 전달된 데이터 가져오기
+        arguments?.let { bundle ->
+            questionId = bundle.getString("id")
+            questionText = bundle.getString("question")
+            audioUrl = bundle.getString("audioUrl")
+
+            binding.tvQuestionTopic.text = questionText
+        }
+
         // 녹음 권한 요청
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ||
             ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }
+
+        // 오디오 URL을 자동으로 스트리밍
+        if (audioUrl != null) {
+            playAudio()
         }
 
         binding.ivRecordBtn.setOnClickListener {
@@ -199,5 +219,30 @@ class PicAssociationFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun playAudio() {
+        if (audioUrl == null) {
+            Log.e("PicAssociationFragment", "Audio URL is null")
+            return
+        }
+
+        mediaPlayer = MediaPlayer().apply {
+            setOnPreparedListener {
+                start()
+            }
+            try {
+                setDataSource(audioUrl)
+                prepareAsync()
+            } catch (e: IOException) {
+                Log.e("PicAssociationFragment", "Error playing audio", e)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 }
