@@ -42,10 +42,13 @@ class PicAssociationFragment : Fragment() {
     private var audioFile: File? = null
     private var mediaPlayer: MediaPlayer? = null
 
+    val nextfragment=DeepQuestionFragment()
+
     private val clientId = "nlpxphm34l"
     private val clientSecret = "B4F7SeFMWV7UpjzOcuu6Kb0nsEuz8EUaF6HYOL44"
 
-    // 변수 선언
+    // 변수 선언 MemoryResponse - FirstQuestion
+
     private var questionId: String? = null
     private var questionText: String? = null
     private var audioUrl: String? = null
@@ -57,13 +60,23 @@ class PicAssociationFragment : Fragment() {
         binding=FragmentPicAssociationBinding.inflate(inflater,container,false)
 
         // 번들로 전달된 데이터 가져오기
-        arguments?.let { bundle ->
-            questionId = bundle.getString("id")
-            questionText = bundle.getString("question")
-            audioUrl = bundle.getString("audioUrl")
+//        arguments?.let { bundle ->
+//
+//            questionId = bundle.getString("id")
+//            questionText = bundle.getString("question")
+//            audioUrl = bundle.getString("audioUrl")
+//
+//            binding.tvQuestionTopic.text = questionText
+//
+//        }
 
-            binding.tvQuestionTopic.text = questionText
-        }
+        questionId = "chatcmpl-9sThkAfagtNKicY0f5g9J0hm7NK5s"
+        questionText = "숲길을 선택할게요.\n\n엄마, 오늘 숲길을 걸으면서 어떤 기분이 들었어?"
+        audioUrl = "https://cdn.typecast.ai/data/s/2024/8/4/light-speakcore-worker-865c58d466-6dnht/4d71723b-1608-45b7-80eb-e6281b7ca823.wav?Expires=1722857326&Signature=O1XfNyQUSy7udqATDB5KnMQSJy~0PLdN85XaJ~C8SaawRhRiuZaTM8lYgUQoRazHjCCcZgmlCMMWcvDeyT4rSBMmEjah3ehUxy6F7T-ojJ6pHJdKWtXfz-2f3yKgCjNtnkOwhoGf1cKFiy9F2Z9i3fEtmGsp61Kh630NAaMpePiBrTWlck2GenLjs7Qan1ihMg~71niG1f4Kr5DxRwrU6MT2aUKp8cDR-j2i1SVjEX3o-~28I5ppT1bsj6-ZR0CFwL2SOcNpEt0xF7ZJEEQ7EtHna56KgSdr8mJ-cQBDhB0Bki5AxXAVvlE7-kFt0AL~DAYnOin6-HdKKO8-LZVACQ__&Key-Pair-Id=K11PO7SMLJYOIE"
+
+        binding.tvQuestionTopic.text = questionText
+
+
 
         // 녹음 권한 요청
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ||
@@ -84,12 +97,7 @@ class PicAssociationFragment : Fragment() {
             binding.ivRecordIng.visibility=View.VISIBLE
             binding.ivRecordingNextBtn.visibility=View.GONE
         }
-        binding.ivRecordingNextBtn.setOnClickListener {
-            val fragment=DeepQuestionFragment()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.memory_frm,fragment)
-                .commit()
-        }
+
 
         binding.ivRecordCancleBtn.setOnClickListener {
             stopRecording()
@@ -122,6 +130,7 @@ class PicAssociationFragment : Fragment() {
 
         return binding.root
     }
+
     private fun startRecording() {
         audioFile = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC), "recorded_audio.m4a")
         mediaRecorder = MediaRecorder().apply {
@@ -186,7 +195,7 @@ class PicAssociationFragment : Fragment() {
                             //server
                             val apiService=RetrofitService.retrofit.create(MemoryIF::class.java)
                             val request=FirstAnsRequest(
-                                id="chatcmpl-9rhwoYmo1WuQ78BtR7FV06Zub749H", //임시 id
+                                id=questionId.toString(),
                                 text = text
                             )
                             apiService.sendFirstAns(request).enqueue(object : retrofit2.Callback<FirstAnsResponse>{
@@ -199,6 +208,20 @@ class PicAssociationFragment : Fragment() {
                                         result?.let{
                                             Log.d("Tag",result.toString())
                                             //심화 fragment 로 넘어가야 함 -> 응답으로 온 audioUrl을 음성으로 내보내고, text ui에 띄우기
+
+                                            binding.ivRecordingNextBtn.setOnClickListener {
+                                                val bundle = Bundle().apply {
+                                                    putString("id", result.result.question.id)
+                                                    putString("text", result.result.question.text)
+                                                    putString("audioUrl", result.result.question.audioUrl)
+                                                }
+                                                Log.d("bundle",result.result.question.text)
+                                                nextfragment.arguments = bundle
+
+                                                parentFragmentManager.beginTransaction()
+                                                    .replace(R.id.memory_frm,nextfragment)
+                                                    .commit()
+                                            }
                                         }
                                     }else{
                                         Log.e("PicAssociationFragment","Failed to get response")
@@ -220,6 +243,7 @@ class PicAssociationFragment : Fragment() {
             }
         })
     }
+
 
     private fun playAudio() {
         if (audioUrl == null) {

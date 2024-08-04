@@ -4,4 +4,3 @@ data class FirstAnsRequest(
     val id:String,
     val text: String
 )
-
