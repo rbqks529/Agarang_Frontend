@@ -77,6 +77,11 @@ class PicAssociationFragment : Fragment() {
         binding.tvQuestionTopic.text = questionText
 
 
+        Log.d("PicAssociationFragment", "Question ID: $questionId")
+        Log.d("PicAssociationFragment", "Question Text: $questionText")
+        Log.d("PicAssociationFragment", "Audio URL: $audioUrl")
+
+
 
         // 녹음 권한 요청
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ||
@@ -90,6 +95,7 @@ class PicAssociationFragment : Fragment() {
         }
 
         binding.ivRecordBtn.setOnClickListener {
+            Log.d("PicAssociationFragment", "Record button clicked")
             startRecording()
             binding.ivRecordBtn.visibility=View.GONE
             binding.ivRecordCancleBtn.visibility=View.VISIBLE
@@ -100,6 +106,7 @@ class PicAssociationFragment : Fragment() {
 
 
         binding.ivRecordCancleBtn.setOnClickListener {
+            Log.d("PicAssociationFragment", "Cancel button clicked")
             stopRecording()
             binding.ivRecordBtn.visibility=View.VISIBLE
             binding.ivRecordCancleBtn.visibility=View.GONE
@@ -109,6 +116,7 @@ class PicAssociationFragment : Fragment() {
         }
 
         binding.ivRecordArrowBtn.setOnClickListener {
+            Log.d("PicAssociationFragment", "Arrow button clicked")
             stopRecording()
             binding.ivRecordBtn.visibility=View.GONE
             binding.ivRecordCancleBtn.visibility=View.GONE
@@ -125,13 +133,16 @@ class PicAssociationFragment : Fragment() {
         if (selectedChar != -1) {
             // selectedChar 값을 사용하여 작업 수행
             binding.ivBabyCharacter.setImageResource(selectedChar)
+            Log.d("PicAssociationFragment", "Character selected: $selectedChar")
         }
+
 
 
         return binding.root
     }
 
     private fun startRecording() {
+        Log.d("PicAssociationFragment", "Starting recording")
         audioFile = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC), "recorded_audio.m4a")
         mediaRecorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -143,12 +154,15 @@ class PicAssociationFragment : Fragment() {
             try {
                 prepare()
                 start()
+                Log.d("PicAssociationFragment", "Recording started")
             } catch (e: IOException) {
-                e.printStackTrace()
+                Log.e("PicAssociationFragment", "Failed to start recording", e)
+               /* e.printStackTrace()*/
             }
         }
     }
     private fun stopRecording() {
+        Log.d("PicAssociationFragment", "Stopping recording")
         mediaRecorder?.apply {
             stop()
             release()
@@ -157,6 +171,7 @@ class PicAssociationFragment : Fragment() {
     }
 
     private fun uploadAudioFileAndGetText() {
+        Log.d("UploadAudio", "Uploading audio file")
         val url = "https://naveropenapi.apigw.ntruss.com/recog/v1/stt?lang=Kor"
         val client = OkHttpClient()
 
@@ -188,6 +203,7 @@ class PicAssociationFragment : Fragment() {
                     try {
                         val jsonObject = JSONObject(responseBody)
                         val text = jsonObject.optString("text")
+                        Log.d("성공", "Extracted text: $text")
                         activity?.runOnUiThread {
                             // UI 업데이트
                             binding.tvRecordNotice.text = text.toString()
@@ -210,6 +226,7 @@ class PicAssociationFragment : Fragment() {
                                             //심화 fragment 로 넘어가야 함 -> 응답으로 온 audioUrl을 음성으로 내보내고, text ui에 띄우기
 
                                             binding.ivRecordingNextBtn.setOnClickListener {
+                                                //번들로 전달 (DeepQuestion으로)
                                                 val bundle = Bundle().apply {
                                                     putString("id", result.result.question.id)
                                                     putString("text", result.result.question.text)
