@@ -1,7 +1,10 @@
 package com.example.myapplication.Memory
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
+import android.media.MediaRecorder
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsetsAnimation
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.myapplication.Data.Request.Memory2Request
 import com.example.myapplication.Data.Response.Memory2Response
 import com.example.myapplication.R
@@ -19,16 +24,22 @@ import com.example.myapplication.databinding.FragmentDeepQuestionBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.io.IOException
 
 class DeepQuestionFragment : Fragment() {
     private lateinit var binding:FragmentDeepQuestionBinding
-
-    private var mediaPlayer:MediaPlayer?=null
     // 변수 선언
     private var questionId: String? = null
     private var questionText: String? = null
     private var audioUrl: String? = null
+
+    private var mediaRecorder: MediaRecorder? = null
+    private var audioFile: File? = null
+    private var mediaPlayer: MediaPlayer? = null
+//clova key
+    private val clientId = "nlpxphm34l"
+    private val clientSecret = "B4F7SeFMWV7UpjzOcuu6Kb0nsEuz8EUaF6HYOL44"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,10 +58,25 @@ class DeepQuestionFragment : Fragment() {
             binding.tvQuestionTopic.text = questionText
         }
 
+
+        binding.tvQuestionTopic.text = questionText
+
+
+        Log.d("PicAssociationFragment", "Question ID: $questionId")
+        Log.d("PicAssociationFragment", "Question Text: $questionText")
+        Log.d("PicAssociationFragment", "Audio URL: $audioUrl")
+
+
+
+        // 녹음 권한 요청
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        }
+
         if (audioUrl != null) {
             playAudio()
         }
-
         binding.ivRecordBtn.setOnClickListener {
             binding.ivRecordBtn.visibility=View.GONE
             binding.tvRecordNotice.visibility=View.VISIBLE
