@@ -5,7 +5,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.myapplication.Home.HomeFragment
 import com.example.myapplication.R
 
 class LoginActivity : AppCompatActivity() {
@@ -20,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm, FamilyRoleFragment())
+            .replace(R.id.main_frm, LoginFamilyRoleFragment())
             .commitAllowingStateLoss()
     }
 }
