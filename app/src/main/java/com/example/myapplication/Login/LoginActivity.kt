@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.myapplication.Home.HomeFragment
 import com.example.myapplication.R
 
 class LoginActivity : AppCompatActivity() {
@@ -17,5 +18,9 @@ class LoginActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, FamilyRoleFragment())
+            .commitAllowingStateLoss()
     }
 }

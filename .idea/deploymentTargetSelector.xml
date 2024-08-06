@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-08-04T12:02:39.345496Z">
+        <DropdownSelection timestamp="2024-08-06T05:57:31.904106Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\정주연\.android\avd\wookkikki_API_34.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=27eba325d9217ece" />
             </handle>
           </Target>
         </DropdownSelection>
