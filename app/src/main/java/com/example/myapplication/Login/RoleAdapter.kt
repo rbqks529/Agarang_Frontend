@@ -1,61 +1,92 @@
 package com.example.myapplication.Login
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.TextView
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.databinding.ItemRoleBinding
+import com.example.myapplication.databinding.ItemRoleEditBinding
 
 class RoleAdapter(
+    private val context: Context,
     private val roles: MutableList<String>,
     private val onItemSelected: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_EDIT = 0
     private val VIEW_TYPE_ITEM = 1
+    private var selectedPosition: Int = -1
 
-    inner class EditViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val editTextRole: EditText = itemView.findViewById(R.id.edit_text_role)
-    }
-
-    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textViewRole: TextView = itemView.findViewById(R.id.text_view_role)
-    }
+    inner class EditViewHolder(val binding: ItemRoleEditBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ItemViewHolder(val binding: ItemRoleBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_role, parent, false)
         return when (viewType) {
-            VIEW_TYPE_EDIT -> EditViewHolder(view)
-            else -> ItemViewHolder(view)
+            VIEW_TYPE_EDIT -> {
+                val binding = ItemRoleEditBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                EditViewHolder(binding)
+            }
+            else -> {
+                val binding = ItemRoleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ItemViewHolder(binding)
+            }
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is EditViewHolder -> {
-                holder.editTextRole.visibility = View.VISIBLE
-                holder.editTextRole.setOnEditorActionListener { v, actionId, event ->
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        val newRole = v.text.toString().trim()
-                        if (newRole.isNotEmpty() && !roles.contains(newRole)) {
-                            roles.add(1, newRole)
-                            notifyDataSetChanged()
-                            onItemSelected(newRole)
+                holder.binding.editTextRole.apply {
+                    hint = "직접 작성할게요"
+                    setHintTextColor(Color.GRAY)
+                    setTextColor(Color.BLACK)
+                    textSize = 16f
+                    setPadding(40, 60, 40, 60)
+                    setBackgroundResource(R.drawable.ic_login_edittext_background)
+
+                    setOnEditorActionListener { v, actionId, event ->
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            val newRole = v.text.toString().trim()
+                            if (newRole.isNotEmpty() && !roles.contains(newRole)) {
+                                roles.add(1, newRole)
+                                notifyDataSetChanged()
+                                onItemSelected(newRole)
+                            }
+                            true
+                        } else {
+                            false
                         }
-                        true
-                    } else {
-                        false
                     }
                 }
             }
             is ItemViewHolder -> {
-                val role = roles[position]
-                holder.textViewRole.text = role
-                holder.itemView.setOnClickListener {
-                    onItemSelected(role)
+                val role = roles[holder.adapterPosition]
+                holder.binding.textViewRole.apply {
+                    text = role
+                    setTextColor(if (holder.adapterPosition == selectedPosition) Color.BLACK else Color.parseColor("#484848"))
+                    textSize = 16f
+                    typeface = if (holder.adapterPosition == selectedPosition)
+                        Typeface.create("Pretendard700", Typeface.BOLD)
+                    else
+                        Typeface.create("Pretendard400", Typeface.NORMAL)
+                    setPadding(40, 30, 40, 30)
+                    background = if (holder.adapterPosition == selectedPosition) {
+                        ContextCompat.getDrawable(context, R.drawable.ic_login_selected)
+                    } else {
+                        null
+                    }
+                    setOnClickListener {
+                        selectedPosition = holder.adapterPosition
+                        notifyDataSetChanged()
+                        onItemSelected(role)
+                    }
                 }
             }
         }
