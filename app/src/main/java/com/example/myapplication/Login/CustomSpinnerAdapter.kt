@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
@@ -25,10 +26,21 @@ class CustomSpinnerAdapter(context: Context, roles: MutableList<String>) :
 
         view.setPadding(
             view.paddingLeft,
-            if (position == 0) 60 else 40,
+            if (position == 0) 50 else 30,
             view.paddingRight,
-            if (position == 0) 60 else 40
+            if (position == 0) 50 else 30
         )
+
+        // EditText일 경우 클릭 이벤트 처리
+        if (position == 0) {
+            view.setOnClickListener {
+                (view as EditText).apply {
+                    requestFocus()
+                    showSoftKeyboard(context, this)
+                }
+            }
+        }
+
         return view
     }
 
@@ -44,14 +56,35 @@ class CustomSpinnerAdapter(context: Context, roles: MutableList<String>) :
             setBackgroundResource(R.drawable.ic_login_edittext_background)
             setTextColor(Color.BLACK)
             textSize = 16f
+            isFocusableInTouchMode = true
+            isFocusable = true
+
+            setOnClickListener {
+                requestFocus()
+                showSoftKeyboard(context, this)
+            }
+
             setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) {
+                if (hasFocus) {
+                    showSoftKeyboard(context, this)
+                }
+            }
+
+            setOnEditorActionListener { _, actionId, event ->
+                if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE ||
+                    (event != null && event.keyCode == android.view.KeyEvent.KEYCODE_ENTER && event.action == android.view.KeyEvent.ACTION_DOWN)
+                ) {
                     val newRole = text.toString().trim()
                     if (newRole.isNotEmpty() && !getItems().contains(newRole)) {
                         insert(newRole, 1)  // EditText 다음 위치에 새 역할 추가
                         notifyDataSetChanged()
                         text.clear()  // EditText 내용 초기화
                     }
+                    hideSoftKeyboard(context, this)
+                    clearFocus()
+                    true
+                } else {
+                    false
                 }
             }
         })
@@ -111,5 +144,19 @@ class CustomSpinnerAdapter(context: Context, roles: MutableList<String>) :
     override fun getItem(position: Int): String? {
         return super.getItem(position)
 
+    }
+
+    fun showSoftKeyboard(ctx: Context, v: View?) {
+        val imm = ctx.getSystemService(
+            Context.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
+
+    fun hideSoftKeyboard(ctx: Context, v: View) {
+        val inputManager = ctx.getSystemService(
+            Context.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(v.windowToken, 0)
     }
 }
