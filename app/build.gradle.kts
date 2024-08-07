@@ -73,5 +73,9 @@ dependencies {
 
     implementation("androidx.room:androidx.room.gradle.plugin:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
+    implementation("androidx.activity:activity:1.9.1")
+    implementation("androidx.fragment:fragment-ktx:1.8.2")
 }
 
