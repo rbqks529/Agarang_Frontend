@@ -6,5 +6,5 @@ data class FirstAnsRequest(
 )
 
 data class bookmarkSetRequest(
-    val memoryId: String
+    val memoryId: Long
 )
