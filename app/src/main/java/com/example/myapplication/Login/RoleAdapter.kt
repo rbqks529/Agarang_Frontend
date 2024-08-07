@@ -54,7 +54,9 @@ class RoleAdapter(
                             val newRole = v.text.toString().trim()
                             if (newRole.isNotEmpty() && !roles.contains(newRole)) {
                                 roles.add(1, newRole)
+                                selectedPosition = 1  // Ensure the new role is selected
                                 notifyDataSetChanged()
+                                setText("")
                                 onItemSelected(newRole)
                             }
                             true
