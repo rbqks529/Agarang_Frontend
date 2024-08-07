@@ -61,7 +61,6 @@ class PicAssociationFragment : Fragment() {
 
         // 번들로 전달된 데이터 가져오기
         arguments?.let { bundle ->
-
             questionId = bundle.getString("id")
             questionText = bundle.getString("question")
             audioUrl = bundle.getString("audioUrl")
@@ -70,11 +69,7 @@ class PicAssociationFragment : Fragment() {
 
         }
 
-//        questionId = "chatcmpl-9sThkAfagtNKicY0f5g9J0hm7NK5s"
-//        questionText = "숲길을 선택할게요.\n\n엄마, 오늘 숲길을 걸으면서 어떤 기분이 들었어?"
-//        audioUrl = "https://cdn.typecast.ai/data/s/2024/8/4/light-speakcore-worker-865c58d466-6dnht/4d71723b-1608-45b7-80eb-e6281b7ca823.wav?Expires=1722857326&Signature=O1XfNyQUSy7udqATDB5KnMQSJy~0PLdN85XaJ~C8SaawRhRiuZaTM8lYgUQoRazHjCCcZgmlCMMWcvDeyT4rSBMmEjah3ehUxy6F7T-ojJ6pHJdKWtXfz-2f3yKgCjNtnkOwhoGf1cKFiy9F2Z9i3fEtmGsp61Kh630NAaMpePiBrTWlck2GenLjs7Qan1ihMg~71niG1f4Kr5DxRwrU6MT2aUKp8cDR-j2i1SVjEX3o-~28I5ppT1bsj6-ZR0CFwL2SOcNpEt0xF7ZJEEQ7EtHna56KgSdr8mJ-cQBDhB0Bki5AxXAVvlE7-kFt0AL~DAYnOin6-HdKKO8-LZVACQ__&Key-Pair-Id=K11PO7SMLJYOIE"
-//
-//        binding.tvQuestionTopic.text = questionText
+        binding.tvQuestionTopic.text = questionText
 
 
         Log.d("PicAssociationFragment", "Question ID: $questionId")
@@ -135,6 +130,8 @@ class PicAssociationFragment : Fragment() {
             binding.ivBabyCharacter.setImageResource(selectedChar)
             Log.d("PicAssociationFragment", "Character selected: $selectedChar")
         }
+
+
 
         return binding.root
     }
@@ -265,6 +262,7 @@ class PicAssociationFragment : Fragment() {
             Log.e("PicAssociationFragment", "Audio URL is null")
             return
         }
+
         mediaPlayer = MediaPlayer().apply {
             setOnPreparedListener {
                 start()
