@@ -67,8 +67,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/pretendard500"
             android:text="역할을 선택해주세요"
-            android:textColor="@color/black"
+            android:textColor="#737373"
             android:textSize="16sp" />
     </LinearLayout>
 

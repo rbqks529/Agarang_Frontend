@@ -20,7 +20,7 @@ class LoginFamilyRoleFragment : Fragment() {
         _binding = FragmentFamilyRoleBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val roles = mutableListOf("직접 작성할게요", "엄마", "아빠", "할머니", "할아버지", "기타")
+        val roles = mutableListOf("직접 작성할게요", "엄마", "아빠", "할머니", "할아버지")
 
         adapter = RoleAdapter(requireContext(), roles) { role ->
             selectedRole = role

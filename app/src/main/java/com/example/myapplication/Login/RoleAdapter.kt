@@ -47,9 +47,7 @@ class RoleAdapter(
                     hint = "직접 작성할게요"
                     setHintTextColor(Color.GRAY)
                     setTextColor(Color.BLACK)
-                    textSize = 16f
-                    setPadding(40, 60, 40, 60)
-                    setBackgroundResource(R.drawable.ic_login_edittext_background)
+                    setPadding(40, 50, 40, 50)
 
                     setOnEditorActionListener { v, actionId, event ->
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -71,7 +69,6 @@ class RoleAdapter(
                 holder.binding.textViewRole.apply {
                     text = role
                     setTextColor(if (holder.adapterPosition == selectedPosition) Color.BLACK else Color.parseColor("#484848"))
-                    textSize = 16f
                     typeface = if (holder.adapterPosition == selectedPosition)
                         Typeface.create("Pretendard700", Typeface.BOLD)
                     else
