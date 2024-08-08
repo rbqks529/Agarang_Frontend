@@ -9,8 +9,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+
 import com.example.myapplication.Data.Response.DiaryCardResponse
 import com.example.myapplication.Data.Response.Result
+
+import com.example.myapplication.Data.Request.bookmarkSetRequest
+import com.example.myapplication.Data.Response.BookmarkSetResult
+
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.RetrofitService
@@ -124,10 +129,14 @@ class DiaryMainCardFragment : Fragment() {
             adapter = dateAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
-        cardAdapter = CardViewAdapter(diaryDataList) { deletedItem ->
+
+
+        cardAdapter = CardViewAdapter(diaryDataList, { deletedItem ->
             // 항목이 삭제되었을 때 호출되는 콜백
             updateDateAdapterAfterDeletion(deletedItem)
-        }
+        }, { itemId ->
+            sendBookmarkRequest(itemId)
+        })
 
         binding.rvDiaryCardView.apply {
             adapter = cardAdapter
@@ -156,6 +165,31 @@ class DiaryMainCardFragment : Fragment() {
             })
         }
         scrollToPosition(currentPosition)
+    }
+
+    private fun sendBookmarkRequest(itemId: Long) {
+
+        val apiService = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val request = bookmarkSetRequest(memoryId = itemId)
+        apiService.sendBookmarkSet(request).enqueue(object : Callback<BookmarkSetResult> {
+            override fun onResponse(call: Call<BookmarkSetResult>, response: Response<BookmarkSetResult>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null && result.isSuccess) {
+                        Log.d("Bookmark", "북마크 업데이트 성공")
+                    } else {
+                        Log.e("Bookmark", "북마크 업데이트 실패: ${response.code()}")
+                    }
+                } else {
+                    Log.e("Bookmark", "북마크 업데이트 실패: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<BookmarkSetResult>, t: Throwable) {
+                Log.e("Bookmark", "서버 통신 실패", t)
+            }
+        })
+
     }
 
     private fun scrollToPosition(position: Int) {

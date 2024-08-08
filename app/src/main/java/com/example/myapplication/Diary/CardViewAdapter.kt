@@ -13,7 +13,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class CardViewAdapter(
     private var items: MutableList<DiaryMainDayData>,
-    private val onItemDeleted: (DiaryMainDayData) -> Unit
+    private val onItemDeleted: (DiaryMainDayData) -> Unit,
+    private val onBookmarkClicked: (Long)->Unit
 ) : RecyclerView.Adapter<CardViewAdapter.ViewHolder>(), DiaryCardEditFragment.OnEditCompleteListener {
 
     inner class ViewHolder(val binding: CardviewItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -46,6 +47,7 @@ class CardViewAdapter(
                     if (updatedFavoriteStatus) R.drawable.ic_heart_red
                     else R.drawable.ic_heart_gray
                 )
+                onBookmarkClicked(item.id.toLong())
                 notifyItemChanged(position)
                 onItemDeleted(item)
             }

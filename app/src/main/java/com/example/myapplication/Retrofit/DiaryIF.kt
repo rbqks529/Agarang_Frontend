@@ -1,6 +1,8 @@
 package com.example.myapplication.Retrofit
 
 import com.example.myapplication.Data.Request.Memory2Request
+import com.example.myapplication.Data.Request.bookmarkSetRequest
+import com.example.myapplication.Data.Response.BookmarkSetResult
 import com.example.myapplication.Data.Response.DiaryBookmarkResponse
 import com.example.myapplication.Data.Response.DiaryCardResponse
 import com.example.myapplication.Data.Response.DiaryDayResponse
@@ -22,6 +24,7 @@ interface DiaryIF {
     @GET("api/memory")
     fun getBookmarkedMemories(@Query("viewType") viewType: String): Call<DiaryBookmarkResponse>
 
+
     //카드 뷰를 date로 요청
     @GET("api/memory")
     fun getCardViewByDate(@Query("viewType") viewType: String, @Query("date") date: String): Call<DiaryCardResponse>
@@ -29,4 +32,8 @@ interface DiaryIF {
     // 카드 뷰를 ID로 요청
     @GET("api/memory")
     fun getCardViewById(@Query("viewType") viewType: String, @Query("id") id: String): Call<DiaryCardResponse>
+
+    @POST("api/memory/bookmark")
+    fun sendBookmarkSet(@Body memoryId: bookmarkSetRequest): Call <BookmarkSetResult>
+
 }
