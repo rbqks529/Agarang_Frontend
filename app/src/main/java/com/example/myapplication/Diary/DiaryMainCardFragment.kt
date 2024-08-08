@@ -34,13 +34,12 @@ class DiaryMainCardFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDiaryMainCardBinding.inflate(inflater, container, false)
-
         binding.ivDiaryPrevious.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,7 +48,6 @@ class DiaryMainCardFragment : Fragment() {
             val date = it.getString("date") ?: return@let
             fetchDiaryCard(date)
         }*/
-
         // 테스트용 날짜 지정. 추후 위 버전으로 변경해야함
         val testDate = "20240701"
         fetchDiaryCard(testDate)
@@ -58,7 +56,7 @@ class DiaryMainCardFragment : Fragment() {
     private fun fetchDiaryCard(date: String) {
         val service = RetrofitService.retrofit.create(DiaryIF::class.java)
 
-        //테스트용 날짜. getCardViewBtDate 파라메터 추후 다시 수정해야함 ( "card", date) 로
+        //테스트용 날짜.
         val testDate = "20240701"
         service.getCardViewByDate("card", date).enqueue(object : Callback<DiaryCardResponse> {
             override fun onResponse(call: Call<DiaryCardResponse>, response: Response<DiaryCardResponse>) {
@@ -85,6 +83,7 @@ class DiaryMainCardFragment : Fragment() {
     private fun handleApiResponse(result: Result) {
         // API 응답 처리
         // diaryDataList를 API 응답을 사용하여 초기화
+
         diaryDataList.clear()
         diaryDataList.addAll(result.memories.map { memory ->
 
@@ -100,21 +99,31 @@ class DiaryMainCardFragment : Fragment() {
         })
         // RecyclerView 초기화
         setupRecyclerViews()
+
     }
+
     private fun setupRecyclerViews() {
         val currentCalendar = Calendar.getInstance()
-        dateAdapter = DateAdapter(
+        /*dateAdapter = DateAdapter(
             currentCalendar.get(Calendar.YEAR),
             currentCalendar.get(Calendar.MONTH) + 1,
             diaryDataList
         ) { position ->
             scrollToPosition(position)
+        }*/
+        dateAdapter = DateAdapter(
+            currentCalendar.get(Calendar.YEAR),
+            currentCalendar.get(Calendar.MONTH) + 1,
+            diaryDataList
+        ) { selectedDate ->
+            // 날짜가 선택되었을 때 API 호출
+            fetchDiaryCard(selectedDate)
         }
+
         binding.rvDiaryDate.apply {
             adapter = dateAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
-
         cardAdapter = CardViewAdapter(diaryDataList) { deletedItem ->
             // 항목이 삭제되었을 때 호출되는 콜백
             updateDateAdapterAfterDeletion(deletedItem)
@@ -160,13 +169,19 @@ class DiaryMainCardFragment : Fragment() {
                 // CardView를 중앙으로 스크롤
                 val cardLayoutManager = binding.rvDiaryCardView.layoutManager as LinearLayoutManager
                 cardLayoutManager.scrollToPositionWithOffset(position, 0)
-/* 불필요
+
                 // 날짜 RecyclerView를 중앙으로 스크롤
                 val dateLayoutManager = binding.rvDiaryDate.layoutManager as LinearLayoutManager
                 val smoothScroller = CenterSmoothScroller(requireContext())
                 smoothScroller.targetPosition = diaryDataList[position].day - 1
                 dateLayoutManager.startSmoothScroll(smoothScroller)
 
+                // DateAdapter의 선택된 위치 업데이트
+                dateAdapter.updateSelectedPosition(diaryDataList[position].day - 1)
+
+
+
+/* 불필요
                 // DateAdapter의 선택된 위치 업데이트
                 dateAdapter.updateSelectedPosition(diaryDataList[position].day - 1)*/
             }
@@ -176,6 +191,7 @@ class DiaryMainCardFragment : Fragment() {
                 currentPosition = RecyclerView.NO_POSITION
                 dateAdapter.updateSelectedPosition(RecyclerView.NO_POSITION)
             }*/
+
         }
     }
 
@@ -206,6 +222,7 @@ class DiaryMainCardFragment : Fragment() {
         if (diaryDataList.isNotEmpty()) {
             binding.rvDiaryCardView.scrollToPosition(currentPosition)
         }
+
     }
 
     private fun updateDateSelection(position: Int) {
