@@ -21,6 +21,7 @@ class SelectSpeedFragment : Fragment() {
     private lateinit var binding: FragmentSelectSpeedBinding
     private var selectedSpeed: FrameLayout? = null
     private val sharedViewModel:SharedViewModel by activityViewModels()
+    private var questionId: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSelectSpeedBinding.inflate(inflater, container, false)
@@ -30,6 +31,11 @@ class SelectSpeedFragment : Fragment() {
         if (selectedChar != -1) {
             // selectedChar 값을 사용하여 작업 수행
             binding.ivBabyCharacter.setImageResource(selectedChar)
+        }
+        // 번들로 전달된 데이터 가져오기
+        arguments?.let { bundle ->
+            questionId = bundle.getString("id")
+            Log.d("deepquestion-bundle",questionId.toString())
         }
         return binding.root
     }
@@ -81,6 +87,15 @@ class SelectSpeedFragment : Fragment() {
     private fun applySelection(frameLayout: FrameLayout, backgroundSelected: ImageView, textView: TextView) {
         backgroundSelected.visibility = View.VISIBLE
         textView.setTextColor(Color.parseColor("#EB5F2A"))
+        // 프래그먼트 전환
+        val fragment = FinFragment()
+        val bundle = Bundle()
+        bundle.putString("id", questionId)
+        fragment.arguments = bundle
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.memory_frm, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun resetSelection(frameLayout: FrameLayout) {

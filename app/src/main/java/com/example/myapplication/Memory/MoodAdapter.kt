@@ -1,6 +1,7 @@
 package com.example.myapplication.Memory
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +18,8 @@ class MoodAdapter(
     private val context: Context,
     private val items: Array<String>,
     private val fragmentManager: FragmentManager,
-    private val sharedViewModel: SharedViewModel
-
+    private val sharedViewModel: SharedViewModel,
+    private val questionId: String
 ) : BaseAdapter() {
 
     val moodMapping = mapOf(
@@ -80,7 +81,11 @@ class MoodAdapter(
 
             // SelectSpeedFragment로 전환
             val transaction: FragmentTransaction = fragmentManager.beginTransaction()
-            transaction.replace(R.id.memory_frm, SelectSpeedFragment())
+            val fragment=SelectSpeedFragment()
+            val bundle = Bundle()
+            bundle.putString("id", questionId)
+            fragment.arguments = bundle
+            transaction.replace(R.id.memory_frm, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }

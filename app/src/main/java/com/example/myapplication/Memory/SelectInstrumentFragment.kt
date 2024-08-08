@@ -22,6 +22,7 @@ class SelectInstrumentFragment : Fragment(), InstrumentAdapter.OnItemClickListen
     private val binding get() = _binding!!
     private lateinit var rvInstruments: RecyclerView
     private val sharedViewModel : SharedViewModel by activityViewModels()
+    private var questionId: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSelectInstrumentBinding.inflate(inflater, container, false)
@@ -36,6 +37,13 @@ class SelectInstrumentFragment : Fragment(), InstrumentAdapter.OnItemClickListen
             // selectedChar 값을 사용하여 작업 수행
             imageView.setImageResource(selectedChar)
         }
+
+        // 번들로 전달된 데이터 가져오기
+        arguments?.let { bundle ->
+            questionId = bundle.getString("id")
+            Log.d("deepquestion-bundle",questionId.toString())
+        }
+
         return binding.root
     }
 
@@ -75,6 +83,9 @@ class SelectInstrumentFragment : Fragment(), InstrumentAdapter.OnItemClickListen
 
         // 프래그먼트 전환
         val fragment = SelectGenreFragment()
+        val bundle = Bundle()
+        bundle.putString("id", questionId)
+        fragment.arguments = bundle
         parentFragmentManager.beginTransaction()
             .replace(R.id.memory_frm, fragment)
             .addToBackStack(null)

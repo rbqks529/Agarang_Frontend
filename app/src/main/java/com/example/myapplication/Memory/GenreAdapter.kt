@@ -1,6 +1,7 @@
 package com.example.myapplication.Memory
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,8 @@ class GenreAdapter(
     private val context: Context,
     private val items: Array<String>,
     private val fragmentManager: FragmentManager,
-    private val sharedViewModel: SharedViewModel
+    private val sharedViewModel: SharedViewModel,
+    private val questionId: String
 ) : BaseAdapter() {
 
     val genreMapping = mapOf(
@@ -76,11 +78,15 @@ class GenreAdapter(
             val selectGenre = items[position]
             val genreCode = genreMapping[selectGenre] ?: selectGenre
             Log.e("GenreAdapter",genreCode)
-            sharedViewModel.setMood(genreCode)
+            sharedViewModel.setGenre(genreCode)
 
             // SelectMoodFragment로 전환
             val transaction: FragmentTransaction = fragmentManager.beginTransaction()
-            transaction.replace(R.id.memory_frm, SelectMoodFragment())
+            val fragment=SelectMoodFragment()
+            val bundle = Bundle()
+            bundle.putString("id", questionId)
+            fragment.arguments = bundle
+            transaction.replace(R.id.memory_frm, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
         }
