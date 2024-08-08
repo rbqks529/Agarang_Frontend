@@ -8,12 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.ImageView
+import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
+import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentSelectGenreBinding
 
 class SelectGenreFragment : Fragment() {
 
     lateinit var binding: FragmentSelectGenreBinding
+    private val sharedViewModel:SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,7 +26,7 @@ class SelectGenreFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_select_genre, container, false)
         val gridView = view.findViewById<GridView>(R.id.gv_genre)
         val genres = arrayOf("발라드", "팝", "재즈", "어쿠스틱", "알앤비", "일렉트로닉","락", "인디고", "힙합")
-        val adapter = GenreAdapter(requireContext(), genres, requireActivity().supportFragmentManager)
+        val adapter = GenreAdapter(requireContext(), genres, requireActivity().supportFragmentManager, sharedViewModel)
 
         gridView.adapter = adapter
 

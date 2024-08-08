@@ -3,6 +3,7 @@ package com.example.myapplication.Memory
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +11,16 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
+import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentSelectSpeedBinding
 
 class SelectSpeedFragment : Fragment() {
 
     private lateinit var binding: FragmentSelectSpeedBinding
     private var selectedSpeed: FrameLayout? = null
+    private val sharedViewModel:SharedViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSelectSpeedBinding.inflate(inflater, container, false)
@@ -51,13 +55,27 @@ class SelectSpeedFragment : Fragment() {
         selectedSpeed?.let { resetSelection(it) }
 
         // 새로운 선택 적용
-        when (selectedFrame.id) {
-            R.id.fl_speed_fast -> applySelection(binding.flSpeedFast, binding.backgroundSelected, binding.genreOption)
-            R.id.fl_speed_medium -> applySelection(binding.flSpeedMedium, binding.backgroundSelected2, binding.genreOption2)
-            R.id.fl_speed_slow -> applySelection(binding.flSpeedSlow, binding.backgroundSelected3, binding.genreOption3)
+        val tempo = when (selectedFrame.id) {
+            R.id.fl_speed_fast -> {
+                applySelection(binding.flSpeedFast, binding.backgroundSelected, binding.genreOption)
+                "FAST"
+            }
+            R.id.fl_speed_medium -> {
+                applySelection(binding.flSpeedMedium, binding.backgroundSelected2, binding.genreOption2)
+                "MID"
+            }
+            R.id.fl_speed_slow -> {
+                applySelection(binding.flSpeedSlow, binding.backgroundSelected3, binding.genreOption3)
+                "SLOW"
+            }
+            else -> null
         }
 
         selectedSpeed = selectedFrame
+        tempo?.let {
+            Log.e("SelectSpeedFragment",it)
+            sharedViewModel.setTempo(it)
+        }
     }
 
     private fun applySelection(frameLayout: FrameLayout, backgroundSelected: ImageView, textView: TextView) {

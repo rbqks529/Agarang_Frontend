@@ -9,10 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridView
 import android.widget.ImageView
+import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
+import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentSelectMoodBinding
 
 class SelectMoodFragment : Fragment() {
+
+    private val sharedViewModel:SharedViewModel by activityViewModels()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -22,8 +26,9 @@ class SelectMoodFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_select_mood, container, false)
 
         val gridView = view.findViewById<GridView>(R.id.gv_mood)
-        val moods = arrayOf("아름다운", "밝은", "행복한", "평화로운", "따뜻한", "활기찬","기쁜","환상적인", "사랑스러운")
-        val adapter = MoodAdapter(requireContext(), moods, requireActivity().supportFragmentManager)
+        val moods = arrayOf(
+            "아름다운", "밝은" , "행복한" , "평화로운", "따뜻한", "활기찬" , "기쁜" , "환상적인", "사랑스러운")
+        val adapter = MoodAdapter(requireContext(), moods, requireActivity().supportFragmentManager, sharedViewModel)
 
         gridView.adapter = adapter
 
