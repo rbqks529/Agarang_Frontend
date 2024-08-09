@@ -9,11 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
+import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentChildInfoChangeBinding
 
 class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListener {
     lateinit var binding: FragmentChildInfoChangeBinding
+    private val sharedViewModel:SharedViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,19 +47,8 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
 
         binding.ivOkBox.setOnClickListener {
             saveData()
-
-            val newFragment = HomeSettingFragment()
-            val bundle = Bundle().apply {
-                val sharedPreferences = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-                val birthName = sharedPreferences.getString("birthName", "")
-                val birthDate = sharedPreferences.getString("birthDate", "")
-                putString("birthName", birthName)
-                putString("birthDate", birthDate)
-            }
-            newFragment.arguments = bundle
-
             parentFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, newFragment)
+                .replace(R.id.main_frm, HomeSettingFragment())
                 .addToBackStack(null)
                 .commit()
         }
@@ -83,29 +75,25 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
     }
 
     private fun saveData() {
-        val sharedPreferences = requireActivity().getSharedPreferences("app_prefs", Context.MODE_MULTI_PROCESS)
-        with(sharedPreferences.edit()) {
-            putString("birthName", binding.etBirthName.text.toString())
-            putString("birthDate", binding.tvBirthDate.text.toString())
-            putString("weight", binding.etWeight.text.toString().replace(" kg",""))
-            commit()
-        }
-        if((sharedPreferences.getString("selected_char","anything").isNullOrEmpty())==false){
-
-        }
+        sharedViewModel.setBabyName(binding.etBirthName.text.toString())
+        sharedViewModel.setDueDate(binding.tvBirthDate.text.toString())
+        sharedViewModel.setBabyWeight(binding.etWeight.text.toString().replace(" kg", ""))
     }
 
     private fun init() {
         // 초기화 작업 수행
-        val sharedPreferences = requireActivity().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val birthName = sharedPreferences.getString("birthName", "")
-        val birthDate = sharedPreferences.getString("birthDate", "")
-        val weight = sharedPreferences.getString("weight", "")
 
-        binding.etBirthName.setText(birthName)
-        binding.tvBirthDate.text = birthDate
-        binding.etWeight.setText(if (weight.isNullOrEmpty()) "" else "$weight kg")
+        sharedViewModel.babyName.observe(viewLifecycleOwner) { name ->
+            binding.etBirthName.setText(name)
+        }
 
+        sharedViewModel.dueDate.observe(viewLifecycleOwner) { date ->
+            binding.tvBirthDate.text = date
+        }
+
+        sharedViewModel.babyWeight.observe(viewLifecycleOwner) { weight ->
+            binding.etWeight.setText(if (weight.isNullOrEmpty()) "" else "$weight kg")
+        }
 
     }
 }

@@ -8,6 +8,45 @@ import androidx.lifecycle.ViewModel
 
 class SharedViewModel:ViewModel() {
 
+    // 아이 정보를 위한 데이터 입니다.
+    // 1. 태명 2. 예정일 3. 체중 4. 가족 코드 5. 가족 역할
+    private val _babyName=MutableLiveData<String>()
+    val babyName: LiveData<String> get() =_babyName
+
+    private val _dueDate=MutableLiveData<String>()
+    val dueDate: LiveData<String> get() =_dueDate
+
+    private val _babyWeight=MutableLiveData<String>()
+    val babyWeight: LiveData<String> get() =_babyWeight
+
+    private val _familyCode=MutableLiveData<String>()
+    val familyCode: LiveData<String> get() =_familyCode
+
+    private val _familyRole=MutableLiveData<String>()
+    val familyRole: LiveData<String> get() =_familyRole
+
+    fun setBabyName(babyName:String){
+        _babyName.value=babyName
+    }
+
+    fun setDueDate(dueDate:String){
+        _dueDate.value=dueDate
+    }
+
+    fun setBabyWeight(babyWeight:String){
+        _babyWeight.value=babyWeight
+    }
+
+    fun setFamilyCode(familyCode:String){
+        _familyCode.value=familyCode
+    }
+
+    fun setFamilyRole(familyRole:String){
+        _familyRole.value=familyRole
+    }
+
+
+    // 음악 선정을 위한 데이터입니다.
     private val _instrument=MutableLiveData<String>()
     val instrument: LiveData<String> get() =_instrument //only read
 
