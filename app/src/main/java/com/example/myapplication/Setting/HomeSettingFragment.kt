@@ -88,6 +88,7 @@ class HomeSettingFragment : Fragment() {
                             binding.tvProfileDday.text = "D-DAY"
                         }else if (daysUntilBirthDate>0){
                             binding.tvProfileDday.text = "D- $daysUntilBirthDate"
+                            sharedViewModel.setBabyDDay(daysUntilBirthDate)
                         }
                     } else {
                         binding.tvProfileDday.text = "Invalid date format"

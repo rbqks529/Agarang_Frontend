@@ -25,6 +25,9 @@ class SharedViewModel:ViewModel() {
     private val _familyRole=MutableLiveData<String>()
     val familyRole: LiveData<String> get() =_familyRole
 
+    private val _babyDday=MutableLiveData<Int>()
+    val babyDday: LiveData<Int> get() =_babyDday
+
     fun setBabyName(babyName:String){
         _babyName.value=babyName
     }
@@ -43,6 +46,10 @@ class SharedViewModel:ViewModel() {
 
     fun setFamilyRole(familyRole:String){
         _familyRole.value=familyRole
+    }
+
+    fun setBabyDDay(babyDday:Int){
+        _babyDday.value=babyDday
     }
 
 
