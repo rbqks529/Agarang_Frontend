@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Data.Request.bookmarkSetRequest
+import com.example.myapplication.Data.Response.BookmarkDeleteDiary
 import com.example.myapplication.Data.Response.BookmarkSetResult
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.DiaryIF
@@ -68,12 +69,11 @@ class DiaryMainCardFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
-        cardAdapter = CardViewAdapter(diaryDataList, { deletedItem ->
-            // 항목이 삭제되었을 때 호출되는 콜백
-            updateDateAdapterAfterDeletion(deletedItem)
-        }, { itemId ->
-            sendBookmarkRequest(itemId)
-        })
+        cardAdapter = CardViewAdapter(
+            diaryDataList,
+            { itemId, deletedItem -> handleItemDeletion(itemId, deletedItem) },
+            { itemId -> sendBookmarkRequest(itemId) }
+        )
         binding.rvDiaryCardView.apply {
             adapter = cardAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -102,6 +102,38 @@ class DiaryMainCardFragment : Fragment() {
         }
 
         scrollToPosition(currentPosition)
+    }
+
+    private fun handleItemDeletion(itemId: Long, deletedItem: DiaryMainDayData) {
+        // UI에서 항목 제거
+        updateDateAdapterAfterDeletion(deletedItem)
+
+        // 서버에 삭제 요청
+        sendDeleteRequest(itemId)
+    }
+
+    private fun sendDeleteRequest(itemId: Long) {
+        val apiService = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val request = bookmarkSetRequest(memoryId = itemId)
+        apiService.deleteDiary(request).enqueue(object : Callback<BookmarkDeleteDiary> {
+            override fun onResponse(call: Call<BookmarkDeleteDiary>, response: Response<BookmarkDeleteDiary>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null && result.isSuccess) {
+                        Log.d("Delete", "메모리 삭제 성공")
+                        // 필요한 경우 UI 업데이트
+                    } else {
+                        Log.e("Delete", "메모리 삭제 실패: ${response.code()}")
+                    }
+                } else {
+                    Log.e("Delete", "메모리 삭제 실패: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<BookmarkDeleteDiary>, t: Throwable) {
+                Log.e("Delete", "서버 통신 실패", t)
+            }
+        })
     }
 
     private fun sendBookmarkRequest(itemId: Long) {
