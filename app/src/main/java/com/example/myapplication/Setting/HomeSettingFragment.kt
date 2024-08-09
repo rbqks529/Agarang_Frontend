@@ -9,9 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
-import com.example.myapplication.ChangeChar2Fragment
 import com.example.myapplication.R
-import com.example.myapplication.SharedViewModel
+import com.example.myapplication.Data.SharedViewModel
 import com.example.myapplication.databinding.FragmentHomeSettingBinding
 import java.util.Calendar
 import java.util.Date

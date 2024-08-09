@@ -7,13 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.Setting.ChildInfoChangeFragment
 import com.example.myapplication.Setting.HomeSettingFragment
-import com.example.myapplication.SharedViewModel
+import com.example.myapplication.Data.SharedViewModel
 import com.example.myapplication.databinding.FragmentHomeBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -24,7 +21,7 @@ class HomeFragment: Fragment() {
     lateinit var binding: FragmentHomeBinding
     private var RecentDiaryAdapter: RecentDiaryAdapter?= null
     private var RecentDiaryDataList : ArrayList<RecentDiaryData> = arrayListOf()
-    private val sharedViewModel:SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

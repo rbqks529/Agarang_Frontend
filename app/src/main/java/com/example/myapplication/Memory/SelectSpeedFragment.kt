@@ -13,14 +13,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
-import com.example.myapplication.SharedViewModel
+import com.example.myapplication.Data.SharedViewModel
 import com.example.myapplication.databinding.FragmentSelectSpeedBinding
 
 class SelectSpeedFragment : Fragment() {
 
     private lateinit var binding: FragmentSelectSpeedBinding
     private var selectedSpeed: FrameLayout? = null
-    private val sharedViewModel:SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private var questionId: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
