@@ -23,10 +23,4 @@ data class BookmarkSetResult(
     val result: List<Any>
 )
 
-data class BookmarkDeleteDiary(
-    val isSuccess: Boolean,
-    val code: Int,
-    val message: String,
-    val result: List<Any>
-)
 
