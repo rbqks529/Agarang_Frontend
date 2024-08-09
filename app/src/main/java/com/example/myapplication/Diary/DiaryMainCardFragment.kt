@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Data.Request.bookmarkSetRequest
-import com.example.myapplication.Data.Response.BookmarkDeleteDiary
 import com.example.myapplication.Data.Response.BookmarkSetResult
+import com.example.myapplication.Data.Response.DeleteDiaryResponse
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.RetrofitService
@@ -115,8 +115,8 @@ class DiaryMainCardFragment : Fragment() {
     private fun sendDeleteRequest(itemId: Long) {
         val apiService = RetrofitService.retrofit.create(DiaryIF::class.java)
         val request = bookmarkSetRequest(memoryId = itemId)
-        apiService.deleteDiary(request).enqueue(object : Callback<BookmarkDeleteDiary> {
-            override fun onResponse(call: Call<BookmarkDeleteDiary>, response: Response<BookmarkDeleteDiary>) {
+        apiService.deleteDiary(request).enqueue(object : Callback<DeleteDiaryResponse> {
+            override fun onResponse(call: Call<DeleteDiaryResponse>, response: Response<DeleteDiaryResponse>) {
                 if (response.isSuccessful) {
                     val result = response.body()
                     if (result != null && result.isSuccess) {
@@ -130,7 +130,7 @@ class DiaryMainCardFragment : Fragment() {
                 }
             }
 
-            override fun onFailure(call: Call<BookmarkDeleteDiary>, t: Throwable) {
+            override fun onFailure(call: Call<DeleteDiaryResponse>, t: Throwable) {
                 Log.e("Delete", "서버 통신 실패", t)
             }
         })

@@ -17,3 +17,7 @@ data class MusicChoice(
     val mood:String,
     val tempo:String
 )
+data class EditMemoryRequest(
+    val memoryId: Long,
+    val text: String
+)
