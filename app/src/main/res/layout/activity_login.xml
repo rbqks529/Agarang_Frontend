@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:fitsSystemWindows="true"
-    android:theme="@style/AppTheme">
+    android:theme="@style/AppTheme"
+    android:background="#FFFFFF">
 
     <FrameLayout
         android:id="@+id/main_frm2"

@@ -59,8 +59,6 @@ class DeepQuestionFragment : Fragment() {
         }
 
 
-        binding.tvQuestionTopic.text = questionText
-
 
         Log.d("PicAssociationFragment", "Question ID: $questionId")
         Log.d("PicAssociationFragment", "Question Text: $questionText")
@@ -88,6 +86,9 @@ class DeepQuestionFragment : Fragment() {
         }
         binding.ivRecordingNextBtn.setOnClickListener {
             val fragment=SelectInstrumentFragment()
+            val bundle = Bundle()
+            bundle.putString("id", questionId)
+            fragment.arguments = bundle
             parentFragmentManager.beginTransaction()
                 .replace(R.id.memory_frm,fragment)
                 .commit()

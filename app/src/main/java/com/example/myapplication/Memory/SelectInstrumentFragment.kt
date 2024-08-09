@@ -2,14 +2,17 @@ package com.example.myapplication.Memory
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentSelectInstrumentBinding
 
 
@@ -18,6 +21,8 @@ class SelectInstrumentFragment : Fragment(), InstrumentAdapter.OnItemClickListen
     private var _binding: FragmentSelectInstrumentBinding? = null
     private val binding get() = _binding!!
     private lateinit var rvInstruments: RecyclerView
+    private val sharedViewModel : SharedViewModel by activityViewModels()
+    private var questionId: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentSelectInstrumentBinding.inflate(inflater, container, false)
@@ -32,6 +37,13 @@ class SelectInstrumentFragment : Fragment(), InstrumentAdapter.OnItemClickListen
             // selectedChar 값을 사용하여 작업 수행
             imageView.setImageResource(selectedChar)
         }
+
+        // 번들로 전달된 데이터 가져오기
+        arguments?.let { bundle ->
+            questionId = bundle.getString("id")
+            Log.d("deepquestion-bundle",questionId.toString())
+        }
+
         return binding.root
     }
 
@@ -39,15 +51,15 @@ class SelectInstrumentFragment : Fragment(), InstrumentAdapter.OnItemClickListen
         super.onViewCreated(view, savedInstanceState)
 
         val instruments = listOf(
-            InstrumentData(R.drawable.ic_piano, "피아노", false),
-            InstrumentData(R.drawable.ic_flute, "플룻"),
-            InstrumentData(R.drawable.ic_guitar, "기타"),
-            InstrumentData(R.drawable.ic_violine, "바이올린"),
-            InstrumentData(R.drawable.ic_trumpet, "트럼펫"),
-            InstrumentData(R.drawable.ic_xylophone, "실로폰", false),
-            InstrumentData(R.drawable.ic_harp, "하프", false),
-            InstrumentData(R.drawable.ic_cello, "첼로"),
-            InstrumentData(R.drawable.ic_saxophone, "색소폰")
+            InstrumentData(R.drawable.ic_piano, "피아노", false, instrumentCode = "PIANO"),
+            InstrumentData(R.drawable.ic_flute, "플룻", instrumentCode = "FLUTE"),
+            InstrumentData(R.drawable.ic_guitar, "기타", instrumentCode = "BASE_GUITAR"),
+            InstrumentData(R.drawable.ic_violine, "바이올린", instrumentCode = "VIOLIN"),
+            InstrumentData(R.drawable.ic_trumpet, "트럼펫", instrumentCode = "TRUMPET"),
+            InstrumentData(R.drawable.ic_xylophone, "실로폰", false, instrumentCode = "XYLOPHONE"),
+            InstrumentData(R.drawable.ic_harp, "하프", false, instrumentCode = "HARP"),
+            InstrumentData(R.drawable.ic_cello, "첼로", instrumentCode = "CELLO"),
+            InstrumentData(R.drawable.ic_saxophone, "색소폰", instrumentCode = "SAXOPHONE")
         )
 
 
@@ -65,8 +77,15 @@ class SelectInstrumentFragment : Fragment(), InstrumentAdapter.OnItemClickListen
         instrument.isSelected = true
         binding.rvInstruments.adapter?.notifyDataSetChanged()
 
+        //선택된 악기 저장
+        sharedViewModel.setInstrument(instrument.instrumentCode)
+        Log.e("SelectInstrumentFragment",instrument.instrumentCode)
+
         // 프래그먼트 전환
         val fragment = SelectGenreFragment()
+        val bundle = Bundle()
+        bundle.putString("id", questionId)
+        fragment.arguments = bundle
         parentFragmentManager.beginTransaction()
             .replace(R.id.memory_frm, fragment)
             .addToBackStack(null)

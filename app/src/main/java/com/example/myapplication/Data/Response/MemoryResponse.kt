@@ -16,3 +16,10 @@ data class FirstAnsResponse(
 data class FirstResult(
     val question: FirstQuestion
 )
+
+data class SelectMusicResponse(
+    val isSuccess: Boolean,
+    val code: Int,
+    val message: String,
+    val result: List<Any>
+)
