@@ -1,11 +1,10 @@
-package com.example.myapplication.Data
+package com.example.myapplication
 
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 
 // UI 관련 데이터를 저장하고 관리해주는 아키텍처
 

@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.Setting.HomeSettingFragment
-import com.example.myapplication.Data.SharedViewModel
+import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentHomeBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar

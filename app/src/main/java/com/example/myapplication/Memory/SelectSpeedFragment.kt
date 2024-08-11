@@ -13,7 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
-import com.example.myapplication.Data.SharedViewModel
+import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentSelectSpeedBinding
 
 class SelectSpeedFragment : Fragment() {
