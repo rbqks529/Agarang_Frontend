@@ -21,7 +21,7 @@ class BirthNameFragment : Fragment() {
         binding.btnNext.setOnClickListener {
             val fragment=DueDateFragment()
             parentFragmentManager.beginTransaction()
-                .replace(R.id.main_frm,fragment) //main_frm 바꾸기
+                .replace(R.id.main_frm2,fragment) //main_frm 바꾸기
                 .addToBackStack(null)
                 .commit()
         }

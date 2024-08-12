@@ -22,9 +22,11 @@ class DueDateFragment : Fragment(),CalendarFragment.OnDateSelectedListener {
             calendarFragment.setTargetFragment(this, 0)
             calendarFragment.show(parentFragmentManager, "datePicker")
         }
+
         binding.btnBack.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
         return binding.root
     }
 

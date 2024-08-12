@@ -61,6 +61,10 @@ class LoginFamilyRoleFragment : Fragment() {
             }
         }
 
+        binding.btnBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         return view
     }
 

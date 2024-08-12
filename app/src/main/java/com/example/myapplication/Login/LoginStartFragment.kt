@@ -6,21 +6,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.myapplication.R
+import com.example.myapplication.databinding.FragmentLoginStartBinding
 
 class LoginStartFragment : Fragment() {
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    lateinit var binding: FragmentLoginStartBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login_start, container, false)
+        binding = FragmentLoginStartBinding.inflate(inflater, container, false)
+
+        binding.icLoginKakao.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.main_frm2, LoginCode1Fragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        binding.icLoginGoogle.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.main_frm2, LoginCode1Fragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        return binding.root
     }
 
 

@@ -30,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm2, LoginFamilyRoleFragment())
+            .replace(R.id.main_frm2, LoginStartFragment())
             .commitAllowingStateLoss()
     }
 }

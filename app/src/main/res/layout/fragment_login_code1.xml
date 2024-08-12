@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:theme="@style/AppTheme"
     android:background="#FFF">
 
     <View
@@ -59,7 +58,9 @@
         android:layout_marginTop="4dp"
         android:textSize="12sp"
         android:textColor="#A1A1A1"/>
+
     <ImageView
+        android:id="@+id/iv_input_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_login_code_button"
@@ -67,6 +68,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_code_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="35dp"/>
+        android:layout_marginTop="33dp"/>
 
 
     <TextView
@@ -104,7 +106,9 @@
         android:layout_marginTop="4dp"
         android:textSize="12sp"
         android:textColor="#A1A1A1"/>
+
     <ImageView
+        android:id="@+id/iv_register_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_login_code_button"
@@ -121,7 +125,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_code_description_2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="35dp"/>
+        android:layout_marginTop="33dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
