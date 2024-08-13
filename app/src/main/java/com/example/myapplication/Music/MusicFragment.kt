@@ -1,14 +1,21 @@
 package com.example.myapplication.Music
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.Data.Response.AllPlaylistResponse
 import com.example.myapplication.R
+import com.example.myapplication.Retrofit.PlaylistIF
+import com.example.myapplication.Retrofit.RetrofitService.retrofit
 import com.example.myapplication.databinding.FragmentMusicBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MusicFragment : Fragment() {
     lateinit var binding:FragmentMusicBinding
@@ -20,18 +27,43 @@ class MusicFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding=FragmentMusicBinding.inflate(inflater,container,false)
-
-        itemList.add(MusicMainData(R.drawable.playlist_bookmark,"즐겨 찾기"))
-        itemList.add(MusicMainData(R.drawable.playlist_all,"전체 플레이리스트"))
-        itemList.add(MusicMainData(R.drawable.playlist_alone,"혼자만의 시간을 가지는"))
-        itemList.add(MusicMainData(R.drawable.playlist_day,"하루를 정리하며 듣는"))
-        itemList.add(MusicMainData(R.drawable.playlist_exercise,"운동하며 듣는"))
-        itemList.add(MusicMainData(R.drawable.playlist_fetal_movement,"태동이 느껴질 때 듣는"))
-        itemList.add(MusicMainData(R.drawable.playlist_morning,"아침을 시작하며 듣는"))
-        itemList.add(MusicMainData(R.drawable.playlist_day,"마음을 편안하게 하는"))
-
+        playlistService()
         recycler()
+
         return binding.root
+    }
+
+    private fun playlistService() {
+        val playlistService=retrofit.create(PlaylistIF::class.java)
+        playlistService.getAllPlaylist().enqueue(object :Callback<AllPlaylistResponse>{
+            override fun onResponse(
+                call: Call<AllPlaylistResponse>,
+                response: Response<AllPlaylistResponse>
+            ) {
+                if(response.isSuccessful){
+                    val allPlaylistResponse=response.body()
+                    val playlists=allPlaylistResponse?.result?.playlists
+                    playlists?.let {
+                        for (playlist in it){
+                            itemList.add(
+                                MusicMainData(
+                                    musicImgId=playlist.imageUrl,
+                                    musicContent=playlist.name
+                                )
+                            )
+                        }
+                    }
+                    musicMainAdapter?.notifyDataSetChanged()
+                }else{
+                    Log.e("MusicFragment","response is not Succeessful")
+                }
+            }
+
+            override fun onFailure(call: Call<AllPlaylistResponse>, t: Throwable) {
+                Log.e("MusicFragment","network error")
+            }
+
+        })
     }
 
     private fun recycler() {
