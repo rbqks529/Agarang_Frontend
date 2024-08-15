@@ -6,16 +6,16 @@ import okhttp3.Response
 
 class AuthInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val originalRequest = chain.request()
+        val request = chain.request()
         val token = AuthUtils.getAuthToken(context)
 
         return if (token != null) {
-            val newRequest = originalRequest.newBuilder()
-                .header("Authorization", "$token")
+            val newRequest = request.newBuilder()
+                .header("Authorization", "Bearer $token")
                 .build()
             chain.proceed(newRequest)
         } else {
-            chain.proceed(originalRequest)
+            chain.proceed(request)
         }
     }
 }

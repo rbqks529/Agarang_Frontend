@@ -18,11 +18,11 @@ interface LoginIF {
     fun authorizeGoogle(): Call<ResponseBody>
 
     @POST("/api/login/process-baby")
-    fun postBabyCode(@Header("Authorization") token: String, @Body babyCode: BabyCodeRequest): Call<CommonResponse>
+    fun postBabyCode(@Body babyCode: BabyCodeRequest): Call<CommonResponse>
 
     @POST("/api/login/process-baby")
-    fun createNewBaby(@Header("Authorization") token: String, @Body request: BabyRequest): Call<CommonResponse>
+    fun createNewBaby(@Body request: BabyRequest): Call<CommonResponse>
 
     @POST("/api/login/process-baby")
-    fun participateFamily(@Header("Authorization") token: String, @Body request: FamilyRoleRequest): Call<CommonResponse>
+    fun participateFamily(@Body request: FamilyRoleRequest): Call<CommonResponse>
 }

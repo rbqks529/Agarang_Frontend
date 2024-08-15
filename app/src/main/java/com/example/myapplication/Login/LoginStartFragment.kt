@@ -2,6 +2,7 @@ package com.example.myapplication.Login
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -43,7 +44,6 @@ class LoginStartFragment : Fragment() {
         }
 
         // WebView 설정
-        // WebView 설정
         binding.webView.settings.javaScriptEnabled = true
         cookieManager = CookieManager.getInstance() // CookieManager 인스턴스 가져오기
         cookieManager.setAcceptCookie(true)
@@ -52,7 +52,7 @@ class LoginStartFragment : Fragment() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Log.d("WebView", "Loading URL: $url")
                 url?.let {
-                    if (it.startsWith("http://agarang.site")) {
+                    if (it.startsWith("https://agarang.site")) {
                         // 로그인 성공 후 리다이렉트된 URL 감지
                         handleLoginSuccess(it)
                         return true
@@ -73,37 +73,16 @@ class LoginStartFragment : Fragment() {
     }
 
     private fun authorizeGoogle() {
-        val loginService = RetrofitService.retrofit.create(LoginIF::class.java)
+        binding.webView.getSettings().setUserAgentString("Mozilla/5.0 AppleWebKit/535.19 Chrome/56.0.0 Mobile Safari/535.19");
 
-        loginService.authorizeGoogle().enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    val loginUrl = response.raw().request.url.toString()
-                    activity?.runOnUiThread {
-                        binding.webView.visibility = View.VISIBLE
-                        binding.webView.loadUrl(loginUrl)
-                    }
-                    /*val cookies = response.headers()["Set-Cookie"]
-
-                    val authToken = extractAuthToken(cookies)
-                    if (authToken != null) {
-                        saveAuthToken(authToken)
-                        Log.d("토큰 확인", "Received JWT: $authToken")
-                    } else {
-                        Log.e("토큰 에러", "Authorization token not found in cookies")
-                    }*/
-                } else {
-                    Toast.makeText(context, "에러: ${response.code()}", Toast.LENGTH_SHORT).show()
-                }
-            }
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
+        activity?.runOnUiThread {
+            binding.webView.visibility = View.VISIBLE
+            binding.webView.loadUrl("https://agarang.site/oauth2/authorization/google")
+        }
     }
 
     private fun authorizeKakao() {
-        val loginService = RetrofitService.retrofit.create(LoginIF::class.java)
+        val loginService = RetrofitService.createRetrofit(requireContext()).create(LoginIF::class.java)
 
         loginService.authorizeKakao().enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

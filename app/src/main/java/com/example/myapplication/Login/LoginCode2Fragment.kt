@@ -34,7 +34,7 @@ class LoginCode2Fragment : Fragment() {
     ): View? {
         binding = FragmentLoginCode2Binding.inflate(inflater, container, false)
 
-        loginService = RetrofitService.retrofit.create(LoginIF::class.java)
+        loginService = RetrofitService.createRetrofit(requireContext()).create(LoginIF::class.java)
 
         binding.ivCodeClear.setOnClickListener {
             binding.etCodeInput.text.clear()
@@ -78,14 +78,9 @@ class LoginCode2Fragment : Fragment() {
     }
 
     private fun postBabyCode(babycode: String) {
-        val token = AuthUtils.getAuthToken(requireContext())
-        if (token == null) {
-            Toast.makeText(context, "로그인 토큰이 없습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show()
-            return
-        }
 
         val request = BabyCodeRequest(babyCode = babycode)
-        loginService.postBabyCode("$token", request).enqueue(object : Callback<CommonResponse> {
+        loginService.postBabyCode(request).enqueue(object : Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
                 if (response.isSuccessful) {
                     val commonResponse = response.body()

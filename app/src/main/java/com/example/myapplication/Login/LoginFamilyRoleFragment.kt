@@ -29,6 +29,7 @@ class LoginFamilyRoleFragment : Fragment() {
 
     private var _binding: FragmentFamilyRoleBinding? = null
     private val binding get() = _binding!!
+    private lateinit var apiService: LoginIF
 
     private lateinit var adapter: RoleAdapter
     private var selectedRole: String = "역할을 선택해주세요"
@@ -102,9 +103,9 @@ class LoginFamilyRoleFragment : Fragment() {
             return
         }
 
-        val apiService = RetrofitService.retrofit.create(LoginIF::class.java)
+        apiService = RetrofitService.createRetrofit(requireContext()).create(LoginIF::class.java)
         val request = FamilyRoleRequest(familyRole)
-        apiService.participateFamily("$token", request).enqueue(object : Callback<CommonResponse> {
+        apiService.participateFamily(request).enqueue(object : Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
                 if (response.isSuccessful) {
                     val result = response.body()
@@ -138,14 +139,8 @@ class LoginFamilyRoleFragment : Fragment() {
         val formattedDueDate = formatDate(trimmedDueDate)
         val request = BabyRequest(babyName, formattedDueDate, familyRole)
 
-        val token = AuthUtils.getAuthToken(requireContext())
-        if (token == null) {
-            Toast.makeText(context, "로그인 토큰이 없습니다. 다시 로그인해주세요.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val apiService = RetrofitService.retrofit.create(LoginIF::class.java)
-        apiService.createNewBaby("$token", request).enqueue(object : Callback<CommonResponse> {
+        apiService = RetrofitService.createRetrofit(requireContext()).create(LoginIF::class.java)
+        apiService.createNewBaby(request).enqueue(object : Callback<CommonResponse> {
             override fun onResponse(call: Call<CommonResponse>, response: Response<CommonResponse>) {
                 if (response.isSuccessful) {
                     val result = response.body()

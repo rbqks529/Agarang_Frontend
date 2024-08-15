@@ -205,7 +205,7 @@ class PicAssociationFragment : Fragment() {
                             binding.tvRecordNotice.text = text.toString()
 
                             //server
-                            val apiService=RetrofitService.retrofit.create(MemoryIF::class.java)
+                            val apiService = RetrofitService.createRetrofit(requireContext()).create(MemoryIF::class.java)
                             val request=FirstAnsRequest(
                                 id=questionId.toString(),
                                 text = text

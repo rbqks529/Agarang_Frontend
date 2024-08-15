@@ -42,7 +42,7 @@ class DiaryMainMonthFragment : Fragment() {
     }
 
     private fun fetchMonthlyMemories() {
-        val service = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val service = RetrofitService.createRetrofit(requireContext()).create(DiaryIF::class.java)
 
         service.getMonthlyMemories("monthly" ,"20240701" ).enqueue(object : Callback<DiaryMonthResponse> {
             override fun onResponse(call: Call<DiaryMonthResponse>, response: Response<DiaryMonthResponse>) {
