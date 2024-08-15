@@ -2,16 +2,21 @@ package com.example.myapplication.Diary
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.example.myapplication.R
+import com.example.myapplication.Data.Request.EditMemoryRequest
+import com.example.myapplication.Data.Response.EditMemoryResponse
+import com.example.myapplication.Retrofit.DiaryIF
+import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentDiaryCardEditBinding
-
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DiaryCardEditFragment : Fragment() {
 
@@ -57,8 +62,6 @@ class DiaryCardEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 기존 데이터 표시
-        /*binding.ivCardEditImage.setImageResource(item.imageResId)*/
         context?.let {
             Glide.with(it)
                 .load(item.imageResId)
@@ -66,19 +69,40 @@ class DiaryCardEditFragment : Fragment() {
                 .into(binding.ivCardEditImage)
         }
 
-
         binding.tvDiaryCardEditContent.setText(item.content)
-
         binding.tvDiaryCardEditContent.requestFocus()
 
-        // 완료 버튼 클릭 리스너
         binding.tvDiaryCardEditComplete.setOnClickListener {
             val editedContent = binding.tvDiaryCardEditContent.text.toString()
-            val editedItem = item.copy(content = editedContent)
-            editCompleteListener?.onEditComplete(position, editedItem)
-
-            // 이전 화면으로 돌아가기
-            parentFragmentManager.popBackStack()
+            updateMemory(item.id.toLong(), editedContent)
         }
+    }
+
+    private fun updateMemory(memoryId: Long, newContent: String) {
+        val apiService = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val request = EditMemoryRequest(memoryId, newContent)
+
+        apiService.editMemory(request).enqueue(object : Callback<EditMemoryResponse> {
+            override fun onResponse(call: Call<EditMemoryResponse>, response: Response<EditMemoryResponse>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null && result.isSuccess) {
+                        Log.d("Edit", "메모리 수정 성공")
+
+                        val editedItem = item.copy(content = newContent)
+                        editCompleteListener?.onEditComplete(position, editedItem)
+                        parentFragmentManager.popBackStack()
+                    } else {
+                        Log.e("Edit", "메모리 수정 실패: ${result?.message}")
+                    }
+                } else {
+                    Log.e("Edit", "메모리 수정 실패: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<EditMemoryResponse>, t: Throwable) {
+                Log.e("Edit", "서버 통신 실패", t)
+            }
+        })
     }
 }

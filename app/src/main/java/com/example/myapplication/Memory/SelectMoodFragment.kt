@@ -13,11 +13,10 @@ import android.widget.ImageView
 import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
 import com.example.myapplication.SharedViewModel
-import com.example.myapplication.databinding.FragmentSelectMoodBinding
 
 class SelectMoodFragment : Fragment() {
 
-    private val sharedViewModel:SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private var questionId: String? = null
 
     @SuppressLint("MissingInflatedId")

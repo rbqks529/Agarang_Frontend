@@ -20,7 +20,7 @@ class SelectSpeedFragment : Fragment() {
 
     private lateinit var binding: FragmentSelectSpeedBinding
     private var selectedSpeed: FrameLayout? = null
-    private val sharedViewModel:SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private var questionId: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

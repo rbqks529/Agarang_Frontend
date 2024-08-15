@@ -17,7 +17,7 @@ import com.example.myapplication.databinding.FragmentSelectGenreBinding
 class SelectGenreFragment : Fragment() {
 
     lateinit var binding: FragmentSelectGenreBinding
-    private val sharedViewModel:SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private var questionId: String? = null
 
     override fun onCreateView(
