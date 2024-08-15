@@ -79,7 +79,7 @@ class DiaryCardEditFragment : Fragment() {
     }
 
     private fun updateMemory(memoryId: Long, newContent: String) {
-        val apiService = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val apiService = RetrofitService.createRetrofit(requireContext()).create(DiaryIF::class.java)
         val request = EditMemoryRequest(memoryId, newContent)
 
         apiService.editMemory(request).enqueue(object : Callback<EditMemoryResponse> {

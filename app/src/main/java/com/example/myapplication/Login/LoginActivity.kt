@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myapplication.R
+import com.example.myapplication.Retrofit.NetworkModule
 import com.example.myapplication.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -29,8 +30,10 @@ class LoginActivity : AppCompatActivity() {
             window.statusBarColor = Color.parseColor("#797979")
         }
 
+        NetworkModule.initialize(this)
+
         supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm2, LoginFamilyRoleFragment())
+            .replace(R.id.main_frm2, LoginStartFragment())
             .commitAllowingStateLoss()
     }
 }

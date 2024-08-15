@@ -45,7 +45,7 @@ class DiaryMainBookmarkFragment : Fragment() {
     }
 
     private fun fetchFavoriteData() {
-        val service = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val service = RetrofitService.createRetrofit(requireContext()).create(DiaryIF::class.java)
 
         service.getBookmarkedMemories("bookmark").enqueue(object : Callback<DiaryBookmarkResponse> {
             override fun onResponse(call: Call<DiaryBookmarkResponse>, response: Response<DiaryBookmarkResponse>) {
