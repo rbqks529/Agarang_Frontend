@@ -20,6 +20,19 @@ data class DiaryCardResponse(
     val result: Result
 )
 
+data class DeleteDiaryResponse(
+    val isSuccess: Boolean,
+    val code: Int,
+    val message: String,
+    val result: List<Any>
+)
+
+data class EditMemoryResponse(
+    val isSuccess: Boolean,
+    val code: Int,
+    val message: String,
+    val result: List<Any>
+)
 
 
 

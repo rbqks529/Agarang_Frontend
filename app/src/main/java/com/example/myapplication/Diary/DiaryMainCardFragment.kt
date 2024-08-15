@@ -9,8 +9,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+<<<<<<< HEAD
 import com.example.myapplication.Data.Response.DiaryCardResponse
 import com.example.myapplication.Data.Response.Result
+=======
+import com.example.myapplication.Data.Request.bookmarkSetRequest
+import com.example.myapplication.Data.Response.BookmarkSetResult
+import com.example.myapplication.Data.Response.DeleteDiaryResponse
+>>>>>>> de49875d147bf6aacf8cb294a8565abe0bfb6832
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.RetrofitService
@@ -126,11 +132,20 @@ class DiaryMainCardFragment : Fragment() {
             adapter = dateAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
+<<<<<<< HEAD
         cardAdapter = CardViewAdapter(diaryDataList) { deletedItem ->
             // 항목이 삭제되었을 때 호출되는 콜백
             updateDateAdapterAfterDeletion(deletedItem)
         }
 
+=======
+
+        cardAdapter = CardViewAdapter(
+            diaryDataList,
+            { itemId, deletedItem -> handleItemDeletion(itemId, deletedItem) },
+            { itemId -> sendBookmarkRequest(itemId) }
+        )
+>>>>>>> de49875d147bf6aacf8cb294a8565abe0bfb6832
         binding.rvDiaryCardView.apply {
             adapter = cardAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -158,6 +173,63 @@ class DiaryMainCardFragment : Fragment() {
             })
         }
         scrollToPosition(currentPosition)
+    }
+
+    private fun handleItemDeletion(itemId: Long, deletedItem: DiaryMainDayData) {
+        // UI에서 항목 제거
+        updateDateAdapterAfterDeletion(deletedItem)
+
+        // 서버에 삭제 요청
+        sendDeleteRequest(itemId)
+    }
+
+    private fun sendDeleteRequest(itemId: Long) {
+        val apiService = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val request = bookmarkSetRequest(memoryId = itemId)
+        apiService.deleteDiary(request).enqueue(object : Callback<DeleteDiaryResponse> {
+            override fun onResponse(call: Call<DeleteDiaryResponse>, response: Response<DeleteDiaryResponse>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null && result.isSuccess) {
+                        Log.d("Delete", "메모리 삭제 성공")
+                        // 필요한 경우 UI 업데이트
+                    } else {
+                        Log.e("Delete", "메모리 삭제 실패: ${response.code()}")
+                    }
+                } else {
+                    Log.e("Delete", "메모리 삭제 실패: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<DeleteDiaryResponse>, t: Throwable) {
+                Log.e("Delete", "서버 통신 실패", t)
+            }
+        })
+    }
+
+    private fun sendBookmarkRequest(itemId: Long) {
+
+        val apiService = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val request = bookmarkSetRequest(memoryId = itemId)
+        apiService.sendBookmarkSet(request).enqueue(object : Callback<BookmarkSetResult> {
+            override fun onResponse(call: Call<BookmarkSetResult>, response: Response<BookmarkSetResult>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null && result.isSuccess) {
+                        Log.d("Bookmark", "북마크 업데이트 성공")
+                    } else {
+                        Log.e("Bookmark", "북마크 업데이트 실패: ${response.code()}")
+                    }
+                } else {
+                    Log.e("Bookmark", "북마크 업데이트 실패: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<BookmarkSetResult>, t: Throwable) {
+                Log.e("Bookmark", "서버 통신 실패", t)
+            }
+        })
+
     }
 
     private fun scrollToPosition(position: Int) {

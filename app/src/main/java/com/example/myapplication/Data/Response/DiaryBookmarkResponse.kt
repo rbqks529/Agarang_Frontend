@@ -15,3 +15,12 @@ data class BookmarkMemory(
     val id: Int,
     val imageUrl: String
 )
+
+data class BookmarkSetResult(
+    val isSuccess: Boolean,
+    val code: Int,
+    val message: String,
+    val result: List<Any>
+)
+
+

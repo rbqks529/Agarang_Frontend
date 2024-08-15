@@ -14,7 +14,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class CardViewAdapter(
     private var items: MutableList<DiaryMainDayData>,
-    private val onItemDeleted: (DiaryMainDayData) -> Unit
+    private val onItemDeleted: (Long, DiaryMainDayData) -> Unit,
+    private val onBookmarkClicked: (Long)->Unit
 ) : RecyclerView.Adapter<CardViewAdapter.ViewHolder>(), DiaryCardEditFragment.OnEditCompleteListener {
 
     inner class ViewHolder(val binding: CardviewItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -49,6 +50,7 @@ class CardViewAdapter(
                     if (updatedFavoriteStatus) R.drawable.ic_heart_red
                     else R.drawable.ic_heart_gray
                 )
+                onBookmarkClicked(item.id.toLong())
                 notifyItemChanged(position)
                 onItemDeleted(item)
             }
@@ -139,7 +141,7 @@ class CardViewAdapter(
         if (position != -1) {
             items.removeAt(position)
             notifyItemRemoved(position)
-            onItemDeleted(item)  // 삭제 시 콜백 호출
+            onItemDeleted(item.id.toLong(), item)  // 삭제 시 콜백 호출
             // 여기에 데이터베이스나 서버에서 실제로 데이터를 삭제하는 로직을 추가할 수 있습니다.
         }
     }
