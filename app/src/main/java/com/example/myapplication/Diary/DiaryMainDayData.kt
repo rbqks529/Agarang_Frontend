@@ -5,9 +5,10 @@ import java.io.Serializable
 
 data class DiaryMainDayData(
     val writer: String="Unknown",
-    var favorite: Boolean=false,
+    var bookmarked: Boolean=false,
     val hashTags: List<String> = emptyList(),
     val imageResId: String="",
+    val thumbnailUrl_1: String? = null,
 
     val id: Int=0,
     val date: String,

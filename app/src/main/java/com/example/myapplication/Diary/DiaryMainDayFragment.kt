@@ -69,7 +69,7 @@ class DiaryMainDayFragment : Fragment() {
             DiaryMainDayData(
                 id = memory.id,
                 date = memory.date,
-                imageResId = memory.imageUrl
+                imageResId = memory.imageUrl ?: ""
             )
         })
         diaryDayAdapter?.notifyDataSetChanged()

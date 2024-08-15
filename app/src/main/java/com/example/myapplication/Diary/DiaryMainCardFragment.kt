@@ -31,6 +31,9 @@ class DiaryMainCardFragment : Fragment() {
     private var diaryDataList: MutableList<DiaryMainDayData> = mutableListOf()
     private var currentPosition = 0
     private var scrollJob: Job? = null
+    // SnapHelper를 전역 변수로 선언
+    private val snapHelper = PagerSnapHelper()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDiaryMainCardBinding.inflate(inflater, container, false)
@@ -56,8 +59,6 @@ class DiaryMainCardFragment : Fragment() {
     private fun fetchDiaryCard(date: String) {
         val service = RetrofitService.retrofit.create(DiaryIF::class.java)
 
-        //테스트용 날짜.
-        val testDate = "20240701"
         service.getCardViewByDate("card", date).enqueue(object : Callback<DiaryCardResponse> {
             override fun onResponse(call: Call<DiaryCardResponse>, response: Response<DiaryCardResponse>) {
                 if (response.isSuccessful) {
@@ -94,7 +95,8 @@ class DiaryMainCardFragment : Fragment() {
                 content = memory.content,
                 hashTags = memory.hashTags,
                 date = formattedDate,
-                favorite = memory.favorite?: false,
+                bookmarked = memory.bookmarked?: false,
+                thumbnailUrl_1 = result.thumbNails.firstOrNull()
             )
         })
         // RecyclerView 초기화
@@ -133,7 +135,7 @@ class DiaryMainCardFragment : Fragment() {
             adapter = cardAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-            val snapHelper = PagerSnapHelper()
+            /*val snapHelper = PagerSnapHelper()*/
             snapHelper.attachToRecyclerView(this)
 
             val padding = resources.displayMetrics.widthPixels / 2 -
@@ -196,11 +198,9 @@ class DiaryMainCardFragment : Fragment() {
     }
 
     //다이어리 삭제 후 호출되는 함수
-    //(다이어리 삭제 후 카드 조회 API를 다시 호출하면 되지 않나..? 고민)
     private fun updateDateAdapterAfterDeletion(deletedItem: DiaryMainDayData) {
         // diaryDataList에서 삭제된 항목 제거
         diaryDataList.remove(deletedItem)
-
         // DateAdapter 업데이트
         dateAdapter.updateItems(diaryDataList)
 
