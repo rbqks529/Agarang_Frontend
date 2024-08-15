@@ -6,12 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.Setting.ChildInfoChangeFragment
 import com.example.myapplication.Setting.HomeSettingFragment
+import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentHomeBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -22,7 +21,7 @@ class HomeFragment: Fragment() {
     lateinit var binding: FragmentHomeBinding
     private var RecentDiaryAdapter: RecentDiaryAdapter?= null
     private var RecentDiaryDataList : ArrayList<RecentDiaryData> = arrayListOf()
-
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -73,6 +72,15 @@ class HomeFragment: Fragment() {
     }
 
     private fun initData(){
+        sharedViewModel.babyName.observe(viewLifecycleOwner){ name->
+            binding.tvDDayText.setText(name+"가 태어나기까지")
+        }
+        sharedViewModel.babyDday.observe(viewLifecycleOwner){ Dday->
+            if(Dday>0){ binding.tvDDay.setText("D-"+Dday) }
+            else if (Dday==0) { binding.tvDDay.setText("D-Day") }
+            else { binding.tvDDay.setText("") }
+
+        }
         RecentDiaryDataList.addAll(
             arrayListOf(
                 RecentDiaryData("내용1", R.drawable.recent_card_sample),

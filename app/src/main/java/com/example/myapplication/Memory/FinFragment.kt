@@ -16,7 +16,6 @@ import com.example.myapplication.Data.Request.MusicChoice
 import com.example.myapplication.Data.Request.selectMusicRequest
 import com.example.myapplication.Data.Response.SelectMusicResponse
 import com.example.myapplication.R
-import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.MemoryIF
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.SharedViewModel
@@ -29,7 +28,7 @@ class FinFragment : Fragment() {
 
     private lateinit var binding: FragmentFinBinding
     private var selectedOption: FrameLayout? = null
-    private val sharedViewModel:SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private var questionId: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
