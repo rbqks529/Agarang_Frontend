@@ -28,7 +28,7 @@ interface DiaryIF {
     @GET("api/memory")
     fun getBookmarkedMemories(@Query("viewType") viewType: String): Call<DiaryBookmarkResponse>
 
-<<<<<<< HEAD
+
     //카드 뷰를 date로 요청
     @GET("api/memory")
     fun getCardViewByDate(@Query("viewType") viewType: String, @Query("date") date: String): Call<DiaryCardResponse>
@@ -36,7 +36,7 @@ interface DiaryIF {
     // 카드 뷰를 ID로 요청
     @GET("api/memory")
     fun getCardViewById(@Query("viewType") viewType: String, @Query("id") id: String): Call<DiaryCardResponse>
-=======
+
     @POST("api/memory/bookmark")
     fun sendBookmarkSet(@Body memoryId: bookmarkSetRequest): Call <BookmarkSetResult>
 
@@ -48,5 +48,4 @@ interface DiaryIF {
 
     @PUT("api/memory")
     fun editMemory(@Body request: EditMemoryRequest): Call<EditMemoryResponse>
->>>>>>> de49875d147bf6aacf8cb294a8565abe0bfb6832
 }

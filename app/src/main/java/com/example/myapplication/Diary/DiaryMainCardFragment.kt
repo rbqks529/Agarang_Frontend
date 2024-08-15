@@ -9,14 +9,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-<<<<<<< HEAD
+
 import com.example.myapplication.Data.Response.DiaryCardResponse
 import com.example.myapplication.Data.Response.Result
-=======
+
+
 import com.example.myapplication.Data.Request.bookmarkSetRequest
 import com.example.myapplication.Data.Response.BookmarkSetResult
 import com.example.myapplication.Data.Response.DeleteDiaryResponse
->>>>>>> de49875d147bf6aacf8cb294a8565abe0bfb6832
+
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.RetrofitService
@@ -48,7 +49,6 @@ class DiaryMainCardFragment : Fragment() {
         }
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -127,25 +127,30 @@ class DiaryMainCardFragment : Fragment() {
             // 날짜가 선택되었을 때 API 호출
             fetchDiaryCard(selectedDate)
         }
-
         binding.rvDiaryDate.apply {
             adapter = dateAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
-<<<<<<< HEAD
-        cardAdapter = CardViewAdapter(diaryDataList) { deletedItem ->
+
+        /*cardAdapter = CardViewAdapter(diaryDataList) { deletedItem ->
             // 항목이 삭제되었을 때 호출되는 콜백
             updateDateAdapterAfterDeletion(deletedItem)
-        }
-
-=======
+        }*/
 
         cardAdapter = CardViewAdapter(
             diaryDataList,
-            { itemId, deletedItem -> handleItemDeletion(itemId, deletedItem) },
-            { itemId -> sendBookmarkRequest(itemId) }
+            onItemDeleted = { itemId, deletedItem ->
+                // 항목이 삭제되었을 때 호출되는 콜백
+                handleItemDeletion(itemId, deletedItem)
+            },
+            onBookmarkClicked = { itemId ->
+                // 북마크 클릭 시 호출되는 콜백
+                sendBookmarkRequest(itemId)
+            }
         )
->>>>>>> de49875d147bf6aacf8cb294a8565abe0bfb6832
+
+
+
         binding.rvDiaryCardView.apply {
             adapter = cardAdapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -172,6 +177,7 @@ class DiaryMainCardFragment : Fragment() {
                 }
             })
         }
+
         scrollToPosition(currentPosition)
     }
 
@@ -270,6 +276,7 @@ class DiaryMainCardFragment : Fragment() {
     }
 
     //다이어리 삭제 후 호출되는 함수
+    //(다이어리 삭제 후 카드 조회 API를 다시 호출하면 되지 않나..? 고민)
     private fun updateDateAdapterAfterDeletion(deletedItem: DiaryMainDayData) {
         // diaryDataList에서 삭제된 항목 제거
         diaryDataList.remove(deletedItem)
@@ -294,7 +301,6 @@ class DiaryMainCardFragment : Fragment() {
         if (diaryDataList.isNotEmpty()) {
             binding.rvDiaryCardView.scrollToPosition(currentPosition)
         }
-
     }
 
     private fun updateDateSelection(position: Int) {
