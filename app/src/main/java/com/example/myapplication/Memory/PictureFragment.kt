@@ -96,7 +96,7 @@ class PictureFragment : Fragment() {
     }
 
     private fun sendImageToServer(body: MultipartBody.Part) {
-        val service = RetrofitService.retrofit.create(MemoryIF::class.java)
+        val service = RetrofitService.createRetrofit(requireContext()).create(MemoryIF::class.java)
         service.sendImageToQuestion(body).enqueue(object : Callback<MemoryImageToQuestionResponse> {
             override fun onResponse(
                 call: Call<MemoryImageToQuestionResponse>,

@@ -36,7 +36,8 @@ class DiaryMainDayFragment : Fragment() {
     }
 
     private fun fetchDailyMemories() {
-        val service = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val service = RetrofitService.createRetrofit(requireContext()).create(DiaryIF::class.java)
+
         val dates = listOf("20240701", "20240702", "20240703", "20240704", "20240705")
         for (date in dates){
             service.getDailyMemories("daily", date).enqueue(object : Callback<DiaryDayResponse> {
