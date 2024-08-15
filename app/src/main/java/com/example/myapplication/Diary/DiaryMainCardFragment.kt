@@ -190,7 +190,7 @@ class DiaryMainCardFragment : Fragment() {
     }
 
     private fun sendDeleteRequest(itemId: Long) {
-        val apiService = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val apiService = RetrofitService.createRetrofit(requireContext()).create(DiaryIF::class.java)
         val request = bookmarkSetRequest(memoryId = itemId)
         apiService.deleteDiary(request).enqueue(object : Callback<DeleteDiaryResponse> {
             override fun onResponse(call: Call<DeleteDiaryResponse>, response: Response<DeleteDiaryResponse>) {
@@ -215,7 +215,7 @@ class DiaryMainCardFragment : Fragment() {
 
     private fun sendBookmarkRequest(itemId: Long) {
 
-        val apiService = RetrofitService.retrofit.create(DiaryIF::class.java)
+        val apiService = RetrofitService.createRetrofit(requireContext()).create(DiaryIF::class.java)
         val request = bookmarkSetRequest(memoryId = itemId)
         apiService.sendBookmarkSet(request).enqueue(object : Callback<BookmarkSetResult> {
             override fun onResponse(call: Call<BookmarkSetResult>, response: Response<BookmarkSetResult>) {
