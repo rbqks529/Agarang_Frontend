@@ -150,7 +150,7 @@ class DeepQuestionFragment : Fragment() {
 
 
     private fun sendMemoryDetailsToServer(id: String, text: String) {
-        val service = RetrofitService.retrofit.create(MemoryIF::class.java)
+        val service = RetrofitService.createRetrofit(requireContext()).create(MemoryIF::class.java)
         val request = Memory2Request(id, text)
 
         service.sendMemoryDetails(request).enqueue(object : Callback<Memory2Response> {

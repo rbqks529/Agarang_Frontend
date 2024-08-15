@@ -114,7 +114,7 @@ class FinFragment : Fragment() {
 
 
         if (instrument!=null && genre !=null && mood!=null && tempo!=null){ //여기 Null 문제 때문에 오류
-            val apiService=RetrofitService.retrofit.create(MemoryIF::class.java)
+            val apiService=RetrofitService.createRetrofit(requireContext()).create(MemoryIF::class.java)
             val music= MusicChoice(
                 instrument=instrument,
                 genre=genre,
