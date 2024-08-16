@@ -19,7 +19,7 @@ class MusicMainAdapter(val items:ArrayList<MusicMainData>, private val fragmentA
     inner class ViewHolder (val binding:MusicItemBinding):RecyclerView.ViewHolder(binding.root){
         fun bind(item: MusicMainData){
             Glide.with(binding.ivRvCover1.context)
-                .load(item.musicImgId)
+                .load(item.musicImgUrl)
                 .into(binding.ivRvCover1)
 
             binding.tvCover1.text=item.musicContent
@@ -31,13 +31,14 @@ class MusicMainAdapter(val items:ArrayList<MusicMainData>, private val fragmentA
             }
 
             binding.ivRvCover1.setOnClickListener{
-                val albumTitle = binding.tvCover1.text.toString()
-                openMusicAlbumFragment(albumTitle)
+                val playlistId=item.playlistId
+
+                openMusicAlbumFragment(playlistId)
             }
         }
-        private fun openMusicAlbumFragment(albumTitle: String) {
+        private fun openMusicAlbumFragment(playlistId: Long) {
             val bundle = Bundle()
-            bundle.putString("albumTitle", albumTitle)
+            bundle.putLong("playlistId",playlistId)
 
             val musicAlbumFragment = MusicAlbumFragment()
             musicAlbumFragment.arguments = bundle

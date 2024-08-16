@@ -49,7 +49,7 @@ class CardViewAdapter(
                 )
                 onBookmarkClicked(item.id.toLong())
                 notifyItemChanged(position)
-                onItemDeleted(item)
+                onItemDeleted(item.id.toLong(), item)
             }
 
             ivOption.setOnClickListener {

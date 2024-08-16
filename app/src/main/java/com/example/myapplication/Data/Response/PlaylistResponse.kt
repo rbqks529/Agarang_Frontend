@@ -1,5 +1,6 @@
 package com.example.myapplication.Data.Response
 
+//플레이리스트 전체 조회
 data class AllPlaylistResponse(
     val code:Int,
     val status:Int,
@@ -16,3 +17,29 @@ data class Playlist(
     val name: String,
     val imageUrl:String
 )
+
+//플레이 리스트 별 트랙 조회
+data class TrackResponse(
+    val isSuccess:Boolean,
+    val code: Int,
+    val message: String,
+    val result:TrackResult
+)
+
+data class TrackResult(
+    val playlists: Playlist,
+    val tracks:List<Tracks>,
+    val totalTrackCount:Int,
+    val totalTrackTime:Int
+)
+
+data class Tracks(
+    val memoryId:Int,
+    val imageUrl: String,
+    val musicTitle:String,
+    val musicUrl:String,
+    val hashTags:List<String>,
+    val bookmarked:Boolean
+)
+
+

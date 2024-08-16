@@ -35,7 +35,8 @@ class MusicFragment : Fragment() {
 
     private fun playlistService() {
         val playlistService=retrofit.create(PlaylistIF::class.java)
-        playlistService.getAllPlaylist().enqueue(object :Callback<AllPlaylistResponse>{
+        val token="eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6IkF1dGhvcml6YXRpb24iLCJwcm92aWRlcklkIjoiZ29vZ2xlXzExNzU2OTQ2OTMyNzU3MjM0NDQ5OCIsInJvbGUiOiJST0xFX1VTRVIiLCJtZW1iZXJJZCI6NSwiaWF0IjoxNzIzNzE4MDg0LCJleHAiOjE3MjM3MjE2ODR9.rxkv-D2RAu-ukUzan969fqYv5NzqD4FXNm037T7k0MY"
+        playlistService.getAllPlaylist(token).enqueue(object :Callback<AllPlaylistResponse>{
             override fun onResponse(
                 call: Call<AllPlaylistResponse>,
                 response: Response<AllPlaylistResponse>
@@ -47,7 +48,8 @@ class MusicFragment : Fragment() {
                         for (playlist in it){
                             itemList.add(
                                 MusicMainData(
-                                    musicImgId=playlist.imageUrl,
+                                    playlistId = playlist.id.toLong(),
+                                    musicImgUrl =playlist.imageUrl,
                                     musicContent=playlist.name
                                 )
                             )
