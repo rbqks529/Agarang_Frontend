@@ -10,9 +10,7 @@ import retrofit2.http.Query
 
 interface PlaylistIF {
     @GET("api/playlists")
-    fun getAllPlaylist(
-        @Header("Authorization") token:String,
-    ): Call<AllPlaylistResponse>
+    fun getAllPlaylist(): Call<AllPlaylistResponse>
 
     @GET("api/playlists/{playlistId}/track")
     fun getTracklist(
