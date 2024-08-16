@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.Data.Response.TrackResponse
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.PlaylistIF
-import com.example.myapplication.Retrofit.RetrofitService.retrofit
+import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentMusicAlbumBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,7 +36,7 @@ class MusicAlbumFragment : Fragment() {
     }
 
     private fun apiService(playlistId:Long) {
-        val apiService=retrofit.create(PlaylistIF::class.java)
+        val apiService = RetrofitService.createRetrofit(requireContext()).create(PlaylistIF::class.java)
         val response=apiService.getTracklist(playlistId)
         response.enqueue(object :Callback<TrackResponse>{
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {

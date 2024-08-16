@@ -9,18 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-<<<<<<< HEAD
 import com.example.myapplication.ChangeChar2Fragment
 import com.example.myapplication.Data.Response.HomeSettingResponse
 import com.example.myapplication.Data.Response.Result
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.HomeIF
 import com.example.myapplication.Retrofit.RetrofitService
-=======
 import androidx.fragment.app.activityViewModels
-import com.example.myapplication.R
 import com.example.myapplication.SharedViewModel
->>>>>>> de49875d147bf6aacf8cb294a8565abe0bfb6832
 import com.example.myapplication.databinding.FragmentHomeSettingBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -74,7 +70,7 @@ class HomeSettingFragment : Fragment() {
     }
 
     private fun fetchBabyInfo() {
-        val service = RetrofitService.retrofit.create(HomeIF::class.java)
+        val service = RetrofitService.createRetrofit(requireContext()).create(HomeIF::class.java)
 
         service.getSettingData().enqueue(object : Callback<HomeSettingResponse> {
             override fun onResponse(

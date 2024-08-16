@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.Data.Response.AllPlaylistResponse
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.PlaylistIF
-import com.example.myapplication.Retrofit.RetrofitService.retrofit
+import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentMusicBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,7 +34,8 @@ class MusicFragment : Fragment() {
     }
 
     private fun playlistService() {
-        val playlistService=retrofit.create(PlaylistIF::class.java)
+        val playlistService = RetrofitService.createRetrofit(requireContext()).create(PlaylistIF::class.java)
+
         val token="eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6IkF1dGhvcml6YXRpb24iLCJwcm92aWRlcklkIjoiZ29vZ2xlXzExNzU2OTQ2OTMyNzU3MjM0NDQ5OCIsInJvbGUiOiJST0xFX1VTRVIiLCJtZW1iZXJJZCI6NSwiaWF0IjoxNzIzNzE4MDg0LCJleHAiOjE3MjM3MjE2ODR9.rxkv-D2RAu-ukUzan969fqYv5NzqD4FXNm037T7k0MY"
         playlistService.getAllPlaylist(token).enqueue(object :Callback<AllPlaylistResponse>{
             override fun onResponse(

@@ -12,12 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myapplication.Data.Response.HomeResponse
 import com.example.myapplication.R
-<<<<<<< HEAD
+import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.HomeIF
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.Setting.ChildInfoChangeFragment
-=======
->>>>>>> de49875d147bf6aacf8cb294a8565abe0bfb6832
 import com.example.myapplication.Setting.HomeSettingFragment
 import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentHomeBinding
@@ -87,7 +85,7 @@ class HomeFragment: Fragment() {
     }
 
     private fun fetchRecentDiary(){
-        val service = RetrofitService.retrofit.create(HomeIF::class.java)
+        val service = RetrofitService.createRetrofit(requireContext()).create(HomeIF::class.java)
 
         service.getHomeData().enqueue(object : Callback<HomeResponse> {
             override fun onResponse(call: Call<HomeResponse>, response: Response<HomeResponse>) {
@@ -148,8 +146,6 @@ class HomeFragment: Fragment() {
 
     }
 
-<<<<<<< HEAD
-=======
     private fun initData(){
         sharedViewModel.babyName.observe(viewLifecycleOwner){ name->
             binding.tvDDayText.setText(name+"가 태어나기까지")
@@ -162,11 +158,10 @@ class HomeFragment: Fragment() {
         }
         RecentDiaryDataList.addAll(
             arrayListOf(
-                RecentDiaryData("내용1", R.drawable.recent_card_sample),
-                RecentDiaryData("내용2", R.drawable.recent_card_sample),
-                RecentDiaryData("내용3", R.drawable.recent_card_sample)
+                RecentDiaryData("내용1", R.drawable.recent_card_sample.toString()),
+                RecentDiaryData("내용2", R.drawable.recent_card_sample.toString()),
+                RecentDiaryData("내용3", R.drawable.recent_card_sample.toString())
             )
         )
     }
->>>>>>> de49875d147bf6aacf8cb294a8565abe0bfb6832
 }
