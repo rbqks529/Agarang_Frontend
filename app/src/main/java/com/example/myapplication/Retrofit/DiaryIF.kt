@@ -40,7 +40,6 @@ interface DiaryIF {
     @POST("api/memory/bookmark")
     fun sendBookmarkSet(@Body memoryId: bookmarkSetRequest): Call <BookmarkSetResult>
 
-
     /*@DELETE("/api/memory")
     fun deleteDiary(@Body memoryId: bookmarkSetRequest): Call <BookmarkDeleteDiary>*/
 
@@ -49,5 +48,4 @@ interface DiaryIF {
 
     @PUT("api/memory")
     fun editMemory(@Body request: EditMemoryRequest): Call<EditMemoryResponse>
-
 }
