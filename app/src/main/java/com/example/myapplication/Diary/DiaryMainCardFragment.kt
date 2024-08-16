@@ -63,7 +63,8 @@ class DiaryMainCardFragment : Fragment() {
     }
 
     private fun fetchDiaryCard(date: String) {
-        val service = RetrofitService.retrofit.create(DiaryIF::class.java)
+
+        val service = RetrofitService.createRetrofit(requireContext()).create(DiaryIF::class.java)
 
         service.getCardViewByDate("card", date).enqueue(object : Callback<DiaryCardResponse> {
             override fun onResponse(call: Call<DiaryCardResponse>, response: Response<DiaryCardResponse>) {
