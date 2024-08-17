@@ -7,17 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myapplication.Data.Response.HomeResponse
 import com.example.myapplication.R
-<<<<<<< HEAD
 import com.example.myapplication.Retrofit.HomeIF
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.Setting.ChildInfoChangeFragment
-=======
->>>>>>> de49875d147bf6aacf8cb294a8565abe0bfb6832
+
 import com.example.myapplication.Setting.HomeSettingFragment
 import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentHomeBinding
@@ -35,7 +32,6 @@ class HomeFragment: Fragment() {
     lateinit var binding: FragmentHomeBinding
     private var RecentDiaryAdapter: RecentDiaryAdapter?= null
     private var RecentDiaryDataList : ArrayList<RecentDiaryData> = arrayListOf()
-    private val sharedViewModel: SharedViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -87,7 +83,7 @@ class HomeFragment: Fragment() {
     }
 
     private fun fetchRecentDiary(){
-        val service = RetrofitService.retrofit.create(HomeIF::class.java)
+        val service = RetrofitService.createRetrofit(requireContext()).create(HomeIF::class.java)
 
         service.getHomeData().enqueue(object : Callback<HomeResponse> {
             override fun onResponse(call: Call<HomeResponse>, response: Response<HomeResponse>) {
@@ -147,26 +143,4 @@ class HomeFragment: Fragment() {
         binding.rvRecentCard.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
     }
-
-<<<<<<< HEAD
-=======
-    private fun initData(){
-        sharedViewModel.babyName.observe(viewLifecycleOwner){ name->
-            binding.tvDDayText.setText(name+"가 태어나기까지")
-        }
-        sharedViewModel.babyDday.observe(viewLifecycleOwner){ Dday->
-            if(Dday>0){ binding.tvDDay.setText("D-"+Dday) }
-            else if (Dday==0) { binding.tvDDay.setText("D-Day") }
-            else { binding.tvDDay.setText("") }
-
-        }
-        RecentDiaryDataList.addAll(
-            arrayListOf(
-                RecentDiaryData("내용1", R.drawable.recent_card_sample),
-                RecentDiaryData("내용2", R.drawable.recent_card_sample),
-                RecentDiaryData("내용3", R.drawable.recent_card_sample)
-            )
-        )
-    }
->>>>>>> de49875d147bf6aacf8cb294a8565abe0bfb6832
 }
