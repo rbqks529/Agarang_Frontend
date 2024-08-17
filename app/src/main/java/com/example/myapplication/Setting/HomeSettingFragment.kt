@@ -9,14 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+
 import com.example.myapplication.ChangeChar2Fragment
 import com.example.myapplication.Data.Response.HomeSettingResponse
 import com.example.myapplication.Data.Response.Result
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.HomeIF
 import com.example.myapplication.Retrofit.RetrofitService
-import androidx.fragment.app.activityViewModels
-import com.example.myapplication.SharedViewModel
+
 import com.example.myapplication.databinding.FragmentHomeSettingBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,7 +28,6 @@ import java.util.Locale
 
 class HomeSettingFragment : Fragment() {
     lateinit var binding: FragmentHomeSettingBinding
-    private val sharedViewModel: SharedViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
