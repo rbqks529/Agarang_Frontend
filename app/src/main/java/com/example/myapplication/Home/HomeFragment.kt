@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myapplication.Data.Response.HomeResponse
 import com.example.myapplication.R
+
+
+import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.HomeIF
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.Setting.ChildInfoChangeFragment
@@ -143,4 +146,5 @@ class HomeFragment: Fragment() {
         binding.rvRecentCard.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
     }
+
 }

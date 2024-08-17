@@ -7,8 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.Data.Response.TrackResponse
 import com.example.myapplication.R
+import com.example.myapplication.Retrofit.PlaylistIF
+import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentMusicAlbumBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MusicAlbumFragment : Fragment() {
     private lateinit var binding: FragmentMusicAlbumBinding
@@ -21,10 +27,31 @@ class MusicAlbumFragment : Fragment() {
     ): View? {
         binding = FragmentMusicAlbumBinding.inflate(inflater, container, false)
 
+        val playlistId=arguments?.getLong("playlistId")
+        playlistId?.let { apiService(it) }
         populateItemList()
         setupRecyclerView()
 
         return binding.root
+    }
+
+    private fun apiService(playlistId:Long) {
+        val apiService = RetrofitService.createRetrofit(requireContext()).create(PlaylistIF::class.java)
+        val response=apiService.getTracklist(playlistId)
+        response.enqueue(object :Callback<TrackResponse>{
+            override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
+                if(response.isSuccessful){
+
+                }else{
+                    Log.e("MusicAlbumFragment","response is not successful")
+                }
+            }
+
+            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                Log.e("MusicAlbumFragment","network error")
+            }
+
+        })
     }
 
     private fun populateItemList() {
