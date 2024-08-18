@@ -1,11 +1,15 @@
 package com.example.myapplication.Retrofit
 
+import com.example.myapplication.Data.Request.CharacterUpdateRequest
 import com.example.myapplication.Data.Response.HomeChangeCharResponse
+import com.example.myapplication.Data.Response.HomeCharUpdateResponse
 import com.example.myapplication.Data.Response.HomeChildResponse
 import com.example.myapplication.Data.Response.HomeResponse
 import com.example.myapplication.Data.Response.HomeSettingResponse
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 
 interface HomeIF {
     //홈 메인
@@ -23,4 +27,8 @@ interface HomeIF {
     //홈 캐릭터 조회
     @GET("api/home/setting/character")
     fun getCharacterData(): Call<HomeChangeCharResponse>
+
+    //홈 캐릭터 수정
+    @PATCH("/api/home/setting/character")
+    fun updateCharacter(@Body requestBody: CharacterUpdateRequest): Call<HomeCharUpdateResponse>
 }

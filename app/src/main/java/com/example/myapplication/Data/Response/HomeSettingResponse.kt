@@ -10,6 +10,7 @@ data class HomeSettingResponse(
 ){data class Result(
         val babyName: String,
         val dueDate: String,
-        val dday: Int
+        val dday: Int,
+        val characterImageUrl: String
     )
 }
