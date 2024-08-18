@@ -16,6 +16,7 @@ object RetrofitService {
     private const val BASE_URL = "https://www.agarang.site/"
     private val cookieJar = PersistentCookieJar()
 
+
     private fun createOkHttpClient(context: Context): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {

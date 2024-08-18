@@ -7,15 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myapplication.Data.Response.HomeResponse
 import com.example.myapplication.R
+
+
 import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.HomeIF
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.Setting.ChildInfoChangeFragment
+
 import com.example.myapplication.Setting.HomeSettingFragment
 import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentHomeBinding
@@ -33,7 +35,6 @@ class HomeFragment: Fragment() {
     lateinit var binding: FragmentHomeBinding
     private var RecentDiaryAdapter: RecentDiaryAdapter?= null
     private var RecentDiaryDataList : ArrayList<RecentDiaryData> = arrayListOf()
-    private val sharedViewModel: SharedViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -130,10 +131,10 @@ class HomeFragment: Fragment() {
     }
 
 
-    private fun updateRecyclerView(memoryUrls: List<String>) {
+    private fun updateRecyclerView(memoryIds: List<String>) {
         // 서버에서 받아온 memoryUrls을 리사이클러뷰에 반영
         RecentDiaryDataList.clear()  // 기존 데이터 초기화
-        RecentDiaryDataList.addAll(memoryUrls.map { url ->
+        RecentDiaryDataList.addAll(memoryIds.map { url ->
             RecentDiaryData("내용", url) // 내용은 임의로 설정
         })
         RecentDiaryAdapter?.notifyDataSetChanged() // 데이터 변경을 어댑터에 알림
@@ -146,22 +147,4 @@ class HomeFragment: Fragment() {
 
     }
 
-    private fun initData(){
-        sharedViewModel.babyName.observe(viewLifecycleOwner){ name->
-            binding.tvDDayText.setText(name+"가 태어나기까지")
-        }
-        sharedViewModel.babyDday.observe(viewLifecycleOwner){ Dday->
-            if(Dday>0){ binding.tvDDay.setText("D-"+Dday) }
-            else if (Dday==0) { binding.tvDDay.setText("D-Day") }
-            else { binding.tvDDay.setText("") }
-
-        }
-        RecentDiaryDataList.addAll(
-            arrayListOf(
-                RecentDiaryData("내용1", R.drawable.recent_card_sample.toString()),
-                RecentDiaryData("내용2", R.drawable.recent_card_sample.toString()),
-                RecentDiaryData("내용3", R.drawable.recent_card_sample.toString())
-            )
-        )
-    }
 }
