@@ -43,11 +43,8 @@
         android:textColor="#818181"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="156dp"
-        android:layout_marginEnd="309dp"
-        />
+        android:layout_marginTop="156dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_family_info"
