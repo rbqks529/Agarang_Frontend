@@ -1,6 +1,10 @@
 package com.example.myapplication.Retrofit
 
+
 import com.example.myapplication.Data.Request.CharacterUpdateRequest
+
+import com.example.myapplication.Data.Response.FamilyResponse
+
 import com.example.myapplication.Data.Response.HomeChangeCharResponse
 import com.example.myapplication.Data.Response.HomeCharUpdateResponse
 import com.example.myapplication.Data.Response.HomeChildResponse
@@ -28,7 +32,13 @@ interface HomeIF {
     @GET("api/home/setting/character")
     fun getCharacterData(): Call<HomeChangeCharResponse>
 
+
     //홈 캐릭터 수정
     @PATCH("/api/home/setting/character")
     fun updateCharacter(@Body requestBody: CharacterUpdateRequest): Call<HomeCharUpdateResponse>
+
+    //홈 가족정보 조회
+    @GET("/api/home/setting/family")
+    fun getFamilyInfo(): Call<FamilyResponse>
+
 }
