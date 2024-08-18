@@ -16,9 +16,9 @@ import com.example.myapplication.databinding.FragmentAlbumPlayBinding
 class AlbumPlayFragment : Fragment() {
     lateinit var binding:FragmentAlbumPlayBinding
     private var itemList: ArrayList<MusicAlbumData> = arrayListOf()
+
     private var musicAlbumPlayAdapter: MusicPlayAdapter? = null
     private var currentTrack:MusicAlbumData?=null
-
     private val handler=Handler(Looper.getMainLooper())
     private var updateSeekBarkRunnable:Runnable?=null
 
@@ -56,11 +56,11 @@ class AlbumPlayFragment : Fragment() {
 
 
         // 음악 실행되어야 함 //
-        binding.ivPlayBackIc.setOnClickListener {
+        binding.ivPlayStopIc.setOnClickListener {
             musicAlbumPlayAdapter!!.playPauseMusic()
             togglePlayPause()
         }
-        binding.ivPlayStopIc.setOnClickListener {
+        binding.ivPlayBackIc.setOnClickListener {
             currentTrack?.let {
                 musicAlbumPlayAdapter!!.playNextTrack(it)
             }
@@ -87,14 +87,14 @@ class AlbumPlayFragment : Fragment() {
 
     private fun togglePlayPause() {
         if(musicAlbumPlayAdapter?.isPlaying()==true){
-            musicAlbumPlayAdapter?.pauseMusic()
-            binding.ivPlayStopIc.isVisible=false
-            binding.ivPlayStartIc.isVisible=true
-
-        }else{
-            musicAlbumPlayAdapter?.playMusic()
+            //musicAlbumPlayAdapter?.pauseMusic()
             binding.ivPlayStopIc.isVisible=true
             binding.ivPlayStartIc.isVisible=false
+
+        }else{
+            //musicAlbumPlayAdapter?.playMusic()
+            binding.ivPlayStopIc.isVisible=false
+            binding.ivPlayStartIc.isVisible=true
         }
     }
 
