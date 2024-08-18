@@ -52,7 +52,7 @@ class LoginStartFragment : Fragment() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Log.d("WebView", "Loading URL: $url")
                 url?.let {
-                    if (it.equals("https://www.agarang.site")) {
+                    if (it.equals("https://www.agarang.site/")) {
                         // 로그인 성공 후 리다이렉트된 URL 감지
                         handleLoginSuccess(it)
                         return true

@@ -79,9 +79,8 @@
         android:fontFamily="@font/pretendard700"
         android:textSize="22sp"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/et_birth_name"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="140dp"/>
 
     <TextView
