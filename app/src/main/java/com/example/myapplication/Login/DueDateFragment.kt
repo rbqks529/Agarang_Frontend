@@ -6,23 +6,31 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.text.InputType
 import androidx.core.content.ContextCompat
 import com.example.myapplication.R
 import com.example.myapplication.Setting.CalendarFragment
 import com.example.myapplication.databinding.FragmentDueDateBinding
 
-class DueDateFragment : Fragment(),CalendarFragment.OnDateSelectedListener {
-    lateinit var binding:FragmentDueDateBinding
+class DueDateFragment : Fragment(), CalendarFragment.OnDateSelectedListener {
+    lateinit var binding: FragmentDueDateBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=FragmentDueDateBinding.inflate(inflater,container,false)
+        binding = FragmentDueDateBinding.inflate(inflater, container, false)
+
+        // EditText를 클릭해도 키보드가 나오지 않도록 설정
+        binding.etDueDate.inputType = InputType.TYPE_NULL
+
+        // EditText 클릭 시 DatePicker 표시
+        binding.etDueDate.setOnClickListener {
+            showDatePicker()
+        }
+
         binding.ivIcCalendar.setOnClickListener {
-            val calendarFragment = CalendarFragment()
-            calendarFragment.setTargetFragment(this, 0)
-            calendarFragment.show(parentFragmentManager, "datePicker")
+            showDatePicker()
         }
 
         // 초기에 다음 버튼을 비활성화
@@ -58,6 +66,12 @@ class DueDateFragment : Fragment(),CalendarFragment.OnDateSelectedListener {
         return binding.root
     }
 
+    private fun showDatePicker() {
+        val calendarFragment = CalendarFragment()
+        calendarFragment.setTargetFragment(this, 0)
+        calendarFragment.show(parentFragmentManager, "datePicker")
+    }
+
     private fun updateNextButtonState() {
         val isDateEntered = binding.etDueDate.text.toString().trim().isNotEmpty()
         binding.btnNext.isEnabled = isDateEntered
@@ -65,15 +79,14 @@ class DueDateFragment : Fragment(),CalendarFragment.OnDateSelectedListener {
         if (isDateEntered) {
             binding.btnNext.setTextColor(ContextCompat.getColor(requireContext(), R.color.orange))
         } else {
-            // 비활성화 상태의 색상 (예: 회색)i
+            // 비활성화 상태의 색상 (예: 회색)
             binding.btnNext.setTextColor(Color.parseColor("#A1A1A1"))
         }
     }
 
-    override fun onDateSelected(date:String){
-        binding.etDueDate.setText("  "+date)
+    override fun onDateSelected(date: String) {
+        binding.etDueDate.setText("  " + date)
         binding.etDueDate.setTextColor(Color.BLACK)
         updateNextButtonState()
     }
-
 }

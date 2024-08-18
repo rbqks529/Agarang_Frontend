@@ -25,4 +25,7 @@ interface LoginIF {
 
     @POST("/api/login/process-baby")
     fun participateFamily(@Body request: FamilyRoleRequest): Call<CommonResponse>
+
+    @POST("/reissue")
+    fun reissueToken(): Call<ResponseBody>
 }

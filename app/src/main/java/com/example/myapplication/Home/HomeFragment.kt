@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -78,11 +79,27 @@ class HomeFragment: Fragment() {
             binding.ivBabyTiger.setImageResource(selectedChar)
         }*/
 
+        // 모든 관련 뷰를 invisible로 설정
+        setViewsVisibility(View.INVISIBLE)
+
+        binding.customCircleBarView.setProgress(0f)  // 50% 진행 (예시)
         fetchRecentDiary()
         initRecyclerView()
 
 
         return binding.root
+    }
+
+    private fun setViewsVisibility(visibility: Int) {
+        binding.tvToday.visibility = visibility
+        binding.tvDDayText.visibility = visibility
+        binding.tvDDay.visibility = visibility
+        binding.tvSpeechBubble.visibility = visibility
+        binding.customCircleBarView.visibility = visibility
+        binding.ivBabyTiger.visibility = visibility
+        binding.rvRecentCard.visibility = visibility
+        binding.ivRectangle1.visibility = visibility
+        binding.ivRectangle2.visibility = visibility
     }
 
     private fun fetchRecentDiary(){
@@ -125,15 +142,30 @@ class HomeFragment: Fragment() {
         binding.tvDDay.text = "D-${result.dday}"
         binding.tvSpeechBubble.text = result.speechBubble
 
+        // D-day를 정수로 변환
+        val dday = result.dday
+
+        // 280일 기준으로 progress 계산
+        val progress = ((280 - dday) / 280.0f) * 360f
+        binding.customCircleBarView.setProgress(progress)
+
         // 이미지 URL을 이미지뷰에 로드 (Glide, Picasso 등을 사용할 수 있습니다)
+
+        activity?.let {
+            Glide.with(this).load(result.characterUrl).into(binding.ivBabyTiger)
+        }
+
+//        setViewsVisibility(View.VISIBLE)
+//
 //        Glide.with(this)
 //            .load(result.characterUrl)
 //            .into(binding.ivBabyTiger)
-        if (isAdded) {
-            Glide.with(requireContext())
-                .load(result.characterUrl)
-                .into(binding.ivBabyTiger)
-        }
+//        if (isAdded) {
+//            Glide.with(requireContext())
+//                .load(result.characterUrl)
+//                .into(binding.ivBabyTiger)
+//       }
+
 
     }
 
@@ -153,5 +185,7 @@ class HomeFragment: Fragment() {
         binding.rvRecentCard.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
     }
+
+
 
 }

@@ -1,6 +1,7 @@
 package com.example.myapplication.Login
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,25 +16,42 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import com.example.myapplication.MainActivity
+import com.example.myapplication.Memory.MemoryMainActivity
 import com.example.myapplication.R
-import com.example.myapplication.Retrofit.LoginIF
+import com.example.myapplication.Retrofit.AuthInterceptor
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentLoginStartBinding
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class LoginStartFragment : Fragment() {
+
+class LoginStartFragment : Fragment(), AuthInterceptor.AuthCallback {
 
     private lateinit var binding: FragmentLoginStartBinding
     private lateinit var cookieManager: CookieManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        RetrofitService.setAuthCallback(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginStartBinding.inflate(inflater, container, false)
+
+        // 저장된 토큰 확인
+        val sharedPreferences = requireActivity().getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        val savedToken = sharedPreferences.getString("auth_token", null)
+
+        if (savedToken != null) {
+            // 토큰이 존재하면 메인 액티비티로 이동
+            val intent = Intent(activity, MainActivity::class.java)
+            startActivity(intent)
+            activity?.finish() // 현재 액티비티 종료
+
+            return binding.root
+        }
 
         binding.icLoginKakao.setOnClickListener {
             authorizeKakao()
@@ -52,7 +70,8 @@ class LoginStartFragment : Fragment() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Log.d("WebView", "Loading URL: $url")
                 url?.let {
-                    if (it.equals("https://www.agarang.site/api/login/success")) {
+
+                    if (it == "https://www.agarang.site/api/login/success") {
                         // 로그인 성공 후 리다이렉트된 URL 감지
                         handleLoginSuccess(it)
                         return true
@@ -118,15 +137,19 @@ class LoginStartFragment : Fragment() {
         binding.webView.visibility = View.GONE
 
         val cookies = cookieManager.getCookie(url)
-        val authToken = extractAuthToken(cookies)
-        if (authToken != null) {
-            saveAuthToken(authToken)
-            Log.d("토큰 확인", "Received JWT: $authToken")
+        val (accessToken, refreshToken) = extractTokens(cookies)
+
+        if (accessToken != null && refreshToken != null) {
+            saveAuthToken(accessToken, refreshToken)
+            Log.d("토큰 확인", "Received ACCESS: $accessToken, REFRESH: $refreshToken")
 
             // 쿠키를 CookieJar에 추가
-            RetrofitService.addCookie(url, "ACCESS=$authToken")
+            RetrofitService.createRetrofit(requireContext())
+            RetrofitService.addCookie(url, "ACCESS=$accessToken")
+            RetrofitService.addCookie(url, "REFRESH=$refreshToken")
+
         } else {
-            Log.e("토큰 에러", "Authorization token not found in cookies: $cookies")
+            Log.e("토큰 에러", "Authorization tokens not found in cookies: $cookies")
         }
 
         Toast.makeText(context, "로그인 성공!", Toast.LENGTH_SHORT).show()
@@ -136,14 +159,40 @@ class LoginStartFragment : Fragment() {
             ?.commit()
     }
 
-    private fun extractAuthToken(cookies: String?): String? {
-        return cookies?.split(";")?.find { it.trim().startsWith("ACCESS=") }?.substringAfter("=")
+
+    private fun extractTokens(cookies: String?): Pair<String?, String?> {
+        val accessToken = cookies?.split(";")?.find { it.trim().startsWith("ACCESS=") }?.substringAfter("=")
+        val refreshToken = cookies?.split(";")?.find { it.trim().startsWith("REFRESH=") }?.substringAfter("=")
+        return Pair(accessToken, refreshToken)
     }
 
-    private fun saveAuthToken(token: String) {
+    private fun saveAuthToken(accessToken: String, refreshToken: String) {
         val sharedPreferences = requireActivity().getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
-        sharedPreferences.edit().putString("auth_token", token).apply()
+        sharedPreferences.edit().apply {
+            putString("auth_token", accessToken) // ACCESS 토큰 저장
+            putString("refresh_token", refreshToken) // REFRESH 토큰 저장
+            apply()
+        }
+        Log.d("토큰 저장", "ACCESS token saved: $accessToken, REFRESH token saved: $refreshToken")
+    }
 
-        Log.d("토큰 저장", "Auth token saved: $token")
+    override fun onTokenExpired() {
+        activity?.runOnUiThread {
+            // 저장된 토큰 삭제
+            val sharedPreferences = requireActivity().getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+            sharedPreferences.edit().clear().apply()
+
+            // 웹뷰 쿠키 삭제
+            /*CookieManager.getInstance().removeAllCookies(null)
+            CookieManager.getInstance().flush()*/
+
+            // 로그인 화면으로 이동
+            Toast.makeText(context, "세션이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_LONG).show()
+
+            // 로그인 액티비티로 이동
+            val intent = Intent(activity, LoginActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+        }
     }
 }

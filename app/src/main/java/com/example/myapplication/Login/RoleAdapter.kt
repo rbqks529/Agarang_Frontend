@@ -47,7 +47,7 @@ class RoleAdapter(
                     hint = "직접 작성할게요"
                     setHintTextColor(Color.GRAY)
                     setTextColor(Color.BLACK)
-                    setPadding(20, 20, 0, 20)
+                    /*setPadding(20, 20, 0, 20)*/
 
                     setOnEditorActionListener { v, actionId, event ->
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -75,7 +75,7 @@ class RoleAdapter(
                         Typeface.create("Pretendard700", Typeface.BOLD)
                     else
                         Typeface.create("Pretendard400", Typeface.NORMAL)
-                    setPadding(20, 10, 0, 10)
+                    /*setPadding(20, 10, 0, 10)*/
                     background = if (holder.adapterPosition == selectedPosition) {
                         ContextCompat.getDrawable(context, R.drawable.ic_login_selected)
                     } else {
