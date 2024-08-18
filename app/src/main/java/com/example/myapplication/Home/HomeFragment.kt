@@ -95,7 +95,7 @@ class HomeFragment: Fragment() {
 
                     if (apiResponse != null && apiResponse.isSuccess) {
                         updateUIWithServerData(apiResponse.result)
-                        updateRecyclerView(apiResponse.result.memoryUrls)
+                        updateRecyclerView(apiResponse.result.memoryIds)
                     } else {
                         // 에러 처리
                         Log.e("오류", "API 요청이 성공하지 못했습니다: ${apiResponse?.message}")

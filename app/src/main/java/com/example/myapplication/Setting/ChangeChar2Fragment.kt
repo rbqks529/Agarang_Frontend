@@ -1,3 +1,4 @@
+/*
 package com.example.myapplication
 
 import android.content.Context
@@ -112,4 +113,4 @@ class ChangeChar2Fragment : Fragment() {
     }
 
 
-}
+}*/

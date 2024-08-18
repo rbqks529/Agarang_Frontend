@@ -1,3 +1,4 @@
+/*
 package com.example.myapplication
 
 import android.content.Context
@@ -84,4 +85,4 @@ public class ChangeChar2Adapter(
         selectedPosition = position
         notifyDataSetChanged()
     }
-}
+}*/

@@ -11,7 +11,7 @@ data class HomeResponse(
         val babyName: String,
         val characterUrl: String,
         val speechBubble: String,
-        val memoryUrls: List<String>,
+        val memoryIds: List<String>,
         val dday: Int
     )
 }

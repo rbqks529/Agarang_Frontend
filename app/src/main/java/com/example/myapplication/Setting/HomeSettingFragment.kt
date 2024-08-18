@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 
-import com.example.myapplication.ChangeChar2Fragment
 import com.example.myapplication.Data.Response.HomeSettingResponse
 import com.example.myapplication.Data.Response.Result
 import com.example.myapplication.R
@@ -34,6 +33,7 @@ class HomeSettingFragment : Fragment() {
     ): View? {
         binding= FragmentHomeSettingBinding.inflate(inflater,container,false)
 
+        fetchBabyInfo()
 
         binding.ivChildInfoPlus.setOnClickListener {
             val fragment=ChildInfoChangeFragment()
@@ -52,7 +52,7 @@ class HomeSettingFragment : Fragment() {
         }
 
         binding.ivCharInfoPlus.setOnClickListener {
-            val fragmentChangChar= ChangeCharFragment() //일단 후기로 옮김
+            val fragmentChangChar= ChangeCharFragment()
             val transaction=parentFragmentManager.beginTransaction()
             transaction.replace(R.id.main_frm,fragmentChangChar)
                 .commit()
