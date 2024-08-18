@@ -11,8 +11,11 @@ import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.Data.Request.CharacterUpdateRequest
 import com.example.myapplication.Data.Response.HomeChangeCharResponse
+import com.example.myapplication.Data.Response.HomeCharUpdateResponse
 import com.example.myapplication.Data.Response.HomeSettingResponse
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.HomeIF
@@ -55,11 +58,47 @@ class ChangeCharFragment : Fragment() {
         binding.finishButton.setOnClickListener {
             if (selectedCharacterId != -1) {
                 saveSelectedCharacter(selectedCharacterId)
+                sendCharacterUpdateRequest(selectedCharacterId)
                 Toast.makeText(requireContext(), "캐릭터가 선택되었습니다.", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(requireContext(), "캐릭터를 선택해주세요.", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun sendCharacterUpdateRequest(characterId: Int) {
+        val service = RetrofitService.createRetrofit(requireContext()).create(HomeIF::class.java)
+
+        // PATCH 요청의 body 데이터
+        val requestBody = CharacterUpdateRequest(characterId)
+        service.updateCharacter(requestBody).enqueue(object : Callback<HomeCharUpdateResponse> {
+            override fun onResponse(call: Call<HomeCharUpdateResponse>, response: Response<HomeCharUpdateResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+
+                    if (apiResponse != null && apiResponse.isSuccess) {
+                        Toast.makeText(requireContext(), "캐릭터가 성공적으로 변경되었습니다.", Toast.LENGTH_SHORT).show()
+                        navigateToHomeSettingFragment() // 성공 시 HomeSettingFragment로 전환
+                    } else {
+                        Toast.makeText(requireContext(), "요청에 실패했습니다: ${apiResponse?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "응답 오류: ${response.errorBody()?.string()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<HomeCharUpdateResponse>, t: Throwable) {
+                Toast.makeText(requireContext(), "API 요청 실패: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+    // HomeSettingFragment로 전환하는 메서드
+    private fun navigateToHomeSettingFragment() {
+        val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.main_frm, HomeSettingFragment())
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
     }
 
     private fun fetchCharacterData() {

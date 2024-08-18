@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 
 import com.example.myapplication.Data.Response.HomeSettingResponse
 import com.example.myapplication.Data.Response.Result
@@ -110,6 +111,12 @@ class HomeSettingFragment : Fragment() {
         binding.tvProfileName.text = result.babyName
         binding.tvProfileDday.text = "D-${result.dday}"
         binding.tvProfileDueDate.text = result.dueDate
+        // Glide를 사용하여 이미지 로드
+        Glide.with(this)
+            .load(result.characterImageUrl)
+            .placeholder(R.drawable.forest) // 이미지를 로드하는 동안 표시할 기본 이미지 (임시로 넣어둠)
+            /*.error(R.drawable.error_image) // 로드 실패 시 표시할 이미지*/
+            .into(binding.sivProperty)
     }
 
 
