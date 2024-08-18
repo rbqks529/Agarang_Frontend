@@ -52,7 +52,7 @@ class LoginStartFragment : Fragment() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Log.d("WebView", "Loading URL: $url")
                 url?.let {
-                    if (it.equals("https://www.agarang.site/")) {
+                    if (it.startsWith("https://www.agarang.site/")) {
                         // 로그인 성공 후 리다이렉트된 URL 감지
                         handleLoginSuccess(it)
                         return true
@@ -115,25 +115,21 @@ class LoginStartFragment : Fragment() {
     }
 
     private fun handleLoginSuccess(url: String) {
-        // WebView 숨기기
         binding.webView.visibility = View.GONE
-
-        // URL에서 code와 state 파라미터 추출
-        /*val uri = Uri.parse(url)
-        val code = uri.getQueryParameter("code")
-        val state = uri.getQueryParameter("state")*/
 
         val cookies = cookieManager.getCookie(url)
         val authToken = extractAuthToken(cookies)
         if (authToken != null) {
             saveAuthToken(authToken)
             Log.d("토큰 확인", "Received JWT: $authToken")
+
+            // 쿠키를 CookieJar에 추가
+            RetrofitService.addCookie(url, "ACCESS=$authToken")
         } else {
             Log.e("토큰 에러", "Authorization token not found in cookies: $cookies")
         }
 
         Toast.makeText(context, "로그인 성공!", Toast.LENGTH_SHORT).show()
-
 
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.main_frm2, LoginCode1Fragment())

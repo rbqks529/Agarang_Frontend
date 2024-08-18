@@ -77,5 +77,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
     implementation("androidx.activity:activity:1.9.1")
     implementation("androidx.fragment:fragment-ktx:1.8.2")
+
+    implementation ("com.squareup.okhttp3:okhttp-urlconnection:4.9.1")
 }
 
