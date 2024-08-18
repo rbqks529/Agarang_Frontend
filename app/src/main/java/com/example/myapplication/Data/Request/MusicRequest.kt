@@ -7,6 +7,6 @@ data class MusicBookmark(
 
 //플레이리스트 음악 삭제
 data class MusicDelete(
-    val playlistId:Int,
+    val playlistId:Long,
     val memoryId:Int
 )

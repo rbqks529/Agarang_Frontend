@@ -37,7 +37,9 @@ class MusicAlbumFragment : Fragment() {
             .into(binding.ivAlbumCover)
         binding.tvAlbumTitle.text = playlistName ?: "Unknown"
 
-        setupRecyclerView()
+        if (playlistId != null) {
+            setupRecyclerView(playlistId)
+        }
 
         return binding.root
     }
@@ -84,8 +86,8 @@ class MusicAlbumFragment : Fragment() {
         })
     }
 
-    private fun setupRecyclerView() {
-        musicAlbumAdapter = MusicAlbumAdapter(requireContext(),itemList, object : MusicAlbumAdapter.OnItemClickListener {
+    private fun setupRecyclerView(playlistId:Long) {
+        musicAlbumAdapter = MusicAlbumAdapter(requireContext(),playlistId,itemList, object : MusicAlbumAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val item = itemList[position]
                 val bundle = Bundle().apply {
