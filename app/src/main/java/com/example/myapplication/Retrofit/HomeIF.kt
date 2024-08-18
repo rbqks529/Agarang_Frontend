@@ -1,5 +1,6 @@
 package com.example.myapplication.Retrofit
 
+import com.example.myapplication.Data.Response.FamilyResponse
 import com.example.myapplication.Data.Response.HomeChangeCharResponse
 import com.example.myapplication.Data.Response.HomeChildResponse
 import com.example.myapplication.Data.Response.HomeResponse
@@ -23,4 +24,8 @@ interface HomeIF {
     //홈 캐릭터 조회
     @GET("api/home/setting/character")
     fun getCharacterData(): Call<HomeChangeCharResponse>
+
+    //홈 가족정보 조회
+    @GET("/api/home/setting/family")
+    fun getFamilyInfo(): FamilyResponse
 }

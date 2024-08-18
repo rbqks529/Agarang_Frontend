@@ -155,7 +155,7 @@ class HomeFragment: Fragment() {
             Glide.with(this).load(result.characterUrl).into(binding.ivBabyTiger)
         }
 
-//        setViewsVisibility(View.VISIBLE)
+          setViewsVisibility(View.VISIBLE)
 //
 //        Glide.with(this)
 //            .load(result.characterUrl)
