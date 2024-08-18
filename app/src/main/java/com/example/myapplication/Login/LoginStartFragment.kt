@@ -52,14 +52,14 @@ class LoginStartFragment : Fragment() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Log.d("WebView", "Loading URL: $url")
                 url?.let {
-                    if (it.startsWith("https://agarang.site")) {
+                    if (it.equals("https://www.agarang.site/")) {
                         // 로그인 성공 후 리다이렉트된 URL 감지
                         handleLoginSuccess(it)
                         return true
                     }
                 }
-                /*val cookies = cookieManager.getCookie(url)
-                Log.d("쿠키 확인", "Received cookies: $cookies")*/
+                val cookies = cookieManager.getCookie(url)
+                Log.d("쿠키 확인", "Received cookies: $cookies")
                 return false
             }
 
@@ -77,12 +77,15 @@ class LoginStartFragment : Fragment() {
 
         activity?.runOnUiThread {
             binding.webView.visibility = View.VISIBLE
-            binding.webView.loadUrl("https://agarang.site/oauth2/authorization/google")
+            binding.webView.loadUrl("https://www.agarang.site/oauth2/authorization/google")
         }
     }
 
     private fun authorizeKakao() {
-        val loginService = RetrofitService.createRetrofit(requireContext()).create(LoginIF::class.java)
+
+        binding.webView.visibility = View.VISIBLE
+        binding.webView.loadUrl("https://www.agarang.site/oauth2/authorization/kakao")
+       /* val loginService = RetrofitService.createRetrofit(requireContext()).create(LoginIF::class.java)
 
         loginService.authorizeKakao().enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -92,7 +95,7 @@ class LoginStartFragment : Fragment() {
                         binding.webView.visibility = View.VISIBLE
                         binding.webView.loadUrl(loginUrl)
                     }
-                    /*val cookies = response.headers()["Set-Cookie"]
+                    *//*val cookies = response.headers()["Set-Cookie"]
 
                     val authToken = extractAuthToken(cookies)
                     if (authToken != null) {
@@ -100,7 +103,7 @@ class LoginStartFragment : Fragment() {
                         Log.d("토큰 확인", "Received JWT: $authToken")
                     } else {
                         Log.e("토큰 에러", "Authorization token not found in cookies")
-                    }*/
+                    }*//*
                 } else {
                     Toast.makeText(context, "에러: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
@@ -108,7 +111,7 @@ class LoginStartFragment : Fragment() {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Toast.makeText(context, "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
             }
-        })
+        })*/
     }
 
     private fun handleLoginSuccess(url: String) {
@@ -126,7 +129,7 @@ class LoginStartFragment : Fragment() {
             saveAuthToken(authToken)
             Log.d("토큰 확인", "Received JWT: $authToken")
         } else {
-            Log.e("토큰 에러", "Authorization token not found in cookies")
+            Log.e("토큰 에러", "Authorization token not found in cookies: $cookies")
         }
 
         Toast.makeText(context, "로그인 성공!", Toast.LENGTH_SHORT).show()
@@ -138,7 +141,7 @@ class LoginStartFragment : Fragment() {
     }
 
     private fun extractAuthToken(cookies: String?): String? {
-        return cookies?.split(";")?.find { it.trim().startsWith("Authorization=") }?.substringAfter("=")
+        return cookies?.split(";")?.find { it.trim().startsWith("ACCESS=") }?.substringAfter("=")
     }
 
     private fun saveAuthToken(token: String) {
