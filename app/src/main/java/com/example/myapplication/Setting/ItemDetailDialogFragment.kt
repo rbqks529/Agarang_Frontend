@@ -26,7 +26,7 @@ class ItemDetailDialogFragment : DialogFragment() {
         fun newInstance(imageUrl: String, charname: String, description: String): ItemDetailDialogFragment {
             val fragment = ItemDetailDialogFragment()
             val args = Bundle().apply{
-                putInt(ARG_IMAGE_URL, imageUrl)
+                putString(ARG_IMAGE_URL, imageUrl)
                 putString(ARG_CHAR_NAME, charname)
                 putString(ARG_DESCRIPTION, description)
             }
