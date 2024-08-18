@@ -34,6 +34,7 @@ class HomeSettingFragment : Fragment() {
     ): View? {
         binding= FragmentHomeSettingBinding.inflate(inflater,container,false)
 
+        fetchBabyInfo()
 
         binding.ivChildInfoPlus.setOnClickListener {
             val fragment=ChildInfoChangeFragment()
@@ -115,6 +116,6 @@ class HomeSettingFragment : Fragment() {
         imageView.setImageResource(selectedImageResourceId)
 
 
-        fetchBabyInfo()
+
     }
 }
