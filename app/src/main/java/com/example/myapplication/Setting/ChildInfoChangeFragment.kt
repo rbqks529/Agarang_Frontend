@@ -21,7 +21,8 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentChildInfoChangeBinding.inflate(inflater, container, false)
-        init()
+
+        fetchBabyInfoFromServer()
 
         binding.btnNameCancle.setOnClickListener {
             binding.etBirthName.setText("")
@@ -67,6 +68,39 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
         return binding.root
     }
 
+    private fun fetchBabyInfoFromServer() {
+        //예시 데이터
+        val babyInfo = mapOf(
+            "babyName" to "태명",
+            "dueDate" to "2025-07-04",
+            "weight" to "2.5"
+        )
+
+        updateUI(babyInfo)
+    }
+
+    private fun updateUI(babyInfo: Map<String, String>) {
+        val babyName = babyInfo["babyName"]
+        val dueDate = babyInfo["dueDate"]
+        val weight = babyInfo["weight"]
+
+        if (!babyName.isNullOrEmpty()) {
+            binding.tvBirthName.visibility = View.VISIBLE
+            binding.etBirthName.visibility = View.GONE
+            binding.tvBirthName.text = babyName
+        } else {
+            binding.tvBirthName.visibility = View.GONE
+            binding.etBirthName.visibility = View.VISIBLE
+        }
+
+        if (!dueDate.isNullOrEmpty()) {
+            binding.tvBirthDate.text = dueDate
+        }
+
+        if (!weight.isNullOrEmpty()) {
+            binding.etWeight.setText("$weight kg")
+        }
+    }
 
     override fun onDateSelected(date: String) {
         binding.tvBirthDate.text = date
@@ -76,22 +110,5 @@ class ChildInfoChangeFragment : Fragment(), CalendarFragment.OnDateSelectedListe
         sharedViewModel.setBabyName(binding.etBirthName.text.toString())
         sharedViewModel.setDueDate(binding.tvBirthDate.text.toString())
         sharedViewModel.setBabyWeight(binding.etWeight.text.toString().replace(" kg", ""))
-    }
-
-    private fun init() {
-        // 초기화 작업 수행
-
-        sharedViewModel.babyName.observe(viewLifecycleOwner) { name ->
-            binding.etBirthName.setText(name)
-        }
-
-        sharedViewModel.dueDate.observe(viewLifecycleOwner) { date ->
-            binding.tvBirthDate.text = date
-        }
-
-        sharedViewModel.babyWeight.observe(viewLifecycleOwner) { weight ->
-            binding.etWeight.setText(if (weight.isNullOrEmpty()) "" else "$weight kg")
-        }
-
     }
 }

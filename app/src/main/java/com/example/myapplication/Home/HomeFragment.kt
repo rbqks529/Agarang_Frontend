@@ -131,10 +131,10 @@ class HomeFragment: Fragment() {
     }
 
 
-    private fun updateRecyclerView(memoryUrls: List<String>) {
+    private fun updateRecyclerView(memoryIds: List<String>) {
         // 서버에서 받아온 memoryUrls을 리사이클러뷰에 반영
         RecentDiaryDataList.clear()  // 기존 데이터 초기화
-        RecentDiaryDataList.addAll(memoryUrls.map { url ->
+        RecentDiaryDataList.addAll(memoryIds.map { url ->
             RecentDiaryData("내용", url) // 내용은 임의로 설정
         })
         RecentDiaryAdapter?.notifyDataSetChanged() // 데이터 변경을 어댑터에 알림
