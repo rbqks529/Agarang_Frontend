@@ -42,4 +42,20 @@ data class Tracks(
     val bookmarked:Boolean
 )
 
+//음악 즐겨찾기 설정
+data class MusicBookmarkResponse(
+    val isSuccess:Boolean,
+    val code: Int,
+    val message: String,
+    val result:List<Any>
+)
+
+//음악 삭제 설정
+data class MusicDeleteResponse(
+    val isSuccess:Boolean,
+    val code: Int,
+    val message: String,
+    val result:List<Any>
+)
+
 

@@ -32,13 +32,16 @@ class MusicMainAdapter(val items:ArrayList<MusicMainData>, private val fragmentA
 
             binding.ivRvCover1.setOnClickListener{
                 val playlistId=item.playlistId
-
-                openMusicAlbumFragment(playlistId)
+                val playlistImg=item.musicImgUrl
+                val playlistName=item.musicContent
+                openMusicAlbumFragment(playlistId,playlistImg,playlistName)
             }
         }
-        private fun openMusicAlbumFragment(playlistId: Long) {
+        private fun openMusicAlbumFragment(playlistId: Long,playlistImg:String, playlistName:String) {
             val bundle = Bundle()
             bundle.putLong("playlistId",playlistId)
+            bundle.putString("playlistPicture",playlistImg)
+            bundle.putString("playlistName",playlistName)
 
             val musicAlbumFragment = MusicAlbumFragment()
             musicAlbumFragment.arguments = bundle
