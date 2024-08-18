@@ -13,7 +13,7 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 object RetrofitService {
-    private const val BASE_URL = "https://agarang.site/"
+    private const val BASE_URL = "https://www.agarang.site/"
 
     private fun createOkHttpClient(context: Context): OkHttpClient {
         return OkHttpClient.Builder()

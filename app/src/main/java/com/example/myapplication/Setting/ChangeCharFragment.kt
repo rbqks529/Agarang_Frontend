@@ -2,18 +2,30 @@ package com.example.myapplication.Setting
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.GridView
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.Data.Response.HomeChangeCharResponse
+import com.example.myapplication.Data.Response.HomeSettingResponse
 import com.example.myapplication.R
+import com.example.myapplication.Retrofit.HomeIF
+import com.example.myapplication.Retrofit.RetrofitService
+import com.example.myapplication.databinding.FragmentChangeCharBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 //캐릭터 변경 -> 초기
-class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
+class ChangeCharFragment : Fragment() {
 
-    private val imageResources = intArrayOf(
+    /*private val imageResources = intArrayOf(
         R.drawable.mouse_1,
         R.drawable.cow_1,
         R.drawable.tiger_1,
@@ -48,74 +60,91 @@ class ChangeCharFragment : Fragment(), ItemDetailDialogFragment.ChangeListener {
         "성실하고 부지런한 아기가 될 거예요. 아침을 깨우는 작은 부지런쟁이!",
         "진실하고 충성스러운 아기가 될 거예요. 언제나 친구들과 함께하는 든든한 작은 수호자!",
         "풍요롭고 복이 많은 아기가 될 거예요. 웃음이 넘치고 모두에게 사랑받는 작은 행복이!"
-    )
+    )*/
 
-    private lateinit var adapter: ChangeCharAdapter
-    private lateinit var finishButton: ImageView
+    lateinit var binding: FragmentChangeCharBinding
+    private lateinit var changeCharAdapter: ChangeCharAdapter
+    private var selectedCharacterId: Int = -1
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_change_char, container, false)
+        binding = FragmentChangeCharBinding.inflate(inflater, container, false)
 
+        fetchCharacterData()
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val gridView: GridView = view.findViewById(R.id.gv_change)
+        // GridView 아이템 클릭 시 이벤트 처리
+        binding.gvChange.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
+                selectedCharacterId = (changeCharAdapter.getItem(position) as HomeChangeCharResponse.Character).characterId
+                changeCharAdapter.setSelectedPosition(position)
+            }
 
-        finishButton = view.findViewById(R.id.finish_button)
-        adapter = ChangeCharAdapter(requireContext(), imageResources, names,descriptions, this)
-        gridView.adapter = adapter
+        // 완료 버튼 클릭 시 이벤트 처리
+        binding.finishButton.setOnClickListener {
+            if (selectedCharacterId != -1) {
+                saveSelectedCharacter(selectedCharacterId)
+                Toast.makeText(requireContext(), "캐릭터가 선택되었습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "캐릭터를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private fun fetchCharacterData() {
+        val service = RetrofitService.createRetrofit(requireContext()).create(HomeIF::class.java)
 
-        finishButton.setOnClickListener{
-            /*val fragment = HomeSettingFragment()
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.main_frm, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-            */
-            val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            selectedImageResourceId?.let {
-                val position = imageResources.indexOf(it)
-                if (position != -1) {
-                    val newImageResourceId = imageResources2[position]
+        service.getCharacterData().enqueue(object : Callback<HomeChangeCharResponse> {
+            override fun onResponse(
+                call: Call<HomeChangeCharResponse>,
+                response: Response<HomeChangeCharResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
 
-                    editor.putInt("selected_char", newImageResourceId)
-                    editor.apply()
-
-                    val fragment = HomeSettingFragment()
-                    val transaction = parentFragmentManager.beginTransaction()
-                    transaction.replace(R.id.main_frm, fragment)
-                    transaction.addToBackStack(null)
-                    transaction.commit()
-
-                    /*val fragment = HomeSettingFragment().apply {
-                        arguments = Bundle().apply {
-                            putInt("selected_char", newImageResourceId)
-                        }
+                    if (apiResponse != null && apiResponse.isSuccess) {
+                        setupGridView(apiResponse.result)
+                    } else {
+                        Log.e("오류", "API 요청이 성공하지 못했습니다: ${apiResponse?.message}")
                     }
-                    val transaction = parentFragmentManager.beginTransaction()
-                    transaction.replace(R.id.main_frm, fragment)
-                    transaction.addToBackStack(null)
-                    transaction.commit()*/
+                } else {
+                    Log.e("오류", "Response error: ${response.errorBody()?.string()}")
                 }
             }
 
-        }
+            override fun onFailure(call: Call<HomeChangeCharResponse>, t: Throwable) {
+                Log.e("오류", "API 요청 실패: ${t.message}")
+            }
+        })
     }
 
-    private var selectedImageResourceId: Int? = null
-    override fun onChangeSelected(imageResourceId: Int) {
-        val position = imageResources.indexOf(imageResourceId)
-        if (position != -1) {
-            adapter.setSelectedPosition(position)
-            selectedImageResourceId = imageResourceId
-            finishButton.visibility = View.VISIBLE
+    private fun setupGridView(characters: List<HomeChangeCharResponse.Character>) {
+        changeCharAdapter = ChangeCharAdapter(requireContext(), characters) { selectedCharacter ->
+            // 캐릭터 선택 시 처리 로직
+            saveSelectedCharacter(selectedCharacter.characterId)
+            updateCharacterInView(selectedCharacter)
         }
+
+        binding.gvChange.adapter = changeCharAdapter
+    }
+
+    private fun saveSelectedCharacter(characterId: Int) {
+        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putInt("selected_char", characterId).apply()
+    }
+
+    private fun updateCharacterInView(character: HomeChangeCharResponse.Character) {
+        // 선택된 캐릭터 정보를 UI에 반영하는 로직
+        // 이 예시에서는 단순히 이미지를 업데이트하지만, 추가적인 로직이 있을 수 있습니다.
+        // 예: 이미지 리소스를 매핑하는 로직 필요
+        Toast.makeText(requireContext(), "선택된 캐릭터: ${character.name}", Toast.LENGTH_SHORT).show()
     }
 }
 
