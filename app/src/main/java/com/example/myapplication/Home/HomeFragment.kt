@@ -179,7 +179,6 @@ class HomeFragment: Fragment() {
         })
         RecentDiaryAdapter?.notifyDataSetChanged() // 데이터 변경을 어댑터에 알림
     }
-
     private fun initRecyclerView(){
         val spanCount = 3 // 열의 수
         RecentDiaryAdapter = RecentDiaryAdapter(RecentDiaryDataList)

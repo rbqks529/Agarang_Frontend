@@ -1,14 +1,11 @@
 package com.example.myapplication.Music
 
 import android.content.Context
-import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +14,6 @@ import com.example.myapplication.Data.Request.MusicBookmark
 import com.example.myapplication.Data.Request.MusicDelete
 import com.example.myapplication.Data.Response.MusicBookmarkResponse
 import com.example.myapplication.Data.Response.MusicDeleteResponse
-import com.example.myapplication.Diary.DiaryDayAdapter
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.PlaylistIF
 import com.example.myapplication.Retrofit.RetrofitService
@@ -40,6 +36,8 @@ class MusicPlayAdapter(
     }
 
     private var itemDragHelper: ItemTouchHelper? = null
+    private var mediaPlayer: MediaPlayer? = null
+
 
     private val helperCallback = DragHelperCallback { fromPos, toPos ->
         Collections.swap(items, fromPos, toPos)
@@ -69,17 +67,15 @@ class MusicPlayAdapter(
                 toggleHeart(memoryId=item.memoryId)
             }
 
-            binding.ivItemCover.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
-            }
-            binding.tvItemTag1.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
-            }
-            binding.tvItemTag2.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
-            }
-            binding.tvItemTitle.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
+            binding.apply {
+                val clickListener=View.OnClickListener {
+                    itemClickListener.onItemClick(adapterPosition)
+                    playMusic(item.musicUrl)
+                }
+                ivItemCover.setOnClickListener(clickListener)
+                tvItemTag1.setOnClickListener(clickListener)
+                tvItemTag2.setOnClickListener(clickListener)
+                tvItemTitle.setOnClickListener(clickListener)
             }
 
             binding.ivItemOption.setOnClickListener {
@@ -214,5 +210,88 @@ class MusicPlayAdapter(
             }
         })
     }
+
+    // 음악 재생 함수
+    private fun playMusic(musicUrl: String) {
+        // MediaPlayer 코드 (앞서 설명한 코드 활용)
+        mediaPlayer?.release()
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(musicUrl)
+            prepareAsync()
+            setOnPreparedListener {
+                start()
+            }
+            setOnErrorListener { mp, what, extra ->
+                Log.e("MediaPlayerError", "Error occurred: $what, $extra")
+                true
+            }
+        }
+    }
+
+    fun playPauseMusic(){
+        mediaPlayer?.let {
+            if (it.isPlaying) {
+                it.pause()
+            } else {
+                it.start()
+            }
+        }
+    }
+
+    fun playNextTrack(currentItem: MusicAlbumData){
+        val currentIndex = items.indexOf(currentItem)
+
+        if (currentIndex != -1) {
+            val nextIndex = (currentIndex + 1) % items.size
+            val nextItem = items[nextIndex]
+
+            mediaPlayer?.release() // 현재 재생 중인 트랙 정리
+            playMusic(nextItem.musicUrl) // 다음 트랙 재생
+
+        }
+    }
+
+    fun playPreviousTrack(currentItem: MusicAlbumData){
+        val currentIndex = items.indexOf(currentItem)
+
+        if (currentIndex != -1) {
+            val previousIndex = if (currentIndex - 1 < 0) {
+                items.size - 1
+            } else {
+                currentIndex - 1
+            }
+
+            val previousItem = items[previousIndex]
+
+            mediaPlayer?.release() // 현재 재생 중인 트랙 정리
+            playMusic(previousItem.musicUrl) // 다음 트랙 재생
+
+        }
+    }
+
+    fun seekTo(position: Int) {
+        mediaPlayer?.seekTo(position)
+    }
+
+    fun getCurrentPosition(): Int {
+        return mediaPlayer?.currentPosition ?: 0
+    }
+
+    fun getDuration(): Int {
+        return mediaPlayer?.duration ?: 0
+    }
+
+    fun isPlaying(): Boolean {
+        return mediaPlayer?.isPlaying?:false
+    }
+
+    fun playMusic(){
+        mediaPlayer?.start()
+    }
+
+    fun pauseMusic(){
+        mediaPlayer?.pause()
+    }
+
 
 }

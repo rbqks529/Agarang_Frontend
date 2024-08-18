@@ -96,25 +96,15 @@
         android:layout_marginEnd="30dp"
         android:visibility="invisible"
         />
-
-    <ImageView
-        android:id="@+id/iv_play_bar_bg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/img_play_bar_bg"
+    
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="304dp"
+        android:layout_height="5dp"
         app:layout_constraintTop_toBottomOf="@id/tv_play_music_hash_tag"
         android:layout_marginTop="13dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
-
-    <ImageView
-        android:id="@+id/iv_play_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/img_play_bar"
-        app:layout_constraintStart_toStartOf="@id/iv_play_bar_bg"
-        app:layout_constraintTop_toTopOf="@id/iv_play_bar_bg"
         />
 
     <TextView
@@ -125,8 +115,8 @@
         android:fontFamily="@font/pretendard400"
         android:textColor="#737373"
         android:textSize="11sp"
-        app:layout_constraintStart_toStartOf="@id/iv_play_bar_bg"
-        app:layout_constraintTop_toBottomOf="@id/iv_play_bar_bg"
+        app:layout_constraintStart_toStartOf="@id/seek_bar"
+        app:layout_constraintTop_toBottomOf="@id/seek_bar"
         android:layout_marginStart="3dp"
         android:layout_marginTop="13dp"
         />
@@ -139,8 +129,8 @@
         android:fontFamily="@font/pretendard400"
         android:textColor="#737373"
         android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="@id/iv_play_bar_bg"
-        app:layout_constraintTop_toBottomOf="@id/iv_play_bar_bg"
+        app:layout_constraintEnd_toEndOf="@id/seek_bar"
+        app:layout_constraintTop_toBottomOf="@id/seek_bar"
         android:layout_marginStart="3dp"
         android:layout_marginTop="13dp"
         />
@@ -150,8 +140,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_play_back"
-        app:layout_constraintStart_toStartOf="@id/iv_play_bar_bg"
-        app:layout_constraintTop_toBottomOf="@id/iv_play_bar_bg"
+        app:layout_constraintStart_toStartOf="@id/seek_bar"
+        app:layout_constraintTop_toBottomOf="@id/seek_bar"
         android:layout_marginStart="62dp"
         android:layout_marginTop="21dp"
         />
@@ -161,20 +151,33 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_play_stop"
-        app:layout_constraintStart_toStartOf="@id/iv_play_bar_bg"
-        app:layout_constraintEnd_toEndOf="@id/iv_play_bar_bg"
-        app:layout_constraintTop_toBottomOf="@id/iv_play_bar_bg"
+        app:layout_constraintStart_toStartOf="@id/seek_bar"
+        app:layout_constraintEnd_toEndOf="@id/seek_bar"
+        app:layout_constraintTop_toBottomOf="@id/seek_bar"
         android:layout_marginTop="21dp"
         />
+
+    <ImageView
+        android:id="@+id/iv_play_start_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/seek_bar"
+        app:layout_constraintEnd_toEndOf="@id/seek_bar"
+        app:layout_constraintTop_toBottomOf="@id/seek_bar"
+        android:layout_marginTop="21dp"
+        android:src="@drawable/ic_play_start_ic"
+        android:visibility="invisible"
+        />
+
 
     <ImageView
         android:id="@+id/iv_play_fore_ic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_play_fore"
-        app:layout_constraintTop_toBottomOf="@id/iv_play_bar_bg"
+        app:layout_constraintTop_toBottomOf="@id/seek_bar"
         android:layout_marginTop="21dp"
-        app:layout_constraintEnd_toEndOf="@id/iv_play_bar_bg"
+        app:layout_constraintEnd_toEndOf="@id/seek_bar"
         android:layout_marginEnd="62dp"
         />
 
