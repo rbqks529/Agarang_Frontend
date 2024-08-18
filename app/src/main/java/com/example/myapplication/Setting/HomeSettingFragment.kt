@@ -65,6 +65,8 @@ class HomeSettingFragment : Fragment() {
             // selectedChar 값을 사용하여 작업 수행
             binding.sivProperty.setImageResource(selectedChar)
         }
+
+        fetchBabyInfo()
         return binding.root
     }
 
@@ -115,6 +117,6 @@ class HomeSettingFragment : Fragment() {
         imageView.setImageResource(selectedImageResourceId)
 
 
-        fetchBabyInfo()
+
     }
 }
