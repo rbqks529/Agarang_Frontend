@@ -1,6 +1,7 @@
 package com.example.myapplication.Login
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +16,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.LoginIF
 import com.example.myapplication.Retrofit.RetrofitService
@@ -34,6 +36,19 @@ class LoginStartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginStartBinding.inflate(inflater, container, false)
+
+        // 저장된 토큰 확인
+        val sharedPreferences = requireActivity().getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+        val savedToken = sharedPreferences.getString("auth_token", null)
+
+        if (savedToken != null) {
+            // 토큰이 존재하면 메인 액티비티로 이동
+            val intent = Intent(activity, MainActivity::class.java)
+            startActivity(intent)
+            activity?.finish() // 현재 액티비티 종료
+
+            return binding.root
+        }
 
         binding.icLoginKakao.setOnClickListener {
             authorizeKakao()
@@ -118,15 +133,19 @@ class LoginStartFragment : Fragment() {
         binding.webView.visibility = View.GONE
 
         val cookies = cookieManager.getCookie(url)
-        val authToken = extractAuthToken(cookies)
-        if (authToken != null) {
-            saveAuthToken(authToken)
-            Log.d("토큰 확인", "Received JWT: $authToken")
+        val (accessToken, refreshToken) = extractTokens(cookies)
+
+        if (accessToken != null && refreshToken != null) {
+            saveAuthToken(accessToken, refreshToken)
+            Log.d("토큰 확인", "Received ACCESS: $accessToken, REFRESH: $refreshToken")
 
             // 쿠키를 CookieJar에 추가
-            RetrofitService.addCookie(url, "ACCESS=$authToken")
+            RetrofitService.createRetrofit(requireContext())
+            RetrofitService.addCookie(url, "ACCESS=$accessToken")
+            RetrofitService.addCookie(url, "REFRESH=$refreshToken")
+
         } else {
-            Log.e("토큰 에러", "Authorization token not found in cookies: $cookies")
+            Log.e("토큰 에러", "Authorization tokens not found in cookies: $cookies")
         }
 
         Toast.makeText(context, "로그인 성공!", Toast.LENGTH_SHORT).show()
@@ -136,14 +155,20 @@ class LoginStartFragment : Fragment() {
             ?.commit()
     }
 
-    private fun extractAuthToken(cookies: String?): String? {
-        return cookies?.split(";")?.find { it.trim().startsWith("ACCESS=") }?.substringAfter("=")
+
+    private fun extractTokens(cookies: String?): Pair<String?, String?> {
+        val accessToken = cookies?.split(";")?.find { it.trim().startsWith("ACCESS=") }?.substringAfter("=")
+        val refreshToken = cookies?.split(";")?.find { it.trim().startsWith("REFRESH=") }?.substringAfter("=")
+        return Pair(accessToken, refreshToken)
     }
 
-    private fun saveAuthToken(token: String) {
+    private fun saveAuthToken(accessToken: String, refreshToken: String) {
         val sharedPreferences = requireActivity().getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
-        sharedPreferences.edit().putString("auth_token", token).apply()
-
-        Log.d("토큰 저장", "Auth token saved: $token")
+        sharedPreferences.edit().apply {
+            putString("auth_token", accessToken) // ACCESS 토큰 저장
+            putString("refresh_token", refreshToken) // REFRESH 토큰 저장
+            apply()
+        }
+        Log.d("토큰 저장", "ACCESS token saved: $accessToken, REFRESH token saved: $refreshToken")
     }
 }

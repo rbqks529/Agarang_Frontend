@@ -14,10 +14,13 @@ import javax.net.ssl.X509TrustManager
 
 object RetrofitService {
     private const val BASE_URL = "https://www.agarang.site/"
-    private val cookieJar = PersistentCookieJar()
 
+    // PersistentCookieJar에 Context 전달
+    private lateinit var cookieJar: PersistentCookieJar
 
     private fun createOkHttpClient(context: Context): OkHttpClient {
+        cookieJar = PersistentCookieJar(context)  // Context로 초기화
+
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
@@ -45,6 +48,7 @@ object RetrofitService {
     }
 }
 
+// 신뢰할 수 있는 모든 SSL 인증서 처리
 object TrustAllCerts : X509TrustManager {
     override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
     override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
@@ -56,3 +60,4 @@ object TrustAllCerts : X509TrustManager {
         return sslContext.socketFactory
     }
 }
+

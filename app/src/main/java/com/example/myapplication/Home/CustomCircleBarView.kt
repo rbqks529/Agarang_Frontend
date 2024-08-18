@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import java.lang.Math.min
 
 class CustomCircleBarView : View {
     // 생성자
@@ -25,10 +26,10 @@ class CustomCircleBarView : View {
 
         val centerX = width / 2f
         val centerY = height / 2f
-        val strokeWidth = 20f  // 선의 두께 설정
+        val strokeWidth = min(width, height) * 0.03f  // 화면 크기의 3%로 설정
         paint.strokeWidth = strokeWidth
 
-        val radius = (Math.min(width, height) / 2f) - (strokeWidth / 2f) - 5f  // 경계에서 10f 만큼 여유를 둠
+        val radius = (min(width, height) / 2f) - (strokeWidth / 2f) - 5f  // 경계에서 10f 만큼 여유를 둠
 
         // 배경 원
         paint.color = Color.parseColor("#80FEFFFE")
