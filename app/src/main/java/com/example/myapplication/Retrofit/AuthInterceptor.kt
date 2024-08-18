@@ -87,6 +87,10 @@ class AuthInterceptor(
                 } else if (errorBody?.contains("액세스 토큰이 만료되었습니다") == true) {
                     onTokenExpired()
                     return null
+                } else if (errorBody?.contains("\"code\":4019") == true) {
+                    Log.e("AuthInterceptor", "Refresh token has expired. Re-login required.")
+                    onTokenExpired()  // Trigger onTokenExpired callback
+                    return null
                 }
             }
         } catch (e: Exception) {

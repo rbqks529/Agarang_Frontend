@@ -112,7 +112,7 @@ class HomeFragment: Fragment() {
 
                     if (apiResponse != null && apiResponse.isSuccess) {
                         updateUIWithServerData(apiResponse.result)
-                        updateRecyclerView(apiResponse.result.memoryIds)
+                        updateRecyclerView(apiResponse.result.memories)
                     } else {
                         // 에러 처리
                         Log.e("오류", "API 요청이 성공하지 못했습니다: ${apiResponse?.message}")
@@ -170,14 +170,14 @@ class HomeFragment: Fragment() {
     }
 
 
-    private fun updateRecyclerView(memoryIds: List<String>) {
-        // 서버에서 받아온 memoryUrls을 리사이클러뷰에 반영
+    private fun updateRecyclerView(memories: List<HomeResponse.Memory>) {
         RecentDiaryDataList.clear()  // 기존 데이터 초기화
-        RecentDiaryDataList.addAll(memoryIds.map { url ->
-            RecentDiaryData("내용", url) // 내용은 임의로 설정
+        RecentDiaryDataList.addAll(memories.map { memory ->
+            RecentDiaryData("내용", memory.imageUrl) // 내용은 임의로 설정
         })
         RecentDiaryAdapter?.notifyDataSetChanged() // 데이터 변경을 어댑터에 알림
     }
+
     private fun initRecyclerView(){
         val spanCount = 3 // 열의 수
         RecentDiaryAdapter = RecentDiaryAdapter(RecentDiaryDataList)

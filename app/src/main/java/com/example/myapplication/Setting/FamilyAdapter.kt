@@ -5,13 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.Data.Response.FamilyMember
 import com.example.myapplication.R
 
-class FamilyAdapter(private val familyMembers: List<String>) :
-    RecyclerView.Adapter<FamilyAdapter.ViewHolder>() {
+class FamilyAdapter : RecyclerView.Adapter<FamilyAdapter.ViewHolder>() {
+    private var familyMembers: List<FamilyMember> = emptyList()
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val memberName: TextView = view.findViewById(R.id.tv_family_member)
+    fun updateMembers(newMembers: List<FamilyMember>) {
+        familyMembers = newMembers
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,8 +23,17 @@ class FamilyAdapter(private val familyMembers: List<String>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.memberName.text = familyMembers[position]
+        val member = familyMembers[position]
+        holder.bind(member)
     }
 
     override fun getItemCount() = familyMembers.size
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val memberName: TextView = view.findViewById(R.id.tv_family_member)
+
+        fun bind(member: FamilyMember) {
+            memberName.text = "${member.name}"
+        }
+    }
 }

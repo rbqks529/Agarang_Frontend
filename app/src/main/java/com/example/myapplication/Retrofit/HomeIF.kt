@@ -27,5 +27,5 @@ interface HomeIF {
 
     //홈 가족정보 조회
     @GET("/api/home/setting/family")
-    fun getFamilyInfo(): FamilyResponse
+    fun getFamilyInfo(): Call<FamilyResponse>
 }
