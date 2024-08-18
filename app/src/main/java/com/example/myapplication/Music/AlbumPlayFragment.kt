@@ -36,7 +36,7 @@ class AlbumPlayFragment : Fragment() {
             itemList.addAll(it)
         }
 
-        musicAlbumPlayAdapter = MusicPlayAdapter(itemList, binding.rvMusicAlbum, object :MusicPlayAdapter.OnItemClickListener{
+        musicAlbumPlayAdapter = MusicPlayAdapter(requireContext(),itemList, binding.rvMusicAlbum, object :MusicPlayAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
                 val item=itemList[position]
                 Glide.with(binding.ivAlbumCover.context)

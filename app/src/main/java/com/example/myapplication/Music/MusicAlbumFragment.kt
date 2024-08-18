@@ -85,7 +85,7 @@ class MusicAlbumFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        musicAlbumAdapter = MusicAlbumAdapter(itemList, object : MusicAlbumAdapter.OnItemClickListener {
+        musicAlbumAdapter = MusicAlbumAdapter(requireContext(),itemList, object : MusicAlbumAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val item = itemList[position]
                 val bundle = Bundle().apply {
