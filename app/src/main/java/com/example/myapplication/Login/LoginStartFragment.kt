@@ -52,7 +52,7 @@ class LoginStartFragment : Fragment() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Log.d("WebView", "Loading URL: $url")
                 url?.let {
-                    if (it.equals("https://www.agarang.site")) {
+                    if (it.equals("https://www.agarang.site/")) {
                         // 로그인 성공 후 리다이렉트된 URL 감지
                         handleLoginSuccess(it)
                         return true
@@ -115,6 +115,7 @@ class LoginStartFragment : Fragment() {
     }
 
     private fun handleLoginSuccess(url: String) {
+        // WebView 숨기기
         binding.webView.visibility = View.GONE
 
         val cookies = cookieManager.getCookie(url)
@@ -130,6 +131,7 @@ class LoginStartFragment : Fragment() {
         }
 
         Toast.makeText(context, "로그인 성공!", Toast.LENGTH_SHORT).show()
+
 
         activity?.supportFragmentManager?.beginTransaction()
             ?.replace(R.id.main_frm2, LoginCode1Fragment())
