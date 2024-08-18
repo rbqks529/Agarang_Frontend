@@ -70,6 +70,7 @@ class LoginStartFragment : Fragment(), AuthInterceptor.AuthCallback {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Log.d("WebView", "Loading URL: $url")
                 url?.let {
+
                     if (it == "https://www.agarang.site/api/login/success") {
                         // 로그인 성공 후 리다이렉트된 URL 감지
                         handleLoginSuccess(it)

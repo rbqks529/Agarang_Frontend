@@ -12,12 +12,24 @@ import android.widget.AdapterView
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.myapplication.Data.Request.MusicBookmark
+import com.example.myapplication.Data.Request.MusicDelete
+import com.example.myapplication.Data.Response.MusicBookmarkResponse
+import com.example.myapplication.Data.Response.MusicDeleteResponse
 import com.example.myapplication.Diary.DiaryDayAdapter
 import com.example.myapplication.R
+import com.example.myapplication.Retrofit.PlaylistIF
+import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.AlbumMusicItemBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.Collections
 
 class MusicPlayAdapter(
+    private val context: Context,
+    private val playlistId:Long,
     private val items: ArrayList<MusicAlbumData>,
     private val dragRecyclerview: RecyclerView,
     private val itemClickListener: OnItemClickListener,
@@ -46,13 +58,15 @@ class MusicPlayAdapter(
 
     inner class ViewHolder(val binding: AlbumMusicItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MusicAlbumData) {
-            binding.ivItemCover.setImageResource(item.musicImgId)
+            Glide.with(binding.ivItemCover.context)
+                .load(item.imageUrl)
+                .into(binding.ivItemCover)
             binding.tvItemTitle.text = item.musicTitle
             binding.tvItemTag1.text = item.musicTag1
             binding.tvItemTag2.text = item.musicTag2
 
             binding.ivItemHeartEmpty.setOnClickListener {
-                toggleHeart()
+                toggleHeart(memoryId=item.memoryId)
             }
 
             binding.ivItemCover.setOnClickListener {
@@ -74,7 +88,7 @@ class MusicPlayAdapter(
 
         }
 
-        private fun toggleHeart() {
+        private fun toggleHeart(memoryId: Int) {
             if (binding.ivItemHeartEmpty.tag == null || binding.ivItemHeartEmpty.tag == "empty") {
                 binding.ivItemHeartEmpty.setImageResource(R.drawable.ic_music_heart)
                 binding.ivItemHeartEmpty.tag = "filled"
@@ -82,7 +96,32 @@ class MusicPlayAdapter(
                 binding.ivItemHeartEmpty.setImageResource(R.drawable.icon_heart_gray_empty)
                 binding.ivItemHeartEmpty.tag = "empty"
             }
+            apiBookmark(memoryId)
         }
+    }
+
+    fun apiBookmark(memoryId: Int){
+        val apiService = RetrofitService.createRetrofit(context).create(PlaylistIF::class.java)
+        val musicBookmark= MusicBookmark(memoryId)
+        val request=apiService.sendMusicBookmark(musicBookmark)
+        request.enqueue(object : Callback<MusicBookmarkResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<MusicBookmarkResponse>,
+                response: Response<MusicBookmarkResponse>
+            ) {
+                if(response.isSuccessful){
+                    val bookmarkResponse = response.body()
+                    Log.d("MusicAlbumAdapter",bookmarkResponse.toString())
+                }else{
+                    Log.e("apiBookmark", "Request failed with code: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<MusicBookmarkResponse>, t: Throwable) {
+                Log.e("apiBookmark", "Network error: ${t.message}")
+            }
+
+        })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -129,6 +168,7 @@ class MusicPlayAdapter(
 
         dialogFragment.onDeleteConfirmed = {
             deleteMemory(item)
+            apiDelete(playlistId = playlistId, memoryId = item.memoryId)
         }
 
         dialogFragment.show(fragmentManager, MusicDeleteDialogFragment.TAG)
@@ -141,4 +181,38 @@ class MusicPlayAdapter(
             notifyItemRemoved(position)
         }
     }
+
+    private fun apiDelete(playlistId: Long, memoryId: Int) {
+
+        val apiService = RetrofitService.createRetrofit(context).create(PlaylistIF::class.java)
+        val musicDelete= MusicDelete(playlistId,memoryId)
+        val call = apiService.sendMusicDelete(musicDelete)
+
+        call.enqueue(object : Callback<MusicDeleteResponse> {
+            override fun onResponse(
+                call: Call<MusicDeleteResponse>,
+                response: Response<MusicDeleteResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    responseBody?.let {
+                        if (it.isSuccess) {
+                            // 요청 성공에 따른 로직 처리
+                            Log.e("API_DELETE", "삭제 성공: ${it.message}")
+                        } else {
+                            // 서버 응답이 실패로 처리될 경우
+                            Log.e("API_DELETE", "서버 오류: ${it.message}")
+                        }
+                    }
+                } else {
+                    Log.e("API_DELETE", "응답 실패: ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: Call<MusicDeleteResponse>, t: Throwable) {
+                Log.e("API_DELETE", "네트워크 오류: ${t.message}")
+            }
+        })
+    }
+
 }

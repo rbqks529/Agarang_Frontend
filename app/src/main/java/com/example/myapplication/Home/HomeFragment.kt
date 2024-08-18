@@ -150,11 +150,22 @@ class HomeFragment: Fragment() {
         binding.customCircleBarView.setProgress(progress)
 
         // 이미지 URL을 이미지뷰에 로드 (Glide, Picasso 등을 사용할 수 있습니다)
+
         activity?.let {
             Glide.with(this).load(result.characterUrl).into(binding.ivBabyTiger)
         }
 
-        setViewsVisibility(View.VISIBLE)
+//        setViewsVisibility(View.VISIBLE)
+//
+//        Glide.with(this)
+//            .load(result.characterUrl)
+//            .into(binding.ivBabyTiger)
+//        if (isAdded) {
+//            Glide.with(requireContext())
+//                .load(result.characterUrl)
+//                .into(binding.ivBabyTiger)
+//       }
+
 
     }
 

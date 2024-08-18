@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 
-import com.example.myapplication.ChangeChar2Fragment
 import com.example.myapplication.Data.Response.HomeSettingResponse
 import com.example.myapplication.Data.Response.Result
 import com.example.myapplication.R
@@ -53,19 +52,25 @@ class HomeSettingFragment : Fragment() {
         }
 
         binding.ivCharInfoPlus.setOnClickListener {
-            val fragmentChangChar= ChangeCharFragment() //일단 후기로 옮김
+            val fragmentChangChar= ChangeCharFragment()
             val transaction=parentFragmentManager.beginTransaction()
             transaction.replace(R.id.main_frm,fragmentChangChar)
                 .commit()
         }
 
-        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val selectedChar = sharedPreferences.getInt("selected_char", -1)
 
-        if (selectedChar != -1) {
+        //오류 때문에 임시로 주석..
+        //홈-> 설정 클릭시 강제 종료되는 문제
+        /*val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val selectedChar = sharedPreferences.getInt("selected_char", -1)*/
+
+       /* if (selectedChar != -1) {
             // selectedChar 값을 사용하여 작업 수행
             binding.sivProperty.setImageResource(selectedChar)
         }
+*/
+
+        fetchBabyInfo()
         return binding.root
     }
 
