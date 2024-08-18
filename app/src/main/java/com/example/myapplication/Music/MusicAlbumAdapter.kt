@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.AlbumMusicItemBinding
 
@@ -21,7 +22,9 @@ class MusicAlbumAdapter(
     inner class ViewHolder(private val binding: AlbumMusicItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: MusicAlbumData) {
-            binding.ivItemCover.setImageResource(item.musicImgId)
+            Glide.with(binding.ivItemCover.context)
+                .load(item.imageUrl)
+                .into(binding.ivItemCover)
             binding.tvItemTitle.text = item.musicTitle
             binding.tvItemTag1.text = item.musicTag1
             binding.tvItemTag2.text = item.musicTag2
