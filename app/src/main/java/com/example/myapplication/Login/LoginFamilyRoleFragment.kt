@@ -1,5 +1,7 @@
 package com.example.myapplication.Login
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -31,6 +33,8 @@ class LoginFamilyRoleFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var apiService: LoginIF
 
+    private lateinit var sharedPreferences: SharedPreferences
+
     private lateinit var adapter: RoleAdapter
     private var selectedRole: String = "역할을 선택해주세요"
 
@@ -40,12 +44,17 @@ class LoginFamilyRoleFragment : Fragment() {
 
         val roles = mutableListOf("직접 작성할게요", "엄마", "아빠", "할머니", "할아버지")
 
+        sharedPreferences = requireContext().getSharedPreferences("role", Context.MODE_PRIVATE)
+
         adapter = RoleAdapter(requireContext(), roles) { role ->
             selectedRole = role
 
             binding.tvSelectedRole.text = role
             binding.tvSelectedRole.setTextColor(Color.BLACK)
             binding.recyclerViewRoles.visibility = View.GONE
+
+            // 역할 선택 후 SharedPreferences에 저장
+            saveRoleToPreferences(role)
 
             // Enable the next button only if a valid role is selected
             binding.btnNext.isEnabled = selectedRole != "역할을 선택해주세요"
@@ -94,6 +103,12 @@ class LoginFamilyRoleFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun saveRoleToPreferences(role: String) {
+        val editor = sharedPreferences.edit()
+        editor.putString("selected_role", role)
+        editor.apply()
     }
 
     private fun participateFamily(familyRole: String) {

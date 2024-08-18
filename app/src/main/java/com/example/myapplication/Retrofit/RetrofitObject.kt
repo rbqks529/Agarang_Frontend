@@ -14,21 +14,21 @@ import javax.net.ssl.X509TrustManager
 
 object RetrofitService {
     private const val BASE_URL = "https://www.agarang.site/"
-
-    // PersistentCookieJar에 Context 전달
     private lateinit var cookieJar: PersistentCookieJar
+    private var authCallback: AuthInterceptor.AuthCallback? = null
+
+    fun setAuthCallback(callback: AuthInterceptor.AuthCallback) {
+        authCallback = callback
+    }
 
     private fun createOkHttpClient(context: Context): OkHttpClient {
-        cookieJar = PersistentCookieJar(context)  // Context로 초기화
-
+        cookieJar = PersistentCookieJar(context)
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
-            .cookieJar(cookieJar)  // CookieJar 추가
-            .connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(15, TimeUnit.SECONDS)
-            .writeTimeout(15, TimeUnit.SECONDS)
+            .addInterceptor(AuthInterceptor(context) { authCallback?.onTokenExpired() })
+            .cookieJar(cookieJar)
             .hostnameVerifier { _, _ -> true }
             .sslSocketFactory(TrustAllCerts.createSSLSocketFactory(), TrustAllCerts)
             .build()
@@ -42,7 +42,6 @@ object RetrofitService {
             .build()
     }
 
-    // 쿠키를 직접 추가할 수 있는 메서드
     fun addCookie(url: String, cookieString: String) {
         cookieJar.addCookie(url, cookieString)
     }

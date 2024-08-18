@@ -17,19 +17,22 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import com.example.myapplication.MainActivity
+import com.example.myapplication.Memory.MemoryMainActivity
 import com.example.myapplication.R
-import com.example.myapplication.Retrofit.LoginIF
+import com.example.myapplication.Retrofit.AuthInterceptor
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentLoginStartBinding
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class LoginStartFragment : Fragment() {
+
+class LoginStartFragment : Fragment(), AuthInterceptor.AuthCallback {
 
     private lateinit var binding: FragmentLoginStartBinding
     private lateinit var cookieManager: CookieManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        RetrofitService.setAuthCallback(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,7 +70,7 @@ class LoginStartFragment : Fragment() {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Log.d("WebView", "Loading URL: $url")
                 url?.let {
-                    if (it.equals("https://www.agarang.site/")) {
+                    if (it == "https://www.agarang.site/api/login/success") {
                         // 로그인 성공 후 리다이렉트된 URL 감지
                         handleLoginSuccess(it)
                         return true
@@ -170,5 +173,25 @@ class LoginStartFragment : Fragment() {
             apply()
         }
         Log.d("토큰 저장", "ACCESS token saved: $accessToken, REFRESH token saved: $refreshToken")
+    }
+
+    override fun onTokenExpired() {
+        activity?.runOnUiThread {
+            // 저장된 토큰 삭제
+            val sharedPreferences = requireActivity().getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
+            sharedPreferences.edit().clear().apply()
+
+            // 웹뷰 쿠키 삭제
+            /*CookieManager.getInstance().removeAllCookies(null)
+            CookieManager.getInstance().flush()*/
+
+            // 로그인 화면으로 이동
+            Toast.makeText(context, "세션이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_LONG).show()
+
+            // 로그인 액티비티로 이동
+            val intent = Intent(activity, LoginActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+        }
     }
 }
