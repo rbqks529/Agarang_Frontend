@@ -29,10 +29,6 @@ class LoginStartFragment : Fragment(), AuthInterceptor.AuthCallback {
     private lateinit var binding: FragmentLoginStartBinding
     private lateinit var cookieManager: CookieManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        RetrofitService.setAuthCallback(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +39,7 @@ class LoginStartFragment : Fragment(), AuthInterceptor.AuthCallback {
         // 저장된 토큰 확인
         val sharedPreferences = requireActivity().getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val savedToken = sharedPreferences.getString("auth_token", null)
+        RetrofitService.setAuthCallback(this)
 
         if (savedToken != null) {
             // 토큰이 존재하면 메인 액티비티로 이동
