@@ -93,6 +93,7 @@ class MusicAlbumFragment : Fragment() {
                 val bundle = Bundle().apply {
                     putParcelable("music_album_data", item)
                     putParcelableArrayList("play_list", itemList)
+                    putLong("playlistId",playlistId)
                 }
                 val fragment = AlbumPlayFragment().apply {
                     arguments = bundle
