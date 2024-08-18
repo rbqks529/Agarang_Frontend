@@ -15,8 +15,6 @@ class ChangeCharAdapter(
     private val context: Context,
     private val items: List<HomeChangeCharResponse.Character>,
 
-    /*private val names: List<String>,
-    private val descriptions: List<String>,*/
     // 캐릭터 변경을 처리하는 리스너
     private val changeListener: (HomeChangeCharResponse.Character)-> Unit
 ) : BaseAdapter() {
