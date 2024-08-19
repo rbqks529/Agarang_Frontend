@@ -99,6 +99,7 @@ class DiaryMainDayFragment : Fragment() {
     }
 
     private fun updateRecyclerView(memories: List<DailyMemory>) {
+        diaryDayItemList.clear()
         diaryDayItemList.addAll(memories.map { memory ->
             DiaryMainDayData(
                 id = memory.id,

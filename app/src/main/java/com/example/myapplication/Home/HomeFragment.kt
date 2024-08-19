@@ -14,6 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myapplication.Data.Response.HomeResponse
+import com.example.myapplication.Data.Response.MonthlyMemory
+import com.example.myapplication.Diary.DiaryMainCardFragment
+import com.example.myapplication.Diary.DiaryMainMonthData
 import com.example.myapplication.Music.MusicAlbumData
 import com.example.myapplication.R
 
@@ -53,9 +56,14 @@ class HomeFragment: Fragment() {
 
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
-        val lastPlayedTrack =loadLastPlayedTrack()
+        // Initially hide the music bar views
+        setMusicBarVisibility(View.INVISIBLE)
+
+        val lastPlayedTrack = loadLastPlayedTrack()
         lastPlayedTrack?.let {
             sharedViewModel.setCurrentTrack(it)
+            // Show the music bar views if there is a last played track
+            setMusicBarVisibility(View.VISIBLE)
         }
 
         sharedViewModel.currentTrack.observe(viewLifecycleOwner, { track ->
@@ -84,43 +92,13 @@ class HomeFragment: Fragment() {
             transaction.replace(R.id.main_frm,fragmentSetting)
                 .commit()
         }
-//shared preference, 현재 날짜 가져오는 코드가 필요 없었던 것
-//전부 서버에서 가져오는 걸로 수정
-
-        /*initData()
-        initRecyclerView()
-
-        //설정화면으로 전환
-        binding.ivSetting.setOnClickListener {
-            val fragmentSetting=HomeSettingFragment()
-            val transaction=parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.main_frm,fragmentSetting)
-                .commit()
-        }
-
-        // 현재 날짜 가져오기
-        val calendar = Calendar.getInstance()
-        val currentDate = calendar.time
-        // 날짜를 특정 형식의 문자열로 변환
-        val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
-        val formattedDate = dateFormat.format(currentDate)
-        binding.tvToday.text = formattedDate
-
-        val sharedPreferences = requireContext().getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        val selectedChar = sharedPreferences.getInt("selected_char", -1)
-
-        if (selectedChar != -1) {
-            // selectedChar 값을 사용하여 작업 수행
-            binding.ivBabyTiger.setImageResource(selectedChar)
-        }*/
 
         // 모든 관련 뷰를 invisible로 설정
         setViewsVisibility(View.INVISIBLE)
 
-        binding.customCircleBarView.setProgress(0f)  // 50% 진행 (예시)
+        binding.customCircleBarView.setProgress(0f)
         fetchRecentDiary()
         initRecyclerView()
-
 
         return binding.root
     }
@@ -140,8 +118,6 @@ class HomeFragment: Fragment() {
             null
         }
     }
-
-
 
     private fun playMusic(musicUrl: String) {
         mediaPlayer?.release()
@@ -169,8 +145,19 @@ class HomeFragment: Fragment() {
         binding.ivRectangle1.visibility = visibility
         binding.ivRectangle2.visibility = visibility
 
-        binding.ivMusicBarPlay.isVisible=true
         binding.ivMusicBarStop.isVisible=false
+    }
+
+    private fun setMusicBarVisibility(visibility: Int) {
+        binding.ivMusicBackground.visibility = visibility
+        binding.sivMusicPhoto.visibility = visibility
+        binding.tvMusicTitle.visibility = visibility
+        binding.tvMusicTag.visibility = visibility
+        binding.ivMusicBarOption.visibility = visibility
+        binding.ivMusicBarNext.visibility = visibility
+        binding.ivMusicBarPlay.visibility = visibility
+        binding.ivMusicBarStop.visibility = visibility
+        binding.ivMusicBarPrevious.visibility = visibility
     }
 
     private fun fetchRecentDiary(){
@@ -226,38 +213,44 @@ class HomeFragment: Fragment() {
             Glide.with(this).load(result.characterUrl).into(binding.ivBabyTiger)
         }
 
-
-          setViewsVisibility(View.VISIBLE)
-
-//
-//        Glide.with(this)
-//            .load(result.characterUrl)
-//            .into(binding.ivBabyTiger)
-//        if (isAdded) {
-//            Glide.with(requireContext())
-//                .load(result.characterUrl)
-//                .into(binding.ivBabyTiger)
-//       }
-
-
+        setViewsVisibility(View.VISIBLE)
     }
-
 
     private fun updateRecyclerView(memories: List<HomeResponse.Memory>) {
         RecentDiaryDataList.clear()  // 기존 데이터 초기화
         RecentDiaryDataList.addAll(memories.map { memory ->
-            RecentDiaryData("내용", memory.imageUrl) // 내용은 임의로 설정
+            RecentDiaryData(
+                imageUrl = memory.imageUrl,
+                id = memory.id
+            ) // 내용은 임의로 설정
         })
         RecentDiaryAdapter?.notifyDataSetChanged() // 데이터 변경을 어댑터에 알림
     }
+
+
     private fun initRecyclerView(){
         val spanCount = 3 // 열의 수
-        RecentDiaryAdapter = RecentDiaryAdapter(RecentDiaryDataList)
+        RecentDiaryAdapter = RecentDiaryAdapter(
+            RecentDiaryDataList,
+            onItemClick = { id ->
+                navigateToDiaryMainCard(id)
+            }
+        )
         binding.rvRecentCard.adapter = RecentDiaryAdapter
         binding.rvRecentCard.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
     }
 
+    private fun navigateToDiaryMainCard(id: Int) {
+        val fragment = DiaryMainCardFragment()
+        val bundle = Bundle().apply {
+            putInt("id", id)
+            // 필요한 경우 다른 데이터도 추가할 수 있습니다.
+        }
+        fragment.arguments = bundle
 
-
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
 }

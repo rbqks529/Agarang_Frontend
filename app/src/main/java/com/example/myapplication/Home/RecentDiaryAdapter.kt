@@ -9,8 +9,11 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.RecentItemBinding
 
-class RecentDiaryAdapter (private val diaryList: List<RecentDiaryData>) :
-    /*RecyclerView.Adapter<RecentDiaryAdapter.DiaryViewHolder>() {
+class RecentDiaryAdapter (
+    private val diaryList: List<RecentDiaryData>,
+    private val onItemClick: (Int) -> Unit) :
+
+/*RecyclerView.Adapter<RecentDiaryAdapter.DiaryViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiaryViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.recent_item, parent, false)
@@ -52,6 +55,11 @@ class RecentDiaryAdapter (private val diaryList: List<RecentDiaryData>) :
     inner class ViewHolder(private val binding: RecentItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(diary: RecentDiaryData) {
             Glide.with(binding.root.context).load(diary.imageUrl).into(binding.ivDiaryImage)
+
+            // 아이템 클릭 리스너 설정
+            itemView.setOnClickListener {
+                onItemClick(diary.id)
+            }
         }
     }
 

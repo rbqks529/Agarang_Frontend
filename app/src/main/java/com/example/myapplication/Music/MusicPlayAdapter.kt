@@ -209,22 +209,5 @@ class MusicPlayAdapter(
         })
     }
 
-    fun playPreviousTrack(currentTrack: MusicAlbumData): MusicAlbumData? {
-        val currentIndex = items.indexOf(currentTrack)
-        return if (currentIndex > 0) {
-            items[currentIndex - 1]
-        } else {
-            null
-        }
-    }
-
-    fun playNextTrack(currentTrack: MusicAlbumData): MusicAlbumData? {
-        val currentIndex = items.indexOf(currentTrack)
-        return if (currentIndex < items.size - 1) {
-            items[currentIndex + 1]
-        } else {
-            null
-        }
-    }
 
 }
