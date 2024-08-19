@@ -29,6 +29,7 @@ class MusicAlbumFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMusicAlbumBinding.inflate(inflater, container, false)
+        Log.e("MusicAlbumFragment","one")
 
         val playlistId=arguments?.getLong("playlistId")
         val playlistImg=arguments?.getString("playlistPicture")

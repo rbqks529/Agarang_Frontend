@@ -82,6 +82,8 @@ class MusicPlayAdapter(
                 showDeleteConfirmationDialog(itemView.context, item)
             }
 
+            Log.e("MusicPlayAdapter","in fun bind")
+
         }
 
         private fun toggleHeart(memoryId: Int) {
