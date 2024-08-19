@@ -9,7 +9,8 @@ import com.example.myapplication.databinding.GridBookmarkItemBinding
 
 class DiaryMainBookmarkAdapter(
     val context: Context,
-    val items: ArrayList<DiaryMainBookmarkData>
+    val items: ArrayList<DiaryMainBookmarkData>,
+    private val onItemClick: (Int) -> Unit  // 클릭 리스너 추가
 ) : RecyclerView.Adapter<DiaryMainBookmarkAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: GridBookmarkItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -18,6 +19,11 @@ class DiaryMainBookmarkAdapter(
                 .load(item.imageUrl)
                 .centerCrop()
                 .into(binding.ivDay)
+
+            // 아이템 클릭 리스너 설정
+            itemView.setOnClickListener {
+                onItemClick(item.id)
+            }
         }
     }
 

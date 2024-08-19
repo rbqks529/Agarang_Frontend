@@ -37,6 +37,8 @@ class CardViewAdapter(
             tvContent.text = item.content
             tvWriter.text = item.writer
 
+            tvMusicTitle.text = item.musicTitle
+
 
             ivBookmark.setImageResource(
                 if (item.bookmarked) R.drawable.ic_heart_red

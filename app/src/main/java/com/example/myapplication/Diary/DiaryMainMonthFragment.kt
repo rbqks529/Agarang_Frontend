@@ -12,6 +12,7 @@ import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentDiaryMainMonthBinding
 import com.example.myapplication.Data.Response.DiaryMonthResponse
 import com.example.myapplication.Data.Response.MonthlyMemory
+import com.example.myapplication.R
 import com.example.myapplication.Retrofit.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,9 +37,25 @@ class DiaryMainMonthFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        DiaryMonthAdapter = DiaryMonthAdapter(requireContext(), DiaryMonthitemList)
+        DiaryMonthAdapter = DiaryMonthAdapter(requireContext(), DiaryMonthitemList) { clickedItem ->
+            navigateToDayFragment(clickedItem)
+        }
         binding.rvDiaryMonth.adapter = DiaryMonthAdapter
         binding.rvDiaryMonth.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun navigateToDayFragment(item: DiaryMainMonthData) {
+        val dayFragment = DiaryMainDayFragment()
+        val bundle = Bundle().apply {
+            putInt("year", item.year)
+            putInt("month", item.month)
+        }
+        dayFragment.arguments = bundle
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, dayFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun fetchMonthlyMemories() {
@@ -71,9 +88,13 @@ class DiaryMainMonthFragment : Fragment() {
         DiaryMonthitemList.addAll(memories.map { memory ->
             DiaryMainMonthData(
                 imageUrl = memory.imageUrl,
-                date = memory.date,
+                date = memory.date
             )
         })
+
+        // 날짜 순으로 정렬
+        DiaryMonthitemList.sort()
+
         DiaryMonthAdapter?.notifyDataSetChanged()
     }
 }

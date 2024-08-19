@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Data.Response.DailyMemory
 import com.example.myapplication.Data.Response.DiaryDayResponse
 import com.example.myapplication.R
@@ -25,6 +27,7 @@ class DiaryMainDayFragment : Fragment() {
     private lateinit var binding: FragmentDiaryMainDayBinding
     private var diaryDayAdapter: DiaryDayAdapter? = null
     private var diaryDayItemList: ArrayList<DiaryMainDayData> = arrayListOf()
+    private var selectedDate: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +35,40 @@ class DiaryMainDayFragment : Fragment() {
     ): View {
         binding = FragmentDiaryMainDayBinding.inflate(inflater, container, false)
 
-        fetchDailyMemories()
         initRecyclerView()
+        setupScrollListener()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        arguments?.let { args ->
+            val year = args.getInt("year", -1)
+            val month = args.getInt("month", -1)
+            if (year != -1 && month != -1) {
+                selectedDate = String.format("%04d-%02d", year, month)
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // 결과 리스너를 설정합니다.
+        parentFragmentManager.setFragmentResultListener("refresh_diary_day", this) { _, bundle ->
+            val shouldRefresh = bundle.getBoolean("refresh", false)
+            if (shouldRefresh) {
+                fetchDailyMemories()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 화면이 다시 보일 때마다 데이터를 새로 가져옵니다.
+        fetchDailyMemories()
     }
 
     private fun fetchDailyMemories() {
@@ -63,7 +96,6 @@ class DiaryMainDayFragment : Fragment() {
                 Log.e("실패", "API 요청 실패: ${t.message}")
             }
         })
-
     }
 
     private fun updateRecyclerView(memories: List<DailyMemory>) {
@@ -76,8 +108,41 @@ class DiaryMainDayFragment : Fragment() {
         })
         diaryDayAdapter?.notifyDataSetChanged()
 
-        // 아이템이 로드된 후 마지막 아이템으로 스크롤
-        scrollToLastItem()
+        if (selectedDate != null) {
+            Log.d("scroll", "$selectedDate")
+            scrollToFirstItemOfMonth()
+        } else {
+            scrollToLastItem()
+        }
+    }
+
+    private fun scrollToFirstItemOfMonth() {
+        if (diaryDayItemList.isNotEmpty() && selectedDate != null) {
+            val targetDate = selectedDate!!
+            Log.d("Scroll", "Trying to scroll to date: $targetDate")
+
+            val position = diaryDayItemList.indexOfFirst { item ->
+                val itemDate = item.date.replace("-", "")  // 하이픈 제거
+                itemDate.startsWith(targetDate.replace("-", ""))
+            }
+
+            Log.d("Scroll", "Found position: $position")
+
+            if (position != -1) {
+                binding.rvDiaryDay.post {
+                    (binding.rvDiaryDay.layoutManager as? GridLayoutManager)?.let { layoutManager ->
+                        // 첫 번째 파라미터는 스크롤할 위치, 두 번째 파라미터는 상단 오프셋(0으로 설정하면 화면 최상단에 위치)
+                        layoutManager.scrollToPositionWithOffset(position, 0)
+                        updateDateText() // 스크롤 후 날짜 텍스트 업데이트
+                        Log.d("Scroll", "Scrolled to position: $position")
+                    }
+                }
+            } else {
+                Log.d("Scroll", "No matching item found for date: $targetDate")
+            }
+        } else {
+            Log.d("Scroll", "List is empty or selectedDate is null")
+        }
     }
 
     private fun initRecyclerView() {
@@ -123,7 +188,7 @@ class DiaryMainDayFragment : Fragment() {
             putString("date", item.date) // 선택한 아이템의 날짜 전달
         }
         fragment.arguments = bundle
-        parentFragmentManager.beginTransaction().replace(R.id.main_frm, fragment)
+        parentFragmentManager.beginTransaction().replace(R.id.main_frm, fragment).addToBackStack(null)
             .commit()
     }
 
@@ -134,6 +199,33 @@ class DiaryMainDayFragment : Fragment() {
         val parsedDate = dateFormat.parse(date)
         val calendar = Calendar.getInstance().apply { time = parsedDate }
         return calendar.get(Calendar.MONTH) + 1 // 월은 0부터 시작하므로 +1 해줌
+    }
+
+    private fun setupScrollListener() {
+        binding.rvDiaryDay.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                updateDateText()
+            }
+        })
+    }
+
+    private fun updateDateText() {
+        val layoutManager = binding.rvDiaryDay.layoutManager as? GridLayoutManager ?: return
+        val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+        if (firstVisibleItemPosition != RecyclerView.NO_POSITION && diaryDayItemList.isNotEmpty()) {
+            val item = diaryDayItemList[firstVisibleItemPosition]
+            val date = item.date
+            val formattedDate = formatDate(date)
+            binding.tvDate.text = formattedDate
+        }
+    }
+
+    private fun formatDate(date: String): String {
+        // date 형식이 "yyyyMMdd"라고 가정
+        val year = date.substring(0, 4)
+        val month = date.substring(4, 6)
+        return "$year / $month"
     }
 
 

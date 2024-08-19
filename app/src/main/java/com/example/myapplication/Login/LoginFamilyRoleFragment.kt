@@ -135,6 +135,10 @@ class LoginFamilyRoleFragment : Fragment() {
 
                     } else {
                         Log.e("가족 참여", "가족 참여 실패: ${response.code()}")
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.main_frm2, LoginCode1Fragment())
+                            .addToBackStack(null)
+                            .commit()
                     }
                 } else {
                     Log.e("가족 참여", "가족 참여 실패: ${response.code()}")
