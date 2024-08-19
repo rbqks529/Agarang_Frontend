@@ -39,6 +39,7 @@ class LoginStartFragment : Fragment(), AuthInterceptor.AuthCallback {
         // 저장된 토큰 확인
         val sharedPreferences = requireActivity().getSharedPreferences("auth_prefs", Context.MODE_PRIVATE)
         val savedToken = sharedPreferences.getString("auth_token", null)
+        Log.d("ACCESS", "$savedToken")
         RetrofitService.setAuthCallback(this)
 
         if (savedToken != null) {

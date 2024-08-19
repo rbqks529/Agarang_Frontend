@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.example.myapplication.Data.Response.BookmarkSetResult
 import com.example.myapplication.Data.Response.CardMemory
 import com.example.myapplication.Data.Response.DeleteDiaryResponse
 import com.example.myapplication.Data.Response.DiaryCardMonthResponse
+import com.example.myapplication.Data.Response.DiaryCardResponse
 
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.DiaryIF
@@ -44,8 +46,8 @@ class DiaryMainCardFragment : Fragment() {
         binding = FragmentDiaryMainCardBinding.inflate(inflater, container, false)
 
         binding.ivDiaryPrevious.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.main_frm, DiaryMainDayFragment())
-                .commit()
+            parentFragmentManager.setFragmentResult("refresh_diary_day", bundleOf("refresh" to true))
+            parentFragmentManager.popBackStack()
         }
 
         return binding.root
@@ -58,12 +60,45 @@ class DiaryMainCardFragment : Fragment() {
             val data = it.getSerializable("data") as? ArrayList<DiaryMainDayData>
             val position = it.getInt("position", 0)
             val date = it.getString("date", "0")
+            val memoryId = it.getInt("id", -1)  // 즐겨찾기에서 전달받은 id
 
             currentPosition = position
-            fetchDiaryCard(date)
+            if (memoryId != -1) {
+                // 즐겨찾기에서 온 경우
+                fetchSingleDiaryCard(memoryId)
+            } else {
+                // 기존 방식대로 처리
+                fetchDiaryCard(date)
+            }
         }
         // 테스트용 날짜 지정. 추후 위 버전으로 변경해야함
     }
+
+    private fun fetchSingleDiaryCard(memoryId: Int) {
+        val service = RetrofitService.createRetrofit(requireContext()).create(DiaryIF::class.java)
+
+        service.getMemory(memoryId).enqueue(object : Callback<DiaryCardResponse> {
+            override fun onResponse(call: Call<DiaryCardResponse>, response: Response<DiaryCardResponse>) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+
+                    if (apiResponse != null && apiResponse.isSuccess) {
+                        handleSingleApiResponse(apiResponse.result)
+                    } else {
+                        Log.e("오류", "API 요청이 성공하지 못했습니다: ${apiResponse?.message}")
+                    }
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("오류", "Response error: $errorBody")
+                }
+            }
+
+            override fun onFailure(call: Call<DiaryCardResponse>, t: Throwable) {
+                Log.e("실패", "API 요청 실패: ${t.message}")
+            }
+        })
+    }
+
 
     private fun fetchDiaryCard(date: String) {
 
@@ -92,6 +127,25 @@ class DiaryMainCardFragment : Fragment() {
         })
     }
 
+    private fun handleSingleApiResponse(memory: CardMemory) {
+        diaryDataList.clear()
+        val formattedDate = memory.date.replace(". ", "").replace(".", "")
+        diaryDataList.add(DiaryMainCardData(
+            id = memory.id,
+            writer = memory.writer,
+            content = memory.content,
+            hashTags = memory.hashTags,
+            date = formattedDate,
+            bookmarked = memory.bookmarked ?: false,
+            imageUrl = memory.imageUrl,
+            musicUrl = memory.musicUrl,
+            musicTitle = memory.musicTitle
+        ))
+
+        setupRecyclerViews()
+    }
+
+
     private fun handleApiResponse(memories: List<CardMemory>) {
         // API 응답 처리
         // diaryDataList를 API 응답을 사용하여 초기화
@@ -101,6 +155,7 @@ class DiaryMainCardFragment : Fragment() {
             // 날짜 형식 변환. API연동오류때문에 일시적으로 추가 date = memory.date 수정
             val formattedDate = memory.date.replace(". ", "").replace(".", "")
             DiaryMainCardData(
+                musicTitle = memory.musicTitle,
                 id = memory.id,
                 writer = memory.writer,
                 content = memory.content,

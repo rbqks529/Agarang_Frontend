@@ -14,12 +14,6 @@ data class Result(
     val memories: List<Memory>
 )
 
-data class DiaryCardResponse(
-    val isSuccess: Boolean,
-    val code: Int,
-    val message: String,
-    val result: Result
-)
 
 data class DeleteDiaryResponse(
     val isSuccess: Boolean,

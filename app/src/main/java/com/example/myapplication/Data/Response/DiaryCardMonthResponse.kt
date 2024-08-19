@@ -12,6 +12,13 @@ data class MemoryResult(
     val memories: List<CardMemory>
 )
 
+data class DiaryCardResponse(
+    val isSuccess: Boolean,
+    val code: Int,
+    val message: String,
+    val result: CardMemory
+)
+
 
 data class CardMemory(
     var id: Int = 0,
@@ -21,5 +28,6 @@ data class CardMemory(
     val musicUrl: String,
     val imageUrl: String,
     val hashTags: List<String>,
-    val bookmarked: Boolean
+    val bookmarked: Boolean,
+    val musicTitle: String = ""
 )

@@ -9,7 +9,11 @@ import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.DiaryMonthItemBinding
 
 
-class DiaryMonthAdapter(val context: Context, val items: List<DiaryMainMonthData>) : RecyclerView.Adapter<DiaryMonthAdapter.ViewHolder>() {
+class DiaryMonthAdapter(
+    val context: Context,
+    val items: List<DiaryMainMonthData>,
+    private val onItemClick: (DiaryMainMonthData) -> Unit
+) : RecyclerView.Adapter<DiaryMonthAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(val binding: DiaryMonthItemBinding) : RecyclerView.ViewHolder(binding.root){
@@ -20,6 +24,10 @@ class DiaryMonthAdapter(val context: Context, val items: List<DiaryMainMonthData
                 .load(item.imageUrl)
                 .centerCrop()
                 .into(binding.ivMonth)
+
+            itemView.setOnClickListener {
+                onItemClick(item)
+            }
         }
     }
 

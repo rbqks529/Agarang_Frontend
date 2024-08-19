@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myapplication.Data.Response.BookmarkMemory
 import com.example.myapplication.Data.Response.DiaryBookmarkResponse
+import com.example.myapplication.R
 import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentDiaryMainBookmarkBinding
@@ -36,7 +37,13 @@ class DiaryMainBookmarkFragment : Fragment() {
 
     private fun initRecyclerView() {
         val spanCount = 3 // 열의 수
-        DiaryBookmarkAdapter = DiaryMainBookmarkAdapter(requireContext(), DiaryBookmarkitemList)
+        DiaryBookmarkAdapter = DiaryMainBookmarkAdapter(
+            requireContext(),
+            DiaryBookmarkitemList,
+            onItemClick = { id ->
+                navigateToDiaryMainCard(id)
+            }
+        )
         binding.rvDiaryDay.adapter = DiaryBookmarkAdapter
         binding.rvDiaryDay.layoutManager = GridLayoutManager(context, spanCount)
 
@@ -83,5 +90,19 @@ class DiaryMainBookmarkFragment : Fragment() {
             })
         }
         DiaryBookmarkAdapter?.notifyDataSetChanged()
+    }
+
+    private fun navigateToDiaryMainCard(id: Int) {
+        val fragment = DiaryMainCardFragment()
+        val bundle = Bundle().apply {
+            putInt("id", id)
+            // 필요한 경우 다른 데이터도 추가할 수 있습니다.
+        }
+        fragment.arguments = bundle
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.main_frm, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

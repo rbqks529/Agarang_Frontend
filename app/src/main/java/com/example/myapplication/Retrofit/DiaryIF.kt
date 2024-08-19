@@ -18,6 +18,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.HTTP
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface DiaryIF {
     @GET("api/memory")
@@ -51,4 +52,7 @@ interface DiaryIF {
 
     @PUT("api/memory")
     fun editMemory(@Body request: EditMemoryRequest): Call<EditMemoryResponse>
+
+    @GET("/api/memory/{memoryId}")
+    fun getMemory(@Path("memoryId") memoryId: Int): Call<DiaryCardResponse>
 }

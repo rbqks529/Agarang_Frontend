@@ -12,7 +12,7 @@ data class DiaryMainCardData(
     val imageUrl: String,
     val hashTags: List<String>,
     var bookmarked: Boolean,
-    val musicTitle: String = "구름은 하늘을 타고",
+    val musicTitle: String
 ) : Serializable {
     var year: Int = 0
     var month: Int = 0
