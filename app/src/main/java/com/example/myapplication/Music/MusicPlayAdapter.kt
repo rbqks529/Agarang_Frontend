@@ -210,8 +210,6 @@ class MusicPlayAdapter(
         })
     }
 
-    // Function to play the previous track
-    // Next/Previous track 기능을 추가적으로 제공
     fun playPreviousTrack(currentTrack: MusicAlbumData): MusicAlbumData? {
         val currentIndex = items.indexOf(currentTrack)
         return if (currentIndex > 0) {

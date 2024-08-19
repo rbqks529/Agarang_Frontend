@@ -37,14 +37,16 @@ class AlbumPlayFragment : Fragment() {
         val musicAlbumData: MusicAlbumData? = arguments?.getParcelable("music_album_data")
         val playlist: ArrayList<MusicAlbumData>? = arguments?.getParcelableArrayList("play_list")
 
+        setupUIListeners()
+
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
 
         // 음악 재생
         musicAlbumData?.let {
             playTrack(it)
         }
-        // UI 이벤트 설정
-        setupUIListeners()
+
 
         playlist?.let {
             itemList.addAll(it)
@@ -112,6 +114,7 @@ class AlbumPlayFragment : Fragment() {
     }
 
     private fun setupUIListeners() {
+
         binding.ivPlayStartIc.setOnClickListener {
             mediaPlayer?.start()
             togglePlayPause(true)
