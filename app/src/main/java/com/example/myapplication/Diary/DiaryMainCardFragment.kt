@@ -133,12 +133,12 @@ class DiaryMainCardFragment : Fragment() {
         diaryDataList.add(DiaryMainCardData(
             id = memory.id,
             writer = memory.writer,
-            content = memory.content,
+            content = memory.content ?: "",
             hashTags = memory.hashTags,
             date = formattedDate,
             bookmarked = memory.bookmarked ?: false,
             imageUrl = memory.imageUrl,
-            musicUrl = memory.musicUrl,
+            musicUrl = memory.musicUrl ?: "",
             musicTitle = memory.musicTitle
         ))
 
@@ -158,11 +158,11 @@ class DiaryMainCardFragment : Fragment() {
                 musicTitle = memory.musicTitle,
                 id = memory.id,
                 writer = memory.writer,
-                content = memory.content,
+                content = memory.content?: "",
                 hashTags = memory.hashTags,
                 date = formattedDate,
                 bookmarked = memory.bookmarked?: false,
-                imageUrl = memory.imageUrl,
+                imageUrl = memory.imageUrl ?: "",
                 musicUrl = memory.musicUrl
             )
         })

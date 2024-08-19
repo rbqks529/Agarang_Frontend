@@ -7,7 +7,7 @@ data class DiaryMainCardData(
     var id: Int = 0,
     val writer: String,
     val date: String,
-    val content: String,
+    val content: String?,
     val musicUrl: String, // 음악 재생을 위한 URL (필요한 경우)
     val imageUrl: String,
     val hashTags: List<String>,
