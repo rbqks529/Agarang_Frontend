@@ -82,6 +82,8 @@ class MusicPlayAdapter(
                 showDeleteConfirmationDialog(itemView.context, item)
             }
 
+            Log.e("MusicPlayAdapter","in fun bind")
+
         }
 
         private fun toggleHeart(memoryId: Int) {
@@ -212,7 +214,7 @@ class MusicPlayAdapter(
     }
 
     // 음악 재생 함수
-    private fun playMusic(musicUrl: String) {
+    fun playMusic(musicUrl: String, onComplete:(()->Unit)?=null) {
         // MediaPlayer 코드 (앞서 설명한 코드 활용)
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer().apply {
@@ -220,6 +222,9 @@ class MusicPlayAdapter(
             prepareAsync()
             setOnPreparedListener {
                 start()
+            }
+            setOnCompletionListener {
+                onComplete?.invoke()
             }
             setOnErrorListener { mp, what, extra ->
                 Log.e("MediaPlayerError", "Error occurred: $what, $extra")
@@ -238,7 +243,7 @@ class MusicPlayAdapter(
         }
     }
 
-    fun playNextTrack(currentItem: MusicAlbumData){
+    fun playNextTrack(currentItem: MusicAlbumData, onComplete:(()->Unit)?=null){
         val currentIndex = items.indexOf(currentItem)
 
         if (currentIndex != -1) {
@@ -246,12 +251,12 @@ class MusicPlayAdapter(
             val nextItem = items[nextIndex]
 
             mediaPlayer?.release() // 현재 재생 중인 트랙 정리
-            playMusic(nextItem.musicUrl) // 다음 트랙 재생
+            playMusic(nextItem.musicUrl,onComplete) // 다음 트랙 재생
 
         }
     }
 
-    fun playPreviousTrack(currentItem: MusicAlbumData){
+    fun playPreviousTrack(currentItem: MusicAlbumData, onComplete:(()->Unit)?=null){
         val currentIndex = items.indexOf(currentItem)
 
         if (currentIndex != -1) {
@@ -264,7 +269,7 @@ class MusicPlayAdapter(
             val previousItem = items[previousIndex]
 
             mediaPlayer?.release() // 현재 재생 중인 트랙 정리
-            playMusic(previousItem.musicUrl) // 다음 트랙 재생
+            playMusic(previousItem.musicUrl,onComplete) // 다음 트랙 재생
 
         }
     }
@@ -285,12 +290,24 @@ class MusicPlayAdapter(
         return mediaPlayer?.isPlaying?:false
     }
 
-    fun playMusic(){
-        mediaPlayer?.start()
+    fun getNextTrack(currentItem: MusicAlbumData): MusicAlbumData? {
+        val currentIndex = items.indexOf(currentItem)
+        return if (currentIndex != -1) {
+            val nextIndex = (currentIndex + 1) % items.size
+            items[nextIndex]
+        } else {
+            null
+        }
     }
 
-    fun pauseMusic(){
-        mediaPlayer?.pause()
+    fun getPreviousTrack(currentItem: MusicAlbumData): MusicAlbumData? {
+        val currentIndex = items.indexOf(currentItem)
+        return if (currentIndex != -1) {
+            val previousIndex = if (currentIndex - 1 >= 0) currentIndex - 1 else items.size - 1
+            items[previousIndex]
+        } else {
+            null
+        }
     }
 
 

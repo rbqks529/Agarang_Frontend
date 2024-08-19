@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.myapplication.Music.MusicAlbumData
 
 // UI 관련 데이터를 저장하고 관리해주는 아키텍처
 
@@ -100,4 +101,11 @@ class SharedViewModel(application:Application) : AndroidViewModel(application) {
         _tempo.value=tempo.uppercase()
     }
 
+    // 홈에 음악을 연결하기 위한 데이터 입니다.
+    private val _currentTrack=MutableLiveData<MusicAlbumData?>()
+    val currentTrack:LiveData<MusicAlbumData?> = _currentTrack
+
+    fun setCurrentTrack(track:MusicAlbumData){
+        _currentTrack.value=track
+    }
 }
