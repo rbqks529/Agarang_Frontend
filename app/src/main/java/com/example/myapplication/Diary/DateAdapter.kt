@@ -13,9 +13,9 @@ import java.util.*
 class DateAdapter(
     private var year: Int,
     private var month: Int,
-    private var items: List<DiaryMainDayData>,
+    private var items: List<DiaryMainCardData>,
     //클릭된 날짜를 전달하는 콜백 함수 ... Int를 String으로 변경함
-    private val onItemClick: (String) -> Unit
+    private val onItemClick: (Int) -> Unit
 ) : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
 
     var selectedPosition = RecyclerView.NO_POSITION
@@ -57,7 +57,7 @@ class DateAdapter(
                     .load(diaryItem.imageResId)
                     .into(ivDiaryThumbnail)*/
                 Glide.with(holder.itemView.context)
-                    .load(diaryItem.thumbnailUrl_1)
+                    .load(diaryItem.imageUrl)
                     .into(ivDiaryThumbnail)
             } else {
                 ivDiaryThumbnail.visibility = View.GONE
@@ -69,16 +69,16 @@ class DateAdapter(
             }
 
             root.setOnClickListener {
-                /*if (diaryItem != null) {
+                if (diaryItem != null) {
                     val diaryItemPosition = items.indexOf(diaryItem)
                     onItemClick(diaryItemPosition)
                     updateSelectedPosition(position)
-                }*/
+                }
 
                 // 날짜 클릭 시 처리
-                val selectedDate = String.format("%04d%02d%02d", year, month, day)
+                /*val selectedDate = String.format("%04d%02d%02d", year, month, day)
                 onItemClick(selectedDate) // 클릭된 날짜를 콜백을 통해 전달
-                updateSelectedPosition(position)
+                updateSelectedPosition(position)*/
             }
         }
     }
@@ -90,13 +90,14 @@ class DateAdapter(
         notifyItemChanged(selectedPosition)
     }
 
-    fun updateItems(newItems: List<DiaryMainDayData>) {
+    fun updateItems(newItems: List<DiaryMainCardData>) {
         items = newItems
         notifyDataSetChanged()
     }
 
-    override fun getItemCount() = daysInMonth
+    override fun getItemCount() = daysInMonth // 해당 월의 날짜 수만큼 리턴
 
+    // 요일 계산
     private fun getWeekday(year: Int, month: Int, day: Int): String {
         calendar.set(year, month - 1, day)
         return when (calendar.get(Calendar.DAY_OF_WEEK)) {

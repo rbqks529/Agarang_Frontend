@@ -29,6 +29,38 @@
             android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/RoundedImageView"/>
 
+        <ImageView
+            android:id="@+id/iv_music_background"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_music_background"
+            app:layout_constraintTop_toTopOf="@id/ivDiaryImage"
+            app:layout_constraintStart_toStartOf="@id/ivDiaryImage"
+            android:layout_marginTop="11dp"
+            android:layout_marginStart="9dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_music_icon"
+            app:layout_constraintStart_toStartOf="@id/iv_music_background"
+            app:layout_constraintTop_toTopOf="@id/iv_music_background"
+            app:layout_constraintBottom_toBottomOf="@id/iv_music_background"
+            android:layout_marginStart="7.6dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="구름은 하늘을 타고"
+            android:fontFamily="@font/pretendard600"
+            android:textSize="10sp"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@id/iv_music_background"
+            app:layout_constraintTop_toTopOf="@id/iv_music_background"
+            app:layout_constraintBottom_toBottomOf="@id/iv_music_background"
+            android:layout_marginStart="23dp"/>
+
+
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="wrap_content"
@@ -73,10 +105,12 @@
             android:layout_marginTop="24dp"
             android:textSize="12sp"
             android:textColor="@color/black" />
+
         <TextView
             android:id="@+id/tv_writer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/tvContent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="14dp"/>
@@ -89,8 +123,8 @@
             android:textSize="10sp"
             android:textColor="#60AFBA"
             app:layout_constraintTop_toBottomOf="@id/tv_writer"
-            app:layout_constraintStart_toStartOf="@id/tvContent"
-            android:layout_marginStart="13.5dp"/>
+            app:layout_constraintStart_toStartOf="@id/tvContent" />
+
         <TextView
             android:id="@+id/tv_hashtag_2"
             android:layout_width="wrap_content"

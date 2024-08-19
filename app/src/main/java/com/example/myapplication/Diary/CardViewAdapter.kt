@@ -14,8 +14,8 @@ import com.example.myapplication.databinding.FragmentBottomSheetDialogBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class CardViewAdapter(
-    private var items: MutableList<DiaryMainDayData>,
-    private val onItemDeleted: (Long, DiaryMainDayData) -> Unit,
+    private var items: MutableList<DiaryMainCardData>,
+    private val onItemDeleted: (Long, DiaryMainCardData) -> Unit,
     private val onBookmarkClicked: (Long)->Unit
 ) : RecyclerView.Adapter<CardViewAdapter.ViewHolder>(), DiaryCardEditFragment.OnEditCompleteListener {
 
@@ -32,7 +32,7 @@ class CardViewAdapter(
             tvDate.text = "${item.year}.${item.month}.${item.day}"
 
             Glide.with(holder.itemView.context)
-                .load(item.imageResId)
+                .load(item.imageUrl)
                 .into(ivDiaryImage)
             tvContent.text = item.content
             tvWriter.text = item.writer
@@ -53,7 +53,6 @@ class CardViewAdapter(
                 )
                 onBookmarkClicked(item.id.toLong())
                 notifyItemChanged(position)
-                onItemDeleted(item.id.toLong(), item)
             }
 
             ivOption.setOnClickListener {
@@ -78,7 +77,7 @@ class CardViewAdapter(
 
     override fun getItemCount() = items.size
 
-    private fun showOptionsBottomSheet(context: Context, item: DiaryMainDayData) {
+    private fun showOptionsBottomSheet(context: Context, item: DiaryMainCardData) {
         val bottomSheetDialog = BottomSheetDialog(context)
         val bottomSheetBinding = FragmentBottomSheetDialogBinding.inflate(LayoutInflater.from(context))
 
@@ -119,14 +118,14 @@ class CardViewAdapter(
         }
     }
 
-    override fun onEditComplete(position: Int, editedItem: DiaryMainDayData) {
+    override fun onEditComplete(position: Int, editedItem: DiaryMainCardData) {
         if (position in 0 until items.size) {
             items[position] = editedItem
             notifyItemChanged(position)
         }
     }
 
-    private fun showDeleteConfirmationDialog(context: Context, item: DiaryMainDayData) {
+    private fun showDeleteConfirmationDialog(context: Context, item: DiaryMainCardData) {
         val fragmentManager = (context as FragmentActivity).supportFragmentManager
         val dialogFragment = DiaryDeleteDialogFragment()
 
@@ -138,7 +137,7 @@ class CardViewAdapter(
 
 
 
-    private fun deleteMemory(item: DiaryMainDayData) {
+    private fun deleteMemory(item: DiaryMainCardData) {
         val position = items.indexOf(item)
         if (position != -1) {
             items.removeAt(position)

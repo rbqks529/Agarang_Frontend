@@ -1,5 +1,6 @@
 package com.example.myapplication.Data.Response
 
+
 data class Memory(
     val writer: String,
     val content: String,
@@ -33,6 +34,7 @@ data class EditMemoryResponse(
     val message: String,
     val result: List<Any>
 )
+
 
 
 
