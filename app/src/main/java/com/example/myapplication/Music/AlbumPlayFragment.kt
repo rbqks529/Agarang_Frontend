@@ -1,6 +1,7 @@
 package com.example.myapplication.Music
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,199 +19,179 @@ import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentAlbumPlayBinding
 
 class AlbumPlayFragment : Fragment() {
-    lateinit var binding:FragmentAlbumPlayBinding
+    private lateinit var binding: FragmentAlbumPlayBinding
     private var itemList: ArrayList<MusicAlbumData> = arrayListOf()
-
     private var musicAlbumPlayAdapter: MusicPlayAdapter? = null
-    private var currentTrack:MusicAlbumData?=null
-    private val handler=Handler(Looper.getMainLooper())
-    private var updateSeekBarkRunnable:Runnable?=null
+    private var currentTrack: MusicAlbumData? = null
+    private val handler = Handler(Looper.getMainLooper())
+    private var updateSeekBarRunnable: Runnable? = null
+    private var mediaPlayer: MediaPlayer? = null
 
     private lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        Log.e("AlbumPlayFragment","one")
-        binding= FragmentAlbumPlayBinding.inflate(inflater,container,false)
+    ): View {
+        binding = FragmentAlbumPlayBinding.inflate(inflater, container, false)
         val musicAlbumData: MusicAlbumData? = arguments?.getParcelable("music_album_data")
-        val playlist:ArrayList<MusicAlbumData>?=arguments?.getParcelableArrayList<MusicAlbumData>("play_list")
+        val playlist: ArrayList<MusicAlbumData>? = arguments?.getParcelableArrayList("play_list")
 
-        sharedViewModel=ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
-        val lastPlayedTrack=loadLastPlayedTrack()
-        lastPlayedTrack?.let{
-            sharedViewModel.setCurrentTrack(it)
-        }
-
-        sharedViewModel.currentTrack.observe(viewLifecycleOwner, { track ->
-            track?.let{
-                saveLastPlayedTrack(it)
-            }
-        })
-
+        // 음악 재생
         musicAlbumData?.let {
-            currentTrack=it
-            updateUIWithTrackInfo(it)
+            playTrack(it)
         }
-        playlist?.let{
+        // UI 이벤트 설정
+        setupUIListeners()
+
+        playlist?.let {
             itemList.addAll(it)
         }
 
-        val playlistId=arguments?.getLong("playlistId")
+        val playlistId = arguments?.getLong("playlistId")
         musicAlbumPlayAdapter = MusicPlayAdapter(
             requireContext(),
-            playlistId = playlistId!!.toLong() ,
+            playlistId = playlistId!!,
             itemList,
             binding.rvMusicAlbum,
-            object :MusicPlayAdapter.OnItemClickListener{
-            override fun onItemClick(position: Int) {
-                val item=itemList[position]
-                currentTrack=item
-                updateUIWithTrackInfo(item)
-                playTrack(item)
+            object : MusicPlayAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    val item = itemList[position]
+                    currentTrack = item
+                    playTrack(item)
+                }
             }
-        })
+        )
         binding.rvMusicAlbum.adapter = musicAlbumPlayAdapter
         binding.rvMusicAlbum.layoutManager = LinearLayoutManager(requireContext())
-
-
-        // 음악 실행되어야 함 //
-        binding.ivPlayStopIc.setOnClickListener {
-            musicAlbumPlayAdapter!!.playPauseMusic()
-            if(musicAlbumPlayAdapter?.isPlaying()==true){
-                binding.ivPlayStopIc.isVisible=true
-                binding.ivPlayStartIc.isVisible=false
-
-            }else{
-                binding.ivPlayStopIc.isVisible=false
-                binding.ivPlayStartIc.isVisible=true
-            }
-        }
-        binding.ivPlayStartIc.setOnClickListener {
-            musicAlbumPlayAdapter!!.playPauseMusic()
-            if(musicAlbumPlayAdapter?.isPlaying()==true){
-                binding.ivPlayStopIc.isVisible=true
-                binding.ivPlayStartIc.isVisible=false
-
-            }else{
-                binding.ivPlayStopIc.isVisible=false
-                binding.ivPlayStartIc.isVisible=true
-            }
-        }
-        binding.ivPlayBackIc.setOnClickListener {
-            currentTrack?.let {
-                musicAlbumPlayAdapter!!.playNextTrack(it){
-                    currentTrack=musicAlbumPlayAdapter?.getNextTrack(it)
-                    currentTrack?.let{track -> updateUIWithTrackInfo(track)}
-                }
-            }
-        }
-        binding.ivPlayForeIc.setOnClickListener {
-            currentTrack?.let {
-                musicAlbumPlayAdapter!!.playPreviousTrack(it){
-                    currentTrack=musicAlbumPlayAdapter?.getPreviousTrack(it)
-                    currentTrack?.let { track -> updateUIWithTrackInfo(track) }
-                }
-            }
-        }
-
-        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    musicAlbumPlayAdapter?.seekTo(progress)
-                }
-            }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
-
-        musicAlbumPlayAdapter?.playMusic(currentTrack!!.musicUrl){
-            currentTrack=musicAlbumPlayAdapter?.getNextTrack(currentTrack!!)
-            currentTrack?.let { track ->
-                updateUIWithTrackInfo(track)
-                musicAlbumPlayAdapter?.playMusic(track.musicUrl)
-            }
-        }
 
         setupSeekBarUpdater()
         return binding.root
     }
 
-    private fun saveLastPlayedTrack(track: MusicAlbumData) {
-        val sharedPreferences = context?.getSharedPreferences("MusicPrefs", Context.MODE_PRIVATE)
-        val editor = sharedPreferences?.edit()
-
-        editor?.putString("LAST_PLAYED_TITLE", track.musicTitle)
-        editor?.putString("LAST_PLAYED_URL", track.musicUrl)
-        editor?.putString("LAST_PLAYED_IMAGE", track.imageUrl)
-        editor?.putString("LAST_PLAYED_HASH_TAG1",track.musicTag1)
-        editor?.putString("LAST_PLAYED_HASH_TAG2",track.musicTag2)
-
-        editor?.apply() // 저장
-    }
-
-    private fun loadLastPlayedTrack(): MusicAlbumData? {
-        val sharedPreferences = context?.getSharedPreferences("MusicPrefs", Context.MODE_PRIVATE)
-
-        val title = sharedPreferences?.getString("LAST_PLAYED_TITLE", null)
-        val musicUrl = sharedPreferences?.getString("LAST_PLAYED_URL", null)
-        val imageUrl = sharedPreferences?.getString("LAST_PLAYED_IMAGE", null)
-        val tag1 = sharedPreferences?.getString("LAST_PLAYED_HASH_TAG1", null)
-        val tag2 = sharedPreferences?.getString("LAST_PLAYED_HASH_TAG2", null)
-
-        return if (title != null && musicUrl != null && imageUrl != null && tag1 != null && tag2!=null) {
-            MusicAlbumData(-1, imageUrl, title, musicUrl, tag1,tag2, false)
-        } else {
-            null
+    private fun playTrack(track: MusicAlbumData) {
+        // 기존 MediaPlayer 해제 및 초기화
+        mediaPlayer?.release()
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(track.musicUrl)
+            prepareAsync()
+            setOnPreparedListener {
+                start()
+                updateSeekBar()
+                sharedViewModel.setCurrentTrack(track) // ViewModel에 현재 트랙 업데이트
+                saveLastPlayedTrack(track) // SharedPreferences에 저장
+                togglePlayPause(true)
+                updateUIWithTrackInfo(track)
+            }
+            setOnCompletionListener {
+                togglePlayPause(false)
+            }
         }
     }
 
-    private fun playTrack(track: MusicAlbumData) {
-        musicAlbumPlayAdapter?.playMusic(track.musicUrl)
-        sharedViewModel.setCurrentTrack(track) // ViewModel에 현재 트랙 업데이트
-        saveLastPlayedTrack(track) // SharedPreferences에 저장
+    private fun updateSeekBar() {
+        val updateSeekBarRunnable = object : Runnable {
+            override fun run() {
+                val currentPosition = mediaPlayer?.currentPosition ?: 0
+                val duration = mediaPlayer?.duration ?: 0
+
+                binding.seekBar.progress = currentPosition
+                binding.seekBar.max = duration
+
+                // 시간을 포맷팅하여 표시 (00:00 형식)
+                binding.tvMusicTime1.text = formatTime(currentPosition)
+                binding.tvMusicTime2.text = formatTime(duration)
+
+                handler.postDelayed(this, 1000) // 1초마다 업데이트
+            }
+        }
+        handler.post(updateSeekBarRunnable)
     }
 
-//    private fun togglePlayPause() {
-//        if(musicAlbumPlayAdapter?.isPlaying()==true){
-//            binding.ivPlayStopIc.isVisible=true
-//            binding.ivPlayStartIc.isVisible=false
-//
-//        }else{
-//            binding.ivPlayStopIc.isVisible=false
-//            binding.ivPlayStartIc.isVisible=true
-//        }
-//    }
+    private fun setupUIListeners() {
+        binding.ivPlayStartIc.setOnClickListener {
+            mediaPlayer?.start()
+            togglePlayPause(true)
+        }
 
-    private fun updateUIWithTrackInfo(it: MusicAlbumData) {
+        binding.ivPlayStopIc.setOnClickListener {
+            mediaPlayer?.pause()
+            togglePlayPause(false)
+        }
+
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    mediaPlayer?.seekTo(progress)
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
+        // 다음 곡, 이전 곡 버튼 설정
+        binding.ivPlayBackIc.setOnClickListener {
+            currentTrack?.let {
+                musicAlbumPlayAdapter?.playPreviousTrack(it)?.let { prevTrack ->
+                    currentTrack = prevTrack
+                    playTrack(prevTrack)
+                }
+            }
+        }
+
+        binding.ivPlayForeIc.setOnClickListener {
+            currentTrack?.let {
+                musicAlbumPlayAdapter?.playNextTrack(it)?.let { nextTrack ->
+                    currentTrack = nextTrack
+                    playTrack(nextTrack)
+                }
+            }
+        }
+    }
+
+    private fun togglePlayPause(isPlaying: Boolean) {
+        binding.ivPlayStopIc.isVisible = isPlaying
+        binding.ivPlayStartIc.isVisible = !isPlaying
+    }
+
+    private fun updateUIWithTrackInfo(track: MusicAlbumData) {
         Glide.with(binding.ivAlbumCover.context)
-            .load(it.imageUrl)
+            .load(track.imageUrl)
             .into(binding.ivAlbumCover)
-        binding.tvPlayMusicName.text=it.musicTitle
-        binding.tvPlayMusicHashTag.text=it.musicTag1
-        binding.tvPlayMusicHashTag2.text=it.musicTag2
-        binding.ivPlayStopIc.isVisible=true
-        binding.ivPlayStartIc.isVisible=false
+        binding.tvPlayMusicName.text = track.musicTitle
+        binding.tvPlayMusicHashTag.text = "#${track.musicTag1} #${track.musicTag2}"
+    }
+
+    private fun saveLastPlayedTrack(track: MusicAlbumData) {
+        val sharedPreferences = context?.getSharedPreferences("MusicPrefs", Context.MODE_PRIVATE)
+        sharedPreferences?.edit()?.apply {
+            putString("LAST_PLAYED_TITLE", track.musicTitle)
+            putString("LAST_PLAYED_URL", track.musicUrl)
+            putString("LAST_PLAYED_IMAGE", track.imageUrl)
+            putString("LAST_PLAYED_HASH_TAG1", track.musicTag1)
+            putString("LAST_PLAYED_HASH_TAG2", track.musicTag2)
+            apply()
+        }
     }
 
     private fun setupSeekBarUpdater() {
-        updateSeekBarkRunnable=object :Runnable{
+        updateSeekBarRunnable = object : Runnable {
             override fun run() {
-                val currentPosition=musicAlbumPlayAdapter?.getCurrentPosition()?:0
-                val duration = musicAlbumPlayAdapter?.getDuration()?:0
-
-                binding.tvMusicTime1.text=formatTime(currentPosition)
-                binding.tvMusicTime2.text=formatTime(duration)
-                binding.seekBar.progress=currentPosition
-                binding.seekBar.max=duration
-                handler.postDelayed(this,1000)
+                mediaPlayer?.let {
+                    binding.seekBar.progress = it.currentPosition
+                    binding.seekBar.max = it.duration
+                    binding.tvMusicTime1.text = formatTime(it.currentPosition)
+                    binding.tvMusicTime2.text = formatTime(it.duration)
+                }
+                handler.postDelayed(this, 1000)
             }
-
         }
-        updateSeekBarkRunnable?.run()
+        handler.post(updateSeekBarRunnable!!)
     }
+
     private fun formatTime(milliseconds: Int): String {
         val minutes = (milliseconds / 1000) / 60
         val seconds = (milliseconds / 1000) % 60
@@ -219,8 +200,8 @@ class AlbumPlayFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // 핸들러와 Runnable 제거
-        updateSeekBarkRunnable?.let { handler.removeCallbacks(it) }
+        updateSeekBarRunnable?.let { handler.removeCallbacks(it) }
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
-
 }
