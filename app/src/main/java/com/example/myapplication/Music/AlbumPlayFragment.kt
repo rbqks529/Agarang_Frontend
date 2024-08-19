@@ -72,6 +72,7 @@ class AlbumPlayFragment : Fragment() {
     }
 
     private fun playTrack(track: MusicAlbumData) {
+        Log.d("AlbumPlayFragment", "Playing track: ${track.musicTitle}")
         // 기존 MediaPlayer 해제 및 초기화
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer().apply {
@@ -135,18 +136,22 @@ class AlbumPlayFragment : Fragment() {
         // 다음 곡, 이전 곡 버튼 설정
         binding.ivPlayBackIc.setOnClickListener {
             currentTrack?.let {
-                musicAlbumPlayAdapter?.playPreviousTrack(it)?.let { prevTrack ->
-                    currentTrack = prevTrack
-                    playTrack(prevTrack)
+                val prevTrack = musicAlbumPlayAdapter?.playPreviousTrack(it)
+                Log.d("AlbumPlayFragment", "Previous track: $prevTrack")
+                prevTrack?.let { track ->
+                    currentTrack = track
+                    playTrack(track)
                 }
             }
         }
 
         binding.ivPlayForeIc.setOnClickListener {
             currentTrack?.let {
-                musicAlbumPlayAdapter?.playNextTrack(it)?.let { nextTrack ->
-                    currentTrack = nextTrack
-                    playTrack(nextTrack)
+                val nextTrack = musicAlbumPlayAdapter?.playNextTrack(it)
+                Log.d("AlbumPlayFragment", "Next track: $nextTrack")
+                nextTrack?.let { track ->
+                    currentTrack = track
+                    playTrack(track)
                 }
             }
         }
@@ -162,7 +167,8 @@ class AlbumPlayFragment : Fragment() {
             .load(track.imageUrl)
             .into(binding.ivAlbumCover)
         binding.tvPlayMusicName.text = track.musicTitle
-        binding.tvPlayMusicHashTag.text = "#${track.musicTag1} #${track.musicTag2}"
+        binding.tvPlayMusicHashTag.text = "#${track.musicTag1}"
+        binding.tvPlayMusicHashTag2.text=" #${track.musicTag2}"
     }
 
     private fun saveLastPlayedTrack(track: MusicAlbumData) {

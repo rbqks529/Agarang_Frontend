@@ -1,12 +1,10 @@
 package com.example.myapplication.Music
 
 import android.content.Context
-import android.media.MediaPlayer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -14,7 +12,6 @@ import com.example.myapplication.Data.Request.MusicBookmark
 import com.example.myapplication.Data.Request.MusicDelete
 import com.example.myapplication.Data.Response.MusicBookmarkResponse
 import com.example.myapplication.Data.Response.MusicDeleteResponse
-import com.example.myapplication.Data.Response.Playlist
 import com.example.myapplication.R
 import com.example.myapplication.Retrofit.PlaylistIF
 import com.example.myapplication.Retrofit.RetrofitService
@@ -34,8 +31,6 @@ class MusicAlbumAdapter(
         fun onItemClick(position: Int)
     }
 
-    private var mediaPlayer: MediaPlayer? = null
-
     inner class ViewHolder(private val binding: AlbumMusicItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MusicAlbumData) {
             Glide.with(binding.ivItemCover.context)
@@ -52,7 +47,6 @@ class MusicAlbumAdapter(
             binding.apply {
                 val clickListener= View.OnClickListener {
                     itemClickListener.onItemClick(adapterPosition)
-                    playMusic(item.musicUrl)
                 }
                 ivItemCover.setOnClickListener(clickListener)
                 tvItemTag1.setOnClickListener(clickListener)
@@ -63,7 +57,6 @@ class MusicAlbumAdapter(
             binding.ivItemOption.setOnClickListener {
                 showDeleteConfirmationDialog(itemView.context, item)
             }
-            Log.e("MusicAlbumAdapter","in fun bind")
 
         }
 
@@ -75,9 +68,7 @@ class MusicAlbumAdapter(
                 binding.ivItemHeartEmpty.setImageResource(R.drawable.icon_heart_gray_empty)
                 binding.ivItemHeartEmpty.tag = "empty"
             }
-            //서버에 보내야함.
             apiBookmark(memoryId)
-
         }
     }
 
@@ -172,33 +163,4 @@ class MusicAlbumAdapter(
             }
         })
     }
-
-    // 음악 재생 함수
-    private fun playMusic(musicUrl: String) {
-        mediaPlayer?.release()
-        mediaPlayer = MediaPlayer().apply {
-            setDataSource(musicUrl)
-            prepareAsync()
-            setOnPreparedListener {
-                start()
-            }
-            setOnErrorListener { mp, what, extra ->
-                Log.e("MediaPlayerError", "Error occurred: $what, $extra")
-                true
-            }
-        }
-    }
-
-    fun playPauseMusic(){
-        mediaPlayer?.let {
-            if (it.isPlaying) {
-                it.pause()
-            } else {
-                it.start()
-            }
-        }
-    }
-
-
-
 }
