@@ -11,6 +11,6 @@ data class HomeChildResponse(
     data class Result(
         val babyName: String,
         val dueDate: String,
-        val weight: Long
+        val weight: Float?
     )
 }
