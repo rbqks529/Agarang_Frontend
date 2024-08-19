@@ -41,12 +41,11 @@ class AlbumPlayFragment : Fragment() {
 
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
-
         // 음악 재생
         musicAlbumData?.let {
+            currentTrack = it  // currentTrack을 초기화
             playTrack(it)
         }
-
 
         playlist?.let {
             itemList.addAll(it)
@@ -61,7 +60,7 @@ class AlbumPlayFragment : Fragment() {
             object : MusicPlayAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
                     val item = itemList[position]
-                    currentTrack = item
+                    currentTrack = item  // 현재 선택한 트랙을 currentTrack으로 설정
                     playTrack(item)
                 }
             }
@@ -90,6 +89,7 @@ class AlbumPlayFragment : Fragment() {
             }
             setOnCompletionListener {
                 togglePlayPause(false)
+                playNextTrack(track) // 트랙이 끝나면 자동으로 다음 트랙 재생
             }
         }
     }
@@ -139,7 +139,7 @@ class AlbumPlayFragment : Fragment() {
         // 다음 곡, 이전 곡 버튼 설정
         binding.ivPlayBackIc.setOnClickListener {
             currentTrack?.let {
-                val prevTrack = musicAlbumPlayAdapter?.playPreviousTrack(it)
+                val prevTrack = playPreviousTrack(it)
                 Log.d("AlbumPlayFragment", "Previous track: $prevTrack")
                 prevTrack?.let { track ->
                     currentTrack = track
@@ -150,7 +150,7 @@ class AlbumPlayFragment : Fragment() {
 
         binding.ivPlayForeIc.setOnClickListener {
             currentTrack?.let {
-                val nextTrack = musicAlbumPlayAdapter?.playNextTrack(it)
+                val nextTrack = playNextTrack(it)
                 Log.d("AlbumPlayFragment", "Next track: $nextTrack")
                 nextTrack?.let { track ->
                     currentTrack = track
@@ -159,6 +159,7 @@ class AlbumPlayFragment : Fragment() {
             }
         }
     }
+
 
     private fun togglePlayPause(isPlaying: Boolean) {
         binding.ivPlayStopIc.isVisible = isPlaying
@@ -171,7 +172,7 @@ class AlbumPlayFragment : Fragment() {
             .into(binding.ivAlbumCover)
         binding.tvPlayMusicName.text = track.musicTitle
         binding.tvPlayMusicHashTag.text = "#${track.musicTag1}"
-        binding.tvPlayMusicHashTag2.text=" #${track.musicTag2}"
+        binding.tvPlayMusicHashTag2.text = "#${track.musicTag2}"
     }
 
     private fun saveLastPlayedTrack(track: MusicAlbumData) {
@@ -205,6 +206,32 @@ class AlbumPlayFragment : Fragment() {
         val minutes = (milliseconds / 1000) / 60
         val seconds = (milliseconds / 1000) % 60
         return String.format("%02d:%02d", minutes, seconds)
+    }
+
+    private fun playPreviousTrack(currentTrack: MusicAlbumData): MusicAlbumData? {
+        val currentIndex = itemList.indexOf(currentTrack)
+        return if (currentIndex > 0) {
+            itemList[currentIndex - 1]
+        } else {
+            null
+        }
+    }
+
+    private fun playNextTrack(currentTrack: MusicAlbumData): MusicAlbumData? {
+        val currentIndex = itemList.indexOf(currentTrack)
+        return if (currentIndex < itemList.size - 1) {
+            itemList[currentIndex + 1]
+        } else {
+            null
+        }
+    }
+
+    private fun getFirstTrack(): MusicAlbumData? {
+        return if (itemList.isNotEmpty()) itemList[0] else null
+    }
+
+    private fun getLastTrack(): MusicAlbumData? {
+        return if (itemList.isNotEmpty()) itemList[itemList.size - 1] else null
     }
 
     override fun onDestroyView() {
