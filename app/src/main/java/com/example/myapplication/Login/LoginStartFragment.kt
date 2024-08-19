@@ -46,7 +46,6 @@ class LoginStartFragment : Fragment(), AuthInterceptor.AuthCallback {
             // 토큰이 존재하면 메인 액티비티로 이동
             val intent = Intent(activity, MainActivity::class.java)
             startActivity(intent)
-            activity?.finish() // 현재 액티비티 종료
 
             return binding.root
         }
@@ -181,8 +180,8 @@ class LoginStartFragment : Fragment(), AuthInterceptor.AuthCallback {
             sharedPreferences.edit().clear().apply()
 
             // 웹뷰 쿠키 삭제
-            /*CookieManager.getInstance().removeAllCookies(null)
-            CookieManager.getInstance().flush()*/
+            CookieManager.getInstance().removeAllCookies(null)
+            CookieManager.getInstance().flush()
 
             // 로그인 화면으로 이동
             Toast.makeText(context, "세션이 만료되었습니다. 다시 로그인해주세요.", Toast.LENGTH_LONG).show()
