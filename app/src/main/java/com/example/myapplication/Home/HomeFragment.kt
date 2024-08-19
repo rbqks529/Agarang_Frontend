@@ -1,16 +1,20 @@
 package com.example.myapplication.Home
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.myapplication.Data.Response.HomeResponse
+import com.example.myapplication.Music.MusicAlbumData
 import com.example.myapplication.R
 
 
@@ -36,12 +40,43 @@ class HomeFragment: Fragment() {
     lateinit var binding: FragmentHomeBinding
     private var RecentDiaryAdapter: RecentDiaryAdapter?= null
     private var RecentDiaryDataList : ArrayList<RecentDiaryData> = arrayListOf()
+
+    private lateinit var sharedViewModel: SharedViewModel
+    private var mediaPlayer: MediaPlayer? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
+
+        val lastPlayedTrack =loadLastPlayedTrack()
+        lastPlayedTrack?.let {
+            sharedViewModel.setCurrentTrack(it)
+        }
+
+        sharedViewModel.currentTrack.observe(viewLifecycleOwner, { track ->
+            track?.let {
+                binding.tvMusicTitle.text=it.musicTitle
+                Glide.with(this).load(it.imageUrl).into(binding.sivMusicPhoto)
+                binding.tvMusicTag.text="#"+it.musicTag1+" #"+it.musicTag2
+                val musicUrl=it.musicUrl
+                binding.ivMusicBarPlay.setOnClickListener {
+                    playMusic(musicUrl)
+                    binding.ivMusicBarPlay.isVisible=false
+                    binding.ivMusicBarStop.isVisible=true
+                }
+                binding.ivMusicBarStop.setOnClickListener {
+                    mediaPlayer?.pause()
+                    binding.ivMusicBarPlay.isVisible=true
+                    binding.ivMusicBarStop.isVisible=false
+                }
+            }
+        })
+
         //설정화면으로 전환
         binding.ivSetting.setOnClickListener {
             val fragmentSetting=HomeSettingFragment()
@@ -90,6 +125,39 @@ class HomeFragment: Fragment() {
         return binding.root
     }
 
+    private fun loadLastPlayedTrack(): MusicAlbumData? {
+        val sharedPreferences = context?.getSharedPreferences("MusicPrefs", Context.MODE_PRIVATE)
+
+        val title = sharedPreferences?.getString("LAST_PLAYED_TITLE", null)
+        val musicUrl = sharedPreferences?.getString("LAST_PLAYED_URL", null)
+        val imageUrl = sharedPreferences?.getString("LAST_PLAYED_IMAGE", null)
+        val tag1 = sharedPreferences?.getString("LAST_PLAYED_HASH_TAG1", null)
+        val tag2 = sharedPreferences?.getString("LAST_PLAYED_HASH_TAG2", null)
+
+        return if (title != null && musicUrl != null && imageUrl != null && tag1 != null && tag2 != null) {
+            MusicAlbumData(-1, imageUrl, title, musicUrl, tag1, tag2, false)
+        } else {
+            null
+        }
+    }
+
+
+
+    private fun playMusic(musicUrl: String) {
+        mediaPlayer?.release()
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(musicUrl)
+            prepareAsync()
+            setOnPreparedListener {
+                start()
+            }
+            setOnErrorListener { mp, what, extra ->
+                Log.e("MediaPlayerError", "Error occurred: $what, $extra")
+                true
+            }
+        }
+    }
+
     private fun setViewsVisibility(visibility: Int) {
         binding.tvToday.visibility = visibility
         binding.tvDDayText.visibility = visibility
@@ -100,6 +168,9 @@ class HomeFragment: Fragment() {
         binding.rvRecentCard.visibility = visibility
         binding.ivRectangle1.visibility = visibility
         binding.ivRectangle2.visibility = visibility
+
+        binding.ivMusicBarPlay.isVisible=true
+        binding.ivMusicBarStop.isVisible=false
     }
 
     private fun fetchRecentDiary(){

@@ -1,6 +1,8 @@
 package com.example.myapplication.Music
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +29,7 @@ class MusicAlbumFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMusicAlbumBinding.inflate(inflater, container, false)
+        Log.e("MusicAlbumFragment","one")
 
         val playlistId=arguments?.getLong("playlistId")
         val playlistImg=arguments?.getString("playlistPicture")
@@ -110,4 +113,5 @@ class MusicAlbumFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
+
 }

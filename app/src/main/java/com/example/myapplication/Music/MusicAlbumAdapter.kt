@@ -1,8 +1,10 @@
 package com.example.myapplication.Music
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentActivity
@@ -32,36 +34,37 @@ class MusicAlbumAdapter(
         fun onItemClick(position: Int)
     }
 
-    inner class ViewHolder(private val binding: AlbumMusicItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    private var mediaPlayer: MediaPlayer? = null
 
+    inner class ViewHolder(private val binding: AlbumMusicItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MusicAlbumData) {
             Glide.with(binding.ivItemCover.context)
                 .load(item.imageUrl)
                 .into(binding.ivItemCover)
             binding.tvItemTitle.text = item.musicTitle
-            binding.tvItemTag1.text = item.musicTag1
-            binding.tvItemTag2.text = item.musicTag2
+            binding.tvItemTag1.text = "#"+item.musicTag1+" "
+            binding.tvItemTag2.text = "#"+item.musicTag2
 
             binding.ivItemHeartEmpty.setOnClickListener {
                 toggleHeart(item.memoryId)
             }
 
-            binding.ivItemCover.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
-            }
-            binding.tvItemTag1.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
-            }
-            binding.tvItemTag2.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
-            }
-            binding.tvItemTitle.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
+            binding.apply {
+                val clickListener= View.OnClickListener {
+                    itemClickListener.onItemClick(adapterPosition)
+                    playMusic(item.musicUrl)
+                }
+                ivItemCover.setOnClickListener(clickListener)
+                tvItemTag1.setOnClickListener(clickListener)
+                tvItemTag2.setOnClickListener(clickListener)
+                tvItemTitle.setOnClickListener(clickListener)
             }
 
             binding.ivItemOption.setOnClickListener {
                 showDeleteConfirmationDialog(itemView.context, item)
             }
+            Log.e("MusicAlbumAdapter","in fun bind")
+
         }
 
         private fun toggleHeart(memoryId:Int) {
@@ -169,4 +172,33 @@ class MusicAlbumAdapter(
             }
         })
     }
+
+    // 음악 재생 함수
+    private fun playMusic(musicUrl: String) {
+        mediaPlayer?.release()
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(musicUrl)
+            prepareAsync()
+            setOnPreparedListener {
+                start()
+            }
+            setOnErrorListener { mp, what, extra ->
+                Log.e("MediaPlayerError", "Error occurred: $what, $extra")
+                true
+            }
+        }
+    }
+
+    fun playPauseMusic(){
+        mediaPlayer?.let {
+            if (it.isPlaying) {
+                it.pause()
+            } else {
+                it.start()
+            }
+        }
+    }
+
+
+
 }
