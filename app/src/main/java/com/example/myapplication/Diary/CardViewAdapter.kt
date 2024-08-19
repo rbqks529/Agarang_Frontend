@@ -1,6 +1,7 @@
 package com.example.myapplication.Diary
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +38,11 @@ class CardViewAdapter(
             tvContent.text = item.content
             tvWriter.text = item.writer
 
-            tvMusicTitle.text = item.musicTitle
+            if(item.musicUrl.equals("")){
+                tvMusicTitle.text = "음악이 생성되는 중입니다."
+            } else {
+                tvMusicTitle.text = item.musicTitle
+            }
 
 
             ivBookmark.setImageResource(
