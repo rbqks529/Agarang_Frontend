@@ -115,7 +115,6 @@ class MusicPlayAdapter(
             override fun onFailure(call: retrofit2.Call<MusicBookmarkResponse>, t: Throwable) {
                 Log.e("apiBookmark", "Network error: ${t.message}")
             }
-
         })
     }
 

@@ -37,16 +37,33 @@ class AlbumPlayFragment : Fragment() {
         val musicAlbumData: MusicAlbumData? = arguments?.getParcelable("music_album_data")
         val playlist: ArrayList<MusicAlbumData>? = arguments?.getParcelableArrayList("play_list")
 
+        binding.ivPlayBackIc.setOnClickListener {
+            val currentIndex = playlist?.indexOf(playlist.)
+            val prevTrack = if (currentIndex != null && currentIndex > 0) {
+                playlist[currentIndex - 1]
+            } else {
+                null
+            }
+
+            prevTrack?.let {
+                currentTrack = it
+                playTrack(it)
+            }
+        }
+
+
         setupUIListeners()
 
         sharedViewModel = ViewModelProvider(requireActivity()).get(SharedViewModel::class.java)
 
 
         // 음악 재생
-        musicAlbumData?.let {
-            playTrack(it)
+        if(musicAlbumData!=null){
+            playTrack(musicAlbumData)
+        }else if(!playlist.isNullOrEmpty()){
+            currentTrack=playlist[0]
+            playTrack(currentTrack!!)
         }
-
 
         playlist?.let {
             itemList.addAll(it)
@@ -125,17 +142,6 @@ class AlbumPlayFragment : Fragment() {
             togglePlayPause(false)
         }
 
-        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    mediaPlayer?.seekTo(progress)
-                }
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
-
         // 다음 곡, 이전 곡 버튼 설정
         binding.ivPlayBackIc.setOnClickListener {
             currentTrack?.let {
@@ -158,6 +164,18 @@ class AlbumPlayFragment : Fragment() {
                 }
             }
         }
+
+        binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    mediaPlayer?.seekTo(progress)
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
     }
 
     private fun togglePlayPause(isPlaying: Boolean) {
@@ -213,4 +231,5 @@ class AlbumPlayFragment : Fragment() {
         mediaPlayer?.release()
         mediaPlayer = null
     }
+
 }
