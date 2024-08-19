@@ -21,11 +21,11 @@ import retrofit2.Response
 class DiaryCardEditFragment : Fragment() {
 
     private lateinit var binding: FragmentDiaryCardEditBinding
-    private lateinit var item: DiaryMainDayData
+    private lateinit var item: DiaryMainCardData
     private var position: Int = -1
 
     companion object {
-        fun newInstance(item: DiaryMainDayData, position: Int): DiaryCardEditFragment {
+        fun newInstance(item: DiaryMainCardData, position: Int): DiaryCardEditFragment {
             val fragment = DiaryCardEditFragment()
             val args = Bundle().apply {
                 putSerializable("item", item)
@@ -39,13 +39,13 @@ class DiaryCardEditFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            item = it.getSerializable("item") as DiaryMainDayData
+            item = it.getSerializable("item") as DiaryMainCardData
             position = it.getInt("position")
         }
     }
 
     interface OnEditCompleteListener {
-        fun onEditComplete(position: Int, editedItem: DiaryMainDayData)
+        fun onEditComplete(position: Int, editedItem: DiaryMainCardData)
     }
 
     private var editCompleteListener: OnEditCompleteListener? = null
@@ -64,7 +64,7 @@ class DiaryCardEditFragment : Fragment() {
 
         context?.let {
             Glide.with(it)
-                .load(item.imageResId)
+                .load(item.imageUrl)
                 .centerCrop()
                 .into(binding.ivCardEditImage)
         }

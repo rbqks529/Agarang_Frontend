@@ -41,14 +41,14 @@ class LoginStartFragment : Fragment(), AuthInterceptor.AuthCallback {
         val savedToken = sharedPreferences.getString("auth_token", null)
         RetrofitService.setAuthCallback(this)
 
-        /*if (savedToken != null) {
+        if (savedToken != null) {
             // 토큰이 존재하면 메인 액티비티로 이동
             val intent = Intent(activity, MainActivity::class.java)
             startActivity(intent)
             activity?.finish() // 현재 액티비티 종료
 
             return binding.root
-        }*/
+        }
 
         binding.icLoginKakao.setOnClickListener {
             authorizeKakao()

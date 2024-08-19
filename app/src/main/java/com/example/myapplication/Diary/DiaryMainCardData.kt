@@ -1,16 +1,25 @@
 package com.example.myapplication.Diary
 
+import android.util.Log
 import java.io.Serializable
 
-data class DiaryMainDayData(
-    val imageResId: String="",
+data class DiaryMainCardData(
     var id: Int = 0,
+    val writer: String,
     val date: String,
-    val isPlaceholder: Boolean = false // 데이터가 없는 날을 위한 속성
+    val content: String,
+    val musicUrl: String, // 음악 재생을 위한 URL (필요한 경우)
+    val imageUrl: String,
+    val hashTags: List<String>,
+    var bookmarked: Boolean,
+    val musicTitle: String = "구름은 하늘을 타고",
 ) : Serializable {
-    val year: Int
-    val month: Int
-    val day: Int
+    var year: Int = 0
+    var month: Int = 0
+    var day: Int = 0
+
+    val formattedHashtags: List<String>
+        get() = hashTags.take(3).map { "#$it" } // 최대 3개의 해시태그만 사용
 
     init {
         if (date.length == 8) {
@@ -30,4 +39,3 @@ data class DiaryMainDayData(
         }
     }
 }
-
