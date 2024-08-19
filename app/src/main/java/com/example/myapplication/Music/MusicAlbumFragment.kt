@@ -1,6 +1,8 @@
 package com.example.myapplication.Music
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -110,4 +112,5 @@ class MusicAlbumFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
+
 }

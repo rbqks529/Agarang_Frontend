@@ -58,16 +58,40 @@ class AlbumPlayFragment : Fragment() {
         // 음악 실행되어야 함 //
         binding.ivPlayStopIc.setOnClickListener {
             musicAlbumPlayAdapter!!.playPauseMusic()
-            togglePlayPause()
+            if(musicAlbumPlayAdapter?.isPlaying()==true){
+                binding.ivPlayStopIc.isVisible=true
+                binding.ivPlayStartIc.isVisible=false
+
+            }else{
+                binding.ivPlayStopIc.isVisible=false
+                binding.ivPlayStartIc.isVisible=true
+            }
+        }
+        binding.ivPlayStartIc.setOnClickListener {
+            musicAlbumPlayAdapter!!.playPauseMusic()
+            if(musicAlbumPlayAdapter?.isPlaying()==true){
+                binding.ivPlayStopIc.isVisible=true
+                binding.ivPlayStartIc.isVisible=false
+
+            }else{
+                binding.ivPlayStopIc.isVisible=false
+                binding.ivPlayStartIc.isVisible=true
+            }
         }
         binding.ivPlayBackIc.setOnClickListener {
             currentTrack?.let {
-                musicAlbumPlayAdapter!!.playNextTrack(it)
+                musicAlbumPlayAdapter!!.playNextTrack(it){
+                    currentTrack=musicAlbumPlayAdapter?.getNextTrack(it)
+                    currentTrack?.let{track -> updateUIWithTrackInfo(track)}
+                }
             }
         }
         binding.ivPlayForeIc.setOnClickListener {
             currentTrack?.let {
-                musicAlbumPlayAdapter!!.playPreviousTrack(it)
+                musicAlbumPlayAdapter!!.playPreviousTrack(it){
+                    currentTrack=musicAlbumPlayAdapter?.getPreviousTrack(it)
+                    currentTrack?.let { track -> updateUIWithTrackInfo(track) }
+                }
             }
         }
 
@@ -81,22 +105,28 @@ class AlbumPlayFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
+        musicAlbumPlayAdapter?.playMusic(currentTrack!!.musicUrl){
+            currentTrack=musicAlbumPlayAdapter?.getNextTrack(currentTrack!!)
+            currentTrack?.let { track ->
+                updateUIWithTrackInfo(track)
+                musicAlbumPlayAdapter?.playMusic(track.musicUrl)
+            }
+        }
+
         setupSeekBarUpdater()
         return binding.root
     }
 
-    private fun togglePlayPause() {
-        if(musicAlbumPlayAdapter?.isPlaying()==true){
-            //musicAlbumPlayAdapter?.pauseMusic()
-            binding.ivPlayStopIc.isVisible=true
-            binding.ivPlayStartIc.isVisible=false
-
-        }else{
-            //musicAlbumPlayAdapter?.playMusic()
-            binding.ivPlayStopIc.isVisible=false
-            binding.ivPlayStartIc.isVisible=true
-        }
-    }
+//    private fun togglePlayPause() {
+//        if(musicAlbumPlayAdapter?.isPlaying()==true){
+//            binding.ivPlayStopIc.isVisible=true
+//            binding.ivPlayStartIc.isVisible=false
+//
+//        }else{
+//            binding.ivPlayStopIc.isVisible=false
+//            binding.ivPlayStartIc.isVisible=true
+//        }
+//    }
 
     private fun updateUIWithTrackInfo(it: MusicAlbumData) {
         Glide.with(binding.ivAlbumCover.context)
@@ -105,6 +135,8 @@ class AlbumPlayFragment : Fragment() {
         binding.tvPlayMusicName.text=it.musicTitle
         binding.tvPlayMusicHashTag.text=it.musicTag1
         binding.tvPlayMusicHashTag2.text=it.musicTag2
+        binding.ivPlayStopIc.isVisible=true
+        binding.ivPlayStartIc.isVisible=false
     }
 
     private fun setupSeekBarUpdater() {

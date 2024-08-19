@@ -1,8 +1,10 @@
 package com.example.myapplication.Music
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentActivity
@@ -32,6 +34,8 @@ class MusicAlbumAdapter(
         fun onItemClick(position: Int)
     }
 
+    private var mediaPlayer: MediaPlayer? = null
+
     inner class ViewHolder(private val binding: AlbumMusicItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: MusicAlbumData) {
@@ -46,22 +50,21 @@ class MusicAlbumAdapter(
                 toggleHeart(item.memoryId)
             }
 
-            binding.ivItemCover.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
-            }
-            binding.tvItemTag1.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
-            }
-            binding.tvItemTag2.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
-            }
-            binding.tvItemTitle.setOnClickListener {
-                itemClickListener.onItemClick(adapterPosition)
+            binding.apply {
+                val clickListener= View.OnClickListener {
+                    itemClickListener.onItemClick(adapterPosition)
+                    playMusic(item.musicUrl)
+                }
+                ivItemCover.setOnClickListener(clickListener)
+                tvItemTag1.setOnClickListener(clickListener)
+                tvItemTag2.setOnClickListener(clickListener)
+                tvItemTitle.setOnClickListener(clickListener)
             }
 
             binding.ivItemOption.setOnClickListener {
                 showDeleteConfirmationDialog(itemView.context, item)
             }
+
         }
 
         private fun toggleHeart(memoryId:Int) {
@@ -169,4 +172,99 @@ class MusicAlbumAdapter(
             }
         })
     }
+
+    // 음악 재생 함수
+    private fun playMusic(musicUrl: String) {
+        // MediaPlayer 코드 (앞서 설명한 코드 활용)
+        mediaPlayer?.release()
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(musicUrl)
+            prepareAsync()
+            setOnPreparedListener {
+                start()
+            }
+            setOnErrorListener { mp, what, extra ->
+                Log.e("MediaPlayerError", "Error occurred: $what, $extra")
+                true
+            }
+        }
+    }
+
+    fun playPauseMusic(){
+        mediaPlayer?.let {
+            if (it.isPlaying) {
+                it.pause()
+            } else {
+                it.start()
+            }
+        }
+    }
+    fun playNextTrack(currentItem: MusicAlbumData){
+        val currentIndex = items.indexOf(currentItem)
+
+        if (currentIndex != -1) {
+            val nextIndex = (currentIndex + 1) % items.size
+            val nextItem = items[nextIndex]
+
+            mediaPlayer?.release() // 현재 재생 중인 트랙 정리
+            playMusic(nextItem.musicUrl) // 다음 트랙 재생
+
+        }
+    }
+
+    fun playPreviousTrack(currentItem: MusicAlbumData){
+        val currentIndex = items.indexOf(currentItem)
+
+        if (currentIndex != -1) {
+            val previousIndex = if (currentIndex - 1 < 0) {
+                items.size - 1
+            } else {
+                currentIndex - 1
+            }
+
+            val previousItem = items[previousIndex]
+
+            mediaPlayer?.release() // 현재 재생 중인 트랙 정리
+            playMusic(previousItem.musicUrl) // 다음 트랙 재생
+
+        }
+    }
+
+    fun seekTo(position: Int) {
+        mediaPlayer?.seekTo(position)
+    }
+
+    fun getCurrentPosition(): Int {
+        return mediaPlayer?.currentPosition ?: 0
+    }
+
+    fun getDuration(): Int {
+        return mediaPlayer?.duration ?: 0
+    }
+
+    fun isPlaying(): Boolean {
+        return mediaPlayer?.isPlaying?:false
+    }
+
+    fun getNextTrack(currentItem: MusicAlbumData): MusicAlbumData? {
+        val currentIndex = items.indexOf(currentItem)
+        return if (currentIndex != -1) {
+            val nextIndex = (currentIndex + 1) % items.size
+            items[nextIndex]
+        } else {
+            null
+        }
+    }
+
+    fun getPreviousTrack(currentItem: MusicAlbumData): MusicAlbumData? {
+        val currentIndex = items.indexOf(currentItem)
+        return if (currentIndex != -1) {
+            val previousIndex = if (currentIndex - 1 >= 0) currentIndex - 1 else items.size - 1
+            items[previousIndex]
+        } else {
+            null
+        }
+    }
+
+
 }
