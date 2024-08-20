@@ -138,8 +138,8 @@ class DiaryMainCardFragment : Fragment() {
             date = formattedDate,
             bookmarked = memory.bookmarked ?: false,
             imageUrl = memory.imageUrl,
-            musicUrl = memory.musicUrl ?: "",
-            musicTitle = memory.musicTitle
+            musicUrl = memory.musicUrl,
+            musicTitle = memory.musicTitle ?: ""
         ))
 
         setupRecyclerViews()
@@ -149,7 +149,6 @@ class DiaryMainCardFragment : Fragment() {
     private fun handleApiResponse(memories: List<CardMemory>) {
         // API 응답 처리
         // diaryDataList를 API 응답을 사용하여 초기화
-
         diaryDataList.clear()
         diaryDataList.addAll(memories.map { memory ->
             // 날짜 형식 변환. API연동오류때문에 일시적으로 추가 date = memory.date 수정
@@ -162,8 +161,8 @@ class DiaryMainCardFragment : Fragment() {
                 hashTags = memory.hashTags,
                 date = formattedDate,
                 bookmarked = memory.bookmarked?: false,
-                imageUrl = memory.imageUrl ?: "",
-                musicUrl = memory.musicUrl
+                imageUrl = memory.imageUrl,
+                musicUrl = memory.musicUrl ?: ""
             )
         })
 
