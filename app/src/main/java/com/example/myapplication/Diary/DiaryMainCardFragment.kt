@@ -370,10 +370,4 @@ class DiaryMainCardFragment : Fragment() {
         layoutManager.startSmoothScroll(smoothScroller)
     }
 
-    fun setData(data: List<DiaryMainCardData>, initialPosition: Int) {
-        diaryDataList = data.toMutableList()
-        currentPosition = initialPosition
-        setupRecyclerViews()
-    }
-
 }
