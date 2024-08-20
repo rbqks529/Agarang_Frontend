@@ -151,8 +151,6 @@
         tools:ignore="MissingConstraints">
     </androidx.recyclerview.widget.RecyclerView>
 
-
-
     <View
         android:id="@+id/iv_music_background"
         android:layout_width="match_parent"
@@ -197,60 +195,27 @@
         android:layout_marginTop="29dp"
         />
 
-    <ImageView
-        android:id="@+id/iv_music_bar_option"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_music_bar_option"
-        app:layout_constraintTop_toTopOf="@id/iv_music_background"
-        app:layout_constraintEnd_toEndOf="@id/iv_music_background"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="25dp"
-        />
-    <ImageView
-        android:id="@+id/iv_music_bar_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/music_bar_next"
-        app:layout_constraintTop_toTopOf="@id/iv_music_background"
-        app:layout_constraintEnd_toEndOf="@id/iv_music_background"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="44dp"
-        />
 
     <ImageView
         android:id="@+id/iv_music_bar_play"
-        android:layout_width="13dp"
-        android:layout_height="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="88dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:src="@drawable/music_bar_play"
+        app:layout_constraintTop_toTopOf="@id/iv_music_background"
+        app:layout_constraintBottom_toBottomOf="@id/iv_music_background"
         app:layout_constraintEnd_toEndOf="@id/iv_music_background"
-        app:layout_constraintTop_toTopOf="@id/iv_music_background" />
+        android:layout_marginEnd="30dp"/>
 
     <ImageView
         android:id="@+id/iv_music_bar_stop"
-        android:layout_width="13dp"
-        android:layout_height="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="88dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:src="@drawable/ic_play_stop"
-        app:layout_constraintEnd_toEndOf="@id/iv_music_background"
         app:layout_constraintTop_toTopOf="@id/iv_music_background"
+        app:layout_constraintBottom_toBottomOf="@id/iv_music_background"
+        app:layout_constraintEnd_toEndOf="@id/iv_music_background"
+        android:layout_marginEnd="30dp"
         android:visibility="invisible"/>
-
-
-
-    <ImageView
-        android:id="@+id/iv_music_bar_previous"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_music_bar_previous"
-        app:layout_constraintTop_toTopOf="@id/iv_music_background"
-        app:layout_constraintEnd_toEndOf="@id/iv_music_background"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="133dp"
-        />
 
 
 
