@@ -33,7 +33,7 @@ class SelectSpeedFragment : Fragment() {
     private var selectedSpeed: FrameLayout? = null
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private var questionId: String? = null
-    private var tempo: String = "SLOW"
+    private lateinit var tempo: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSelectSpeedBinding.inflate(inflater, container, false)
@@ -73,21 +73,21 @@ class SelectSpeedFragment : Fragment() {
         selectedSpeed?.let { resetSelection(it) }
 
         // 새로운 선택 적용
-        tempo = when (selectedFrame.id) {
+        when (selectedFrame.id) {
             R.id.fl_speed_fast -> {
+                tempo = "FAST"
                 applySelection(binding.flSpeedFast, binding.backgroundSelected, binding.genreOption)
-                "FAST"
+
             }
             R.id.fl_speed_medium -> {
+                tempo = "MID"
                 applySelection(binding.flSpeedMedium, binding.backgroundSelected2, binding.genreOption2)
-                "MID"
+
             }
             R.id.fl_speed_slow -> {
+                tempo = "SLOW"
                 applySelection(binding.flSpeedSlow, binding.backgroundSelected3, binding.genreOption3)
-                "SLOW"
             }
-
-            else -> "MID"
         }
 
         selectedSpeed = selectedFrame
