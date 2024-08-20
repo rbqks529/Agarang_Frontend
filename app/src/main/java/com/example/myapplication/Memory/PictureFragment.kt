@@ -87,7 +87,7 @@ class PictureFragment : Fragment() {
         var outputStream: FileOutputStream? = null
         try {
             outputStream = FileOutputStream(compressedFile)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 30, outputStream) // 품질을 30%로 압축
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, outputStream) // 품질을 30%로 압축
         } finally {
             outputStream?.close()
         }
