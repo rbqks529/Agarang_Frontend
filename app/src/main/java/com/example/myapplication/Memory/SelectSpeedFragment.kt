@@ -101,7 +101,7 @@ class SelectSpeedFragment : Fragment() {
             .commit()*/
 
     // 홈으로 전환되는 걸로 수정!
-        Toast.makeText(requireContext(), "노래가 생성중입니다", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), "노래가 생성중이에요", Toast.LENGTH_SHORT).show()
         val intent = Intent(requireContext(), MainActivity::class.java)
         intent.putExtra("id", questionId)
         startActivity(intent)
