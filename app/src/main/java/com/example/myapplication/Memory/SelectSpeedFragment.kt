@@ -14,10 +14,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.example.myapplication.Data.Request.MusicChoice
+import com.example.myapplication.Data.Request.selectMusicRequest
+import com.example.myapplication.Data.Response.SelectMusicResponse
 import com.example.myapplication.MainActivity
 import com.example.myapplication.R
+import com.example.myapplication.Retrofit.MemoryIF
+import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentSelectSpeedBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SelectSpeedFragment : Fragment() {
 
@@ -105,6 +113,7 @@ class SelectSpeedFragment : Fragment() {
         val intent = Intent(requireContext(), MainActivity::class.java)
         intent.putExtra("id", questionId)
         startActivity(intent)
+        sendToServer()
 
     }
 
@@ -122,6 +131,53 @@ class SelectSpeedFragment : Fragment() {
                 binding.backgroundSelected3.visibility = View.GONE
                 binding.genreOption3.setTextColor(Color.parseColor("#787878"))
             }
+        }
+    }
+    private fun sendToServer() {
+        val instrument=sharedViewModel.instrument.value
+        val genre=sharedViewModel.genre.value //null
+        val mood= sharedViewModel.mood.value
+        val tempo=sharedViewModel.tempo.value
+
+        Log.d("sendToServer", instrument.toString())
+        Log.d("sendToServer", genre.toString())
+        Log.d("sendToServer", mood.toString())
+        Log.d("sendToServer", tempo.toString())
+
+
+        if (instrument!=null && genre !=null && mood!=null && tempo!=null){ //여기 Null 문제 때문에 오류
+            val apiService= RetrofitService.createRetrofit(requireContext()).create(MemoryIF::class.java)
+            val music= MusicChoice(
+                instrument=instrument,
+                genre=genre,
+                mood=mood,
+                tempo=tempo
+            )
+            val request= selectMusicRequest(
+                id=questionId.toString(),
+                musicChoice = music
+            )
+            apiService.sendSelectMusic(request).enqueue(object : Callback<SelectMusicResponse> {
+                override fun onResponse(
+                    call: Call<SelectMusicResponse>,
+                    response: Response<SelectMusicResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        // 성공 처리
+                        Log.d("FinFragment", "Data sent successfully: ${response.body()}")
+                    } else {
+                        // 오류 처리
+                        Log.e("FinFragment", "Error sending data: ${response.errorBody()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<SelectMusicResponse>, t: Throwable) {
+                    Log.e("FinFragment", "Failed to send data", t)
+                }
+
+            })
+        }else{
+            Log.e("FinFragment","Failed to send data")
         }
     }
 }
