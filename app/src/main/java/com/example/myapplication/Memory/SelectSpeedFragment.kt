@@ -1,6 +1,7 @@
 package com.example.myapplication.Memory
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +12,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.example.myapplication.MainActivity
 import com.example.myapplication.R
 import com.example.myapplication.SharedViewModel
 import com.example.myapplication.databinding.FragmentSelectSpeedBinding
@@ -88,14 +91,21 @@ class SelectSpeedFragment : Fragment() {
         backgroundSelected.visibility = View.VISIBLE
         textView.setTextColor(Color.parseColor("#EB5F2A"))
         // 프래그먼트 전환
-        val fragment = FinFragment()
+        /*val fragment = FinFragment()
         val bundle = Bundle()
         bundle.putString("id", questionId)
         fragment.arguments = bundle
         parentFragmentManager.beginTransaction()
             .replace(R.id.memory_frm, fragment)
             .addToBackStack(null)
-            .commit()
+            .commit()*/
+
+    // 홈으로 전환되는 걸로 수정!
+        Toast.makeText(requireContext(), "노래가 생성중입니다", Toast.LENGTH_SHORT).show()
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        intent.putExtra("id", questionId)
+        startActivity(intent)
+
     }
 
     private fun resetSelection(frameLayout: FrameLayout) {
