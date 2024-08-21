@@ -1,6 +1,7 @@
 package com.example.myapplication.Diary
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.CardviewItemBinding
 import com.example.myapplication.databinding.FragmentBottomSheetDialogBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.io.IOException
 
 class CardViewAdapter(
     private var items: MutableList<DiaryMainCardData>,
@@ -21,6 +23,8 @@ class CardViewAdapter(
 ) : RecyclerView.Adapter<CardViewAdapter.ViewHolder>(), DiaryCardEditFragment.OnEditCompleteListener {
 
     inner class ViewHolder(val binding: CardviewItemBinding) : RecyclerView.ViewHolder(binding.root)
+    private var mediaPlayer: MediaPlayer? = null
+    private var audioUrl: String? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = CardviewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -42,6 +46,10 @@ class CardViewAdapter(
                 tvMusicTitle.text = "음악이 생성되는 중입니다."
             } else {
                 tvMusicTitle.text = item.musicTitle
+                ivDiaryImage.setOnClickListener {
+                    audioUrl = item.musicUrl
+                    playAudio()
+                }
             }
 
 
@@ -140,6 +148,25 @@ class CardViewAdapter(
             deleteMemory(item)
         }
         dialogFragment.show(fragmentManager, DiaryDeleteDialogFragment.TAG)
+    }
+
+    private fun playAudio() {
+        if (audioUrl == null) {
+            Log.e("PicAssociationFragment", "Audio URL is null")
+            return
+        }
+
+        mediaPlayer = MediaPlayer().apply {
+            setOnPreparedListener {
+                start()
+            }
+            try {
+                setDataSource(audioUrl)
+                prepareAsync()
+            } catch (e: IOException) {
+                Log.e("PicAssociationFragment", "Error playing audio", e)
+            }
+        }
     }
 
 

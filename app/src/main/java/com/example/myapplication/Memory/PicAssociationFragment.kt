@@ -201,8 +201,6 @@ class PicAssociationFragment : Fragment() {
                         val text = jsonObject.optString("text")
                         Log.d("성공", "Extracted text: $text")
                         activity?.runOnUiThread {
-                            // UI 업데이트
-                            binding.tvRecordNotice.text = text.toString()
 
                             //server
                             val apiService = RetrofitService.createRetrofit(requireContext()).create(MemoryIF::class.java)

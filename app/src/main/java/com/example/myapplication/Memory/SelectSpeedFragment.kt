@@ -33,6 +33,7 @@ class SelectSpeedFragment : Fragment() {
     private var selectedSpeed: FrameLayout? = null
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private var questionId: String? = null
+    private lateinit var tempo: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSelectSpeedBinding.inflate(inflater, container, false)
@@ -72,20 +73,21 @@ class SelectSpeedFragment : Fragment() {
         selectedSpeed?.let { resetSelection(it) }
 
         // 새로운 선택 적용
-        val tempo = when (selectedFrame.id) {
+        when (selectedFrame.id) {
             R.id.fl_speed_fast -> {
+                tempo = "FAST"
                 applySelection(binding.flSpeedFast, binding.backgroundSelected, binding.genreOption)
-                "FAST"
+
             }
             R.id.fl_speed_medium -> {
+                tempo = "MID"
                 applySelection(binding.flSpeedMedium, binding.backgroundSelected2, binding.genreOption2)
-                "MID"
+
             }
             R.id.fl_speed_slow -> {
+                tempo = "SLOW"
                 applySelection(binding.flSpeedSlow, binding.backgroundSelected3, binding.genreOption3)
-                "SLOW"
             }
-            else -> null
         }
 
         selectedSpeed = selectedFrame
@@ -109,11 +111,10 @@ class SelectSpeedFragment : Fragment() {
             .commit()*/
 
     // 홈으로 전환되는 걸로 수정!
-        Toast.makeText(requireContext(), "노래가 생성중이에요", Toast.LENGTH_LONG).show()
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        intent.putExtra("id", questionId)
-        startActivity(intent)
+
         sendToServer()
+        Toast.makeText(requireContext(), "노래가 생성중이에요", Toast.LENGTH_LONG).show()
+
 
     }
 
@@ -137,12 +138,11 @@ class SelectSpeedFragment : Fragment() {
         val instrument=sharedViewModel.instrument.value
         val genre=sharedViewModel.genre.value //null
         val mood= sharedViewModel.mood.value
-        val tempo=sharedViewModel.tempo.value
 
         Log.d("sendToServer", instrument.toString())
         Log.d("sendToServer", genre.toString())
         Log.d("sendToServer", mood.toString())
-        Log.d("sendToServer", tempo.toString())
+        Log.d("sendToServer", tempo)
 
 
         if (instrument!=null && genre !=null && mood!=null && tempo!=null){ //여기 Null 문제 때문에 오류
@@ -157,6 +157,7 @@ class SelectSpeedFragment : Fragment() {
                 id=questionId.toString(),
                 musicChoice = music
             )
+
             apiService.sendSelectMusic(request).enqueue(object : Callback<SelectMusicResponse> {
                 override fun onResponse(
                     call: Call<SelectMusicResponse>,
@@ -165,6 +166,9 @@ class SelectSpeedFragment : Fragment() {
                     if (response.isSuccessful) {
                         // 성공 처리
                         Log.d("FinFragment", "Data sent successfully: ${response.body()}")
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        intent.putExtra("id", questionId)
+                        startActivity(intent)
                     } else {
                         // 오류 처리
                         Log.e("FinFragment", "Error sending data: ${response.errorBody()}")
