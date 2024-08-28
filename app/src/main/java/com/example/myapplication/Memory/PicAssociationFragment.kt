@@ -67,11 +67,6 @@ class PicAssociationFragment : Fragment() {
 
             binding.tvQuestionTopic.text = questionText
         }
-        //예시 피자
-        //questionId ="chatcmpl-9tvnO8SneoJOT6fQhxmo66gHzHIGA"
-        //questionText ="오늘의 주제는 \"맛있는\"이야! 오늘 하루 중에 가장 맛있게 먹었던 음식은 뭐였어?"
-        //audioUrl ="https://cdn.typecast.ai/data/s/2024/8/8/light-speakcore-worker-865c58d466-47tmd/311e81f1-37a2-45cb-9bb9-db0d75eeb1b2.wav?Expires=1723203636&Signature=K52~ec2-5~1EmoR6KAonE9warJgnu3i-s50ffzASDo7wRFcX3Minr3QIue9YhAFCkSR94OeK5xSS9-zv06otRRVhtUuFrWdG1oVoIWF7uFNMoPWOCLGVQIEX0Bo2PZvR4o9f08c4-ZCQ9YJ4c3FgXzgmSNGHfM6xBCRcwExsPFTw0HJYfOl0825ArJMu1zYHkspssUmQB0T2~bunKqI1z2I-91VtkGtF3SMH0myVU~wVoVdwBt35YcqXOiW~Vrpt9h-eL2AncpDzzQPxxzaIKUyN-RAKmZ9mIjTCqUl70VZd01Cz-WQttW26CkTUKIOB3Bw2a4KRx55cXZiH3TULtg__&Key-Pair-Id=K11PO7SMLJYOIE"
-
 
         Log.d("PicAssociationFragment", "Question ID: $questionId")
         Log.d("PicAssociationFragment", "Question Text: $questionText")
