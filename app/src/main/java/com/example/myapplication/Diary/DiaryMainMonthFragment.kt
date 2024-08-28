@@ -6,14 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.Retrofit.DiaryIF
 import com.example.myapplication.Retrofit.RetrofitService
 import com.example.myapplication.databinding.FragmentDiaryMainMonthBinding
 import com.example.myapplication.Data.Response.DiaryMonthResponse
 import com.example.myapplication.Data.Response.MonthlyMemory
-import com.example.myapplication.R
-import com.example.myapplication.Retrofit.NetworkModule
+import com.example.myapplication.Diary.Diary.DiaryFragment
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,19 +46,25 @@ class DiaryMainMonthFragment : Fragment() {
         binding.rvDiaryMonth.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
     }
 
-    private fun navigateToDayFragment(item: DiaryMainMonthData) {
-        val dayFragment = DiaryMainDayFragment()
-        val bundle = Bundle().apply {
-            putInt("year", item.year)
-            putInt("month", item.month)
-        }
-        dayFragment.arguments = bundle
-
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_frm, dayFragment)
-            .addToBackStack(null)
-            .commit()
+    private fun findDiaryFragmentThroughActivity(): DiaryFragment? {
+        val fragmentManager = activity?.supportFragmentManager
+        return fragmentManager?.fragments?.find { it is DiaryFragment } as? DiaryFragment
     }
+
+    private fun navigateToDayFragment(item: DiaryMainMonthData) {
+        Log.d("MonthFragment", "Day로 이동 시도")
+        val diaryFragment = findDiaryFragmentThroughActivity()
+        if (diaryFragment != null) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                diaryFragment.switchToDay()
+                delay(100) // ViewPager2 전환 및 프래그먼트 추가를 위한 시간을 줍니다.
+                diaryFragment.getDayFragment()?.scrollToDate(item.year, item.month)
+            }
+        } else {
+            Log.e("MonthFragment", "DiaryFragment를 찾을 수 없습니다.")
+        }
+    }
+
 
     private fun fetchMonthlyMemories() {
         val service = RetrofitService.createRetrofit(requireContext()).create(DiaryIF::class.java)

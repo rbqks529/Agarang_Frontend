@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.replace
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.Data.Response.DailyMemory
@@ -39,18 +38,6 @@ class DiaryMainDayFragment : Fragment() {
         setupScrollListener()
 
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        arguments?.let { args ->
-            val year = args.getInt("year", -1)
-            val month = args.getInt("month", -1)
-            if (year != -1 && month != -1) {
-                selectedDate = String.format("%04d-%02d", year, month)
-            }
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,6 +122,7 @@ class DiaryMainDayFragment : Fragment() {
                         // 첫 번째 파라미터는 스크롤할 위치, 두 번째 파라미터는 상단 오프셋(0으로 설정하면 화면 최상단에 위치)
                         layoutManager.scrollToPositionWithOffset(position, 0)
                         updateDateText() // 스크롤 후 날짜 텍스트 업데이트
+                        selectedDate = null
                         Log.d("Scroll", "Scrolled to position: $position")
                     }
                 }
@@ -193,6 +181,15 @@ class DiaryMainDayFragment : Fragment() {
             .commit()
     }
 
+    fun scrollToDate(year: Int, month: Int) {
+        selectedDate = String.format("%04d-%02d", year, month)
+        Log.d("DayFragment", selectedDate.toString())
+        /*if (isAdded) {
+            fetchDailyMemories()
+        } else {
+            Log.d("DayFragment", "Fragment is not added to its activity")
+        }*/
+    }
 
     private fun extractMonth(date: String): Int {
         // 날짜 형식에 맞게 SimpleDateFormat 정의 (예: "yyyy-MM-dd")
