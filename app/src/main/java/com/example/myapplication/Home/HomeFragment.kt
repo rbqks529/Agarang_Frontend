@@ -153,11 +153,8 @@ class HomeFragment: Fragment() {
         binding.sivMusicPhoto.visibility = visibility
         binding.tvMusicTitle.visibility = visibility
         binding.tvMusicTag.visibility = visibility
-        binding.ivMusicBarOption.visibility = visibility
-        binding.ivMusicBarNext.visibility = visibility
         binding.ivMusicBarPlay.visibility = visibility
         binding.ivMusicBarStop.visibility = visibility
-        binding.ivMusicBarPrevious.visibility = visibility
     }
 
     private fun fetchRecentDiary(){
