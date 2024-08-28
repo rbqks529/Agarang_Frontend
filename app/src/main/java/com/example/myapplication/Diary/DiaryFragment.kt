@@ -6,17 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
+import com.example.myapplication.Diary.DiaryMainDayFragment
 import com.example.myapplication.Diary.DiaryMainTabLayoutVPAdapter
-import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentDiaryBinding
 import com.google.android.material.tabs.TabLayoutMediator
+
 
 
 class DiaryFragment : Fragment() {
 
     lateinit var binding: FragmentDiaryBinding
-    private val tapList = arrayListOf("즐겨찾기", "월", "일")
+    private val tabList = arrayListOf("즐겨찾기", "월", "일")
+    private lateinit var viewPagerAdapter: DiaryMainTabLayoutVPAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,9 +32,10 @@ class DiaryFragment : Fragment() {
     }
 
     private fun initView() {
-        binding.vpMain.adapter = DiaryMainTabLayoutVPAdapter(requireActivity())
-        TabLayoutMediator(binding.tlMain, binding.vpMain){ tab, position ->
-            tab.text = tapList[position]
+        viewPagerAdapter = DiaryMainTabLayoutVPAdapter(requireActivity())
+        binding.vpMain.adapter = viewPagerAdapter
+        TabLayoutMediator(binding.tlMain, binding.vpMain) { tab, position ->
+            tab.text = tabList[position]
         }.attach()
 
         // 특정 탭의 너비 변경
@@ -58,6 +61,16 @@ class DiaryFragment : Fragment() {
 
             tab.layoutParams = layoutParams
         }
+    }
+
+    fun switchToDay() {
+        // Tab을 일 탭으로 변경
+        binding.vpMain.currentItem = tabList.indexOf("일")
+    }
+
+
+    fun getDayFragment(): DiaryMainDayFragment? {
+        return viewPagerAdapter.getDayFragment()
     }
 
 }
