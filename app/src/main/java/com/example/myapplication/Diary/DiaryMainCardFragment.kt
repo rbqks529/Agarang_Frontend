@@ -29,7 +29,6 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Calendar
 
 class DiaryMainCardFragment : Fragment() {
     private lateinit var binding: FragmentDiaryMainCardBinding
@@ -57,7 +56,6 @@ class DiaryMainCardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let {
-            val data = it.getSerializable("data") as? ArrayList<DiaryMainDayData>
             val position = it.getInt("position", 0)
             val date = it.getString("date", "0")
             val memoryId = it.getInt("id", -1)  // 즐겨찾기에서 전달받은 id
