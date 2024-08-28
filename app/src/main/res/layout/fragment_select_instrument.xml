@@ -16,6 +16,7 @@
             android:layout_height="match_parent">
 
             <FrameLayout
+                android:id="@+id/fl_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +41,7 @@
 
             </FrameLayout>
 
-            <TextView
+            <!--<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="다음에 나랑 소풍가면 뭐하고 싶어?"
@@ -50,14 +51,13 @@
                 android:layout_marginTop="430dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent"/>-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="지금 대화를 노래로 만들어줄게!"
                 android:fontFamily="@font/pretendard500"
-                android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="@color/black"
                 android:layout_marginTop="471dp"
@@ -71,7 +71,6 @@
                 android:layout_height="wrap_content"
                 android:text="취향을 알려줘"
                 android:fontFamily="@font/pretendard500"
-                android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="@color/black"
                 android:layout_marginTop="500dp"

@@ -38,7 +38,7 @@
         android:id="@+id/tv_question_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="오늘은 어떤일이 있었어?"
+        android:text="오늘은 어떤 추억을 가지고 왔어?"
         android:fontFamily="@font/pretendard500"
         android:textColor="#1A000000"
         android:textSize="20sp"

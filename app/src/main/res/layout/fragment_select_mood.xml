@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="어떤 장르를 좋아해?"
-        android:textSize="17sp"
+        android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/fl_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,13 +50,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="오늘의 기분과\n어울리는 단어를 골라줘!"
-        android:textSize="17sp"
+        android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/tv_mood_q1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
         android:textColor="@color/black"
-        android:textStyle="bold"
         android:gravity="center"/>
 
     <GridView
