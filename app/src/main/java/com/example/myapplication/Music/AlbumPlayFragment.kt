@@ -72,12 +72,36 @@ class AlbumPlayFragment : Fragment() {
         setupSeekBarUpdater()
         return binding.root
     }
-
+    
+    //기존 버전
+    /*private fun playTrack(track: MusicAlbumData) {
+        Log.d("AlbumPlayFragment", "Playing track: ${track.musicTitle}")
+        // 기존 MediaPlayer 해제 및 초기화
+        mediaPlayer?.release()
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(track.musicUrl)
+            prepareAsync()
+            setOnPreparedListener {
+                start()
+                updateSeekBar()
+                sharedViewModel.setCurrentTrack(track) // ViewModel에 현재 트랙 업데이트
+                saveLastPlayedTrack(track) // SharedPreferences에 저장
+                togglePlayPause(true)
+                updateUIWithTrackInfo(track)
+            }
+            setOnCompletionListener {
+                togglePlayPause(false)
+                playNextTrack(track) // 트랙이 끝나면 자동으로 다음 트랙 재생
+            }
+        }
+    }*/
+    
+    //음악이 생성중일때 널값이 오면 음악이 생성중이라고 toast 메세지를 띄움
     private fun playTrack(track: MusicAlbumData) {
         Log.d("AlbumPlayFragment", "Playing track: ${track.musicTitle}")
 
         if (track.musicUrl.isEmpty()) {
-            showToast("음악이 생성 중입니다. 잠시만 기다려 주세요.")
+            Toast.makeText(context, "음악이 생성 중입니다. 잠시만 기다려 주세요.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -99,10 +123,6 @@ class AlbumPlayFragment : Fragment() {
                 playNextTrack(track) // 트랙이 끝나면 자동으로 다음 트랙 재생
             }
         }
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun updateSeekBar() {
