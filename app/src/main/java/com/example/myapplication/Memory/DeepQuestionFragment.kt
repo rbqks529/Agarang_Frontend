@@ -229,7 +229,6 @@ class DeepQuestionFragment : Fragment() {
                     if (apiResponse != null && apiResponse.isSuccess) {
                         // 성공적인 응답 처리
                         Log.d("DiaryMainAnswerFragment", "성공: ${apiResponse.message}")
-                        binding.tvRecordNotice.text = apiResponse.message
 
                         val fragment=SelectInstrumentFragment()
                         val bundle = Bundle()
@@ -238,6 +237,7 @@ class DeepQuestionFragment : Fragment() {
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.memory_frm,fragment)
                             .commit()
+
                     } else {
                         // 에러 처리
                         Log.e("DiaryMainAnswerFragment", "에러: ${response.errorBody()?.string()}")
