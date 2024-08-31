@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -74,6 +75,12 @@ class AlbumPlayFragment : Fragment() {
 
     private fun playTrack(track: MusicAlbumData) {
         Log.d("AlbumPlayFragment", "Playing track: ${track.musicTitle}")
+
+        if (track.musicUrl.isEmpty()) {
+            showToast("음악이 생성 중입니다. 잠시만 기다려 주세요.")
+            return
+        }
+
         // 기존 MediaPlayer 해제 및 초기화
         mediaPlayer?.release()
         mediaPlayer = MediaPlayer().apply {
@@ -92,6 +99,10 @@ class AlbumPlayFragment : Fragment() {
                 playNextTrack(track) // 트랙이 끝나면 자동으로 다음 트랙 재생
             }
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun updateSeekBar() {
