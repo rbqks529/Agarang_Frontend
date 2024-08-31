@@ -29,13 +29,9 @@ import java.io.IOException
 
 class DeepQuestionFragment : Fragment() {
     private lateinit var binding:FragmentDeepQuestionBinding
-    // 변수 선언
     private var questionId: String? = null
     private var questionText: String? = null
     private var audioUrl: String? = null
-
-    private var mediaRecorder: MediaRecorder? = null
-    private var audioFile: File? = null
     private var mediaPlayer: MediaPlayer? = null
 //clova key
     private val clientId = "nlpxphm34l"
@@ -124,8 +120,6 @@ class DeepQuestionFragment : Fragment() {
             // selectedChar 값을 사용하여 작업 수행
             binding.ivBabyCharacter.setImageResource(selectedChar)
         }
-
-
         return binding.root
     }
 
